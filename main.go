@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/ishihaya/company-official-app-backend/config"
 )
 
 func main() {
@@ -10,6 +12,7 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintf(w, "Hello World")
 	}))
-	fmt.Println("Listening 8080")
-	http.ListenAndServe(":8080", nil)
+	port := config.PORT()
+	fmt.Println("Listening :", port)
+	http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
 }
