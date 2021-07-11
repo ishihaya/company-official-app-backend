@@ -28,5 +28,6 @@ provider "google" {
 
 module "root" {
   source = "./../.."
+  
   # TODO: 必要な変数を入れる
 }
