@@ -1,8 +1,7 @@
 locals {
-  # TODO: 変数の値を入れる
-  project_id = ""
+  project_id = "company-official-app-dev"
   project_region = "asia-northeast1"
-  gcs_backet_name = ""
+  gcs_backet_name = "tfstate-coa-dev"
 }
 
 terraform {
@@ -28,5 +27,4 @@ provider "google" {
 
 module "root" {
   source = "./../.."
-  # TODO: 必要な変数を入れる
 }
