@@ -14,7 +14,7 @@ terraform {
 }
 
 locals {
-  project_id = "company-official-app-dev"
+  project_id     = "company-official-app-dev"
   project_region = "asia-northeast1"
 }
 
@@ -25,8 +25,8 @@ provider "google" {
 }
 
 module "root" {
-  source = "./../.."
-  project_name = local.project_id
-  project_region = local.project_region
+  source              = "./../.."
+  project_name        = local.project_id
+  project_region      = local.project_region
   tfstate_bucket_name = "tfstate-coa-dev"
 }
