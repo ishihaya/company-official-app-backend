@@ -15,14 +15,12 @@ resource "google_storage_bucket" "manage_tfstate" {
 }
 
 # NOTE: credentialはコンソール上で作成
-# terraform import module.root.google_service_account.github_actions_read_write_service_account projects/PROJECT_NAME/serviceAccounts/ACCOUNT_EMAIL
 resource "google_service_account" "github_actions_read_write_service_account" {
   description  = "Github Actionsを使用してGCPのリソースに読み書きが可能なサービスアカウント"
   account_id   = "github-actions-read-write"
   display_name = "github-actions-read-write"
 }
 
-# terraform import module.root.google_project_iam_custom_role.github_actions_read_write_role projects/PROJECT_NAME/roles/github_actions_read_write_role
 resource "google_project_iam_custom_role" "github_actions_read_write_role" {
   description = "Github Actionsを使用してGCPのリソースに読み書きが可能なロール"
   role_id     = "github_actions_read_write_role"
@@ -61,7 +59,6 @@ resource "google_project_iam_custom_role" "github_actions_read_write_role" {
   ]
 }
 
-# terraform import module.root.google_project_iam_member.github_actions_read_write_iam "projects/PROJECT_NAME/roles/github_actions_read_write_role serviceAccount:ACCOUNT_EMAIL"
 resource "google_project_iam_member" "github_actions_read_write_iam" {
   project = var.project_name
   role    = "projects/${var.project_name}/roles/${google_project_iam_custom_role.github_actions_read_write_role.role_id}"
@@ -69,14 +66,12 @@ resource "google_project_iam_member" "github_actions_read_write_iam" {
 }
 
 # NOTE: credentialはコンソール上で作成
-# terraform import module.root.google_service_account.github_actions_read_only_service_account projects/PROJECT_NAME/serviceAccounts/ACCOUNT_EMAIL
 resource "google_service_account" "github_actions_read_only_service_account" {
   description  = "Github Actionsを使用してGCPのリソースに読み込みのみ可能なサービスアカウント"
   account_id   = "github-actions-read-only"
   display_name = "github-actions-read-only"
 }
 
-# terraform import module.root.google_project_iam_custom_role.github_actions_read_only_role projects/PROJECT_NAME/roles/github_actions_read_only_role
 resource "google_project_iam_custom_role" "github_actions_read_only_role" {
   description = "Github Actionsを使用してGCPのリソースに読み込みのみ可能なロール"
   role_id     = "github_actions_read_only_role"
