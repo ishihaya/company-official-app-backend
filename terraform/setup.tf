@@ -7,7 +7,7 @@
 resource "google_storage_bucket" "manage_tfstate" {
     name = var.tfstate_bucket_name
     project = var.project_name
-    location = "ASIA"
+    location = var.project_region
     default_event_based_hold = false
     force_destroy = false
     requester_pays = false
