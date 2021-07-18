@@ -11,13 +11,13 @@ resource "google_project_service" "iam" {
 }
 
 resource "google_project_service" "cloud_run" {
-  project = var.project_name
-  service = "run.googleapis.com"
+  project                    = var.project_name
+  service                    = "run.googleapis.com"
   disable_dependent_services = true
 }
 
 resource "google_project_service" "secret_manager" {
-  project = var.project_name
-  service = "secretmanager.googleapis.com"
+  project                    = var.project_name
+  service                    = "secretmanager.googleapis.com"
   disable_dependent_services = true
 }
