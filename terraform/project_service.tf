@@ -9,3 +9,9 @@ resource "google_project_service" "iam" {
   service                    = "iam.googleapis.com"
   disable_dependent_services = true
 }
+
+resource "google_project_service" "cloud_run" {
+  project = var.project_name
+  service = "run.googleapis.com"
+  disable_dependent_services = true
+}
