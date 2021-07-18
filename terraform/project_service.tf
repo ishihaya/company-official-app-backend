@@ -10,7 +10,7 @@ resource "google_project_service" "iam" {
   disable_dependent_services = true
 }
 
-resource "google_project_service" "gke" {
+resource "google_project_service" "kubernetes" {
   project = var.project_name
   service = "container.googleapis.com"
   disable_dependent_services = true
