@@ -33,6 +33,8 @@ resource "google_project_iam_custom_role" "github_actions_read_write_role" {
     "storage.objects.get",
     "storage.objects.list",
     "storage.buckets.get",
+    # NOTE: 初回gcrにpushする際にこの権限がないと403が出る
+    "storage.buckets.create",
     # service account
     "iam.serviceAccounts.actAs",
     "iam.serviceAccounts.get",
