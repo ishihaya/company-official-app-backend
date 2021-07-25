@@ -43,6 +43,7 @@ jobs:
           context: .
           file: build/app/Dockerfile
           push: true
+          load: true
           target: deploy
           tags: ${{ env.IMAGE }}
           builder: ${{ steps.buildx.outputs.name }}
