@@ -33,8 +33,8 @@ jobs:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-docker-company-official-app-backend-image-${{ github.sha }}
           restore-keys: ${{ runner.os }}-docker-company-official-app-backend-image-
-      # - name: Configure docker to use the gcloud cli
-      #   run: gcloud auth configure-docker --quiet
+      - name: Configure docker to use the gcloud cli
+        run: gcloud auth configure-docker --quiet
       - name: Build and push image
         uses: docker/build-push-action@v2
         env:
