@@ -1,18 +1,20 @@
-ENV_FILE := ./config/.env
-ENV = $(shell cat $(ENV_FILE))
+include ./config/.env
+export
+# export $(Shell sed 's/=.*//' envfile)
+# ENV_FILE := ./config/.env
+# ENV = $(shell cat $(ENV_FILE))
+# bash -c '$(ENV); mysqldef -uroot -p$$(MYSQL_ROOT_PASSWORD) -P$$(DB_PORT) $$(MYSQL_DATABASE) < schema.sql'
 
 .PHONY: migrate
 migrate:
-	bash -c '$(ENV); mysqldef -uroot -p$$(MYSQL_ROOT_PASSWORD) -P$$(DB_PORT) $$(MYSQL_DATABASE) < schema.sql'
+	mysqldef -uroot -p$(MYSQL_ROOT_PASSWORD) -P$(DB_PORT) $(MYSQL_DATABASE) < schema.sql
 
 .PHONY: migrate
 migrate-dry-run:
-	$(ENV)
 	mysqldef -uroot -p$(MYSQL_ROOT_PASSWORD) -P$(DB_PORT) $(MYSQL_DATABASE) --dry-run < schema.sql
 
 .PHONY: test
 test:
-	$(ENV)
 	go test -v ./... -count=1
 
 .PHONY: fmt-terraform
