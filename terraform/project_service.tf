@@ -15,3 +15,16 @@ resource "google_project_service" "resource_manager" {
   project = var.project_name
   disable_dependent_services = true
 }
+
+resource "google_project_service" "cloud_sql_admin" {
+  service                    = "sqladmin.googleapis.com"
+  project                    = var.project_name
+  disable_dependent_services = true
+}
+
+resource "google_project_service" "service_networking" {
+  service                    = "servicenetworking.googleapis.com"
+  project                    = var.project_name
+  disable_dependent_services = true
+}
+
