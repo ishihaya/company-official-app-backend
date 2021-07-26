@@ -30,6 +30,18 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: pass
+          MYSQL_USER: app
+          MYSQL_PASSWORD: app-pass
+          MYSQL_DATABASE: app-mysql-database
+        ports:
+          - 3306:3306
+        options: --health-cmd "mysqladmin ping -u$MYSQL_USER -p$MYSQL_PASSWORD -P3306" --health-interval 5s --health-timeout 30s --health-retries 20
+    timeout-minutes: 20 
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2
@@ -43,5 +55,13 @@ jobs:
           restore-keys:  v1-${{ runner.os }}-go-
       - name: Get dependencies
         run: go mod download
+      - name: Install sqldef
+        run: |
+          mkdir -p $HOME/bin/ \
+          && wget -O - https://github.com/k0kubun/sqldef/releases/latest/download/mysqldef_linux_amd64.tar.gz | tar xvz \
+          && mv mysqldef $HOME/bin/mysqldef \
+          && echo "$HOME/bin" >> $GITHUB_PATH
+      - name: Migrate DB
+        run: make migrate
       - name: Test
         run: make test
