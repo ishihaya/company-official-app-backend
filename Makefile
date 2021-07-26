@@ -1,4 +1,4 @@
-ENV_FILE = ./config/.env
+ENV_FILE := ./config/.env
 ENV = $(shell cat $(ENV_FILE))
 
 .PHONY: migrate
