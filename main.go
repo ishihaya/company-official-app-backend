@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/ishihaya/company-official-app-backend/config"
@@ -14,5 +15,7 @@ func main() {
 	}))
 	port := config.PORT()
 	fmt.Println("Listening :", port)
-	http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
+	if err := http.ListenAndServe(fmt.Sprintf(":%s", port), nil); err != nil {
+		log.Fatalf("failed to listen: %+v", err)
+	}
 }
