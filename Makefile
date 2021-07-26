@@ -4,7 +4,7 @@ ENV = $(shell cat $(ENV_FILE))
 .PHONY: migrate
 migrate:
 	cat ./config/.env
-	mysqldef -uroot -p${MYSQL_ROOT_PASSWORD} -P$(DB_PORT) $(MYSQL_DATABASE) < schema.sql
+	mysqldef -uroot -p$${MYSQL_ROOT_PASSWORD} -P$(DB_PORT) $(MYSQL_DATABASE) < schema.sql
 
 .PHONY: migrate
 migrate-dry-run:
