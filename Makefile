@@ -1,9 +1,5 @@
 include ./config/.env
 export
-# export $(Shell sed 's/=.*//' envfile)
-# ENV_FILE := ./config/.env
-# ENV = $(shell cat $(ENV_FILE))
-# bash -c '$(ENV); mysqldef -uroot -p$$(MYSQL_ROOT_PASSWORD) -P$$(DB_PORT) $$(MYSQL_DATABASE) < schema.sql'
 
 .PHONY: migrate
 migrate:
