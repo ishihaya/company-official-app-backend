@@ -63,5 +63,5 @@ jobs:
           && echo "$HOME/bin" >> $GITHUB_PATH
       - name: Migrate DB
         run: make migrate
-        - name: Test
+      - name: Test
         run: make test
