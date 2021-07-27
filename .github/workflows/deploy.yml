@@ -81,3 +81,36 @@ jobs:
         run: terraform validate -no-color
       - name: Apply
         run: terraform apply -no-color -input=false -auto-approve
+  migrate_db:
+    name: Migrate DB
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+    services:
+      cloud_sql_proxy:
+        image: gcr.io/cloudsql-docker/gce-proxy:1.16
+        ports:
+          - 127.0.0.1:3307:3306
+        options: /cloud_sql_proxy -instances=company-official-app-dev:asia-northeast1:app-mysql-01
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ env.GCP_PROJECT_ID }}
+          service_account_key: ${{ env.GCP_SA_MYSQL_CLIENT_KEY }}
+          export_default_credentials: true
+      - name: Install sqldef
+        run: |
+          mkdir -p $HOME/bin/
+          wget -O - https://github.com/k0kubun/sqldef/releases/latest/download/mysqldef_linux_amd64.tar.gz | tar xvz
+          mv mysqldef $HOME/bin/mysqldef
+          echo "$HOME/bin" >> $GITHUB_PATH
+      - name: migrate DB
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          DB_PORT: 3307
+          MYSQL_DATABASE: app-mysql-database
+        run: make migrate
+        # run: make migrate -e MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }} -e DB_PORT=3307 -e MYSQL_DATABASE=app-mysql-database
+        # run: mysqldef -uroot -p$MYSQL_ROOT_PASSWORD -P$DB_PORT $MYSQL_DATABASE < schema.sql
