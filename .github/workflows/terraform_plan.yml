@@ -40,7 +40,7 @@ jobs:
         continue-on-error: true
       - name: Plan
         id: plan
-        run: terraform plan -input=false
+        run: terraform plan -no-color -input=false
         continue-on-error: true
       - name: Comment result of plan
         uses: actions/github-script@v4
