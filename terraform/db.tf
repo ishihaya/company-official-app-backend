@@ -22,22 +22,22 @@ resource "google_sql_database" "app_mysql_database" {
 resource "google_sql_user" "app_mysql_root_user" {
   instance   = var.cloud_sql_instance.name
   depends_on = [var.cloud_sql_instance]
-  name     = "root"
-  password = var.mysql_root_password
+  name       = "root"
+  password   = var.mysql_root_password
 }
 
 # アプリケーションで使用するユーザー
 resource "google_sql_user" "app_mysql_user" {
   instance   = var.cloud_sql_instance.name
   depends_on = [var.cloud_sql_instance]
-  name     = var.mysql_user
-  password = var.mysql_password
+  name       = var.mysql_user
+  password   = var.mysql_password
 }
 
 # migrate dry-run 使用時にテーブルとカラム情報を読み込むユーザー
 resource "google_sql_user" "app_mysql_migration_ro_user" {
   instance   = var.cloud_sql_instance.name
   depends_on = [var.cloud_sql_instance]
-  name     = "migration_ro"
-  password = var.mysql_migration_ro_password
+  name       = "migration_ro"
+  password   = var.mysql_migration_ro_password
 }
