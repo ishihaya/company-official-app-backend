@@ -86,26 +86,25 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: dev
-    services:
-      cloud_sql_proxy:
-        image: gcr.io/cloudsql-docker/gce-proxy:1.16
-        ports:
-          - 127.0.0.1:3307:3306
-        options: --entrypoint='/cloud_sql_proxy -instances=company-official-app-dev:asia-northeast1:app-mysql-01'
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@master
-        with:
-          project_id: ${{ env.GCP_PROJECT_ID }}
-          service_account_key: ${{ env.GCP_SA_MYSQL_CLIENT_KEY }}
-          export_default_credentials: true
       - name: Install sqldef
         run: |
           mkdir -p $HOME/bin/
           wget -O - https://github.com/k0kubun/sqldef/releases/latest/download/mysqldef_linux_amd64.tar.gz | tar xvz
           mv mysqldef $HOME/bin/mysqldef
           echo "$HOME/bin" >> $GITHUB_PATH
+      # TODO: cloud_sql_proxyをinstallしてbackgroundで実行する
+      # NOTE: 他の方法、コンテナ別途作成なども考えたが面倒なのでやめる
+      # - name: Set up Cloud SDK
+      #   uses: google-github-actions/setup-gcloud@master
+      #   with:
+      #     project_id: ${{ env.GCP_PROJECT_ID }}
+      #     service_account_key: ${{ env.GCP_SA_MYSQL_CLIENT_KEY }}
+      #     export_default_credentials: true
+      #     ports:
+      #       - 127.0.0.1:3307:3306
+      #     -instances=company-official-app-dev:asia-northeast1:app-mysql-01'
       - name: migrate DB
         env:
           MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
