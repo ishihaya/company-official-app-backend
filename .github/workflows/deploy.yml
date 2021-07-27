@@ -86,12 +86,12 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: dev
-    services:
-      cloud_sql_proxy:
-        image: gcr.io/cloudsql-docker/gce-proxy:1.16
-        ports:
-          - 127.0.0.1:3307:3306
-        options: /cloud_sql_proxy -instances=company-official-app-dev:asia-northeast1:app-mysql-01
+    # services:
+    #   cloud_sql_proxy:
+    #     image: gcr.io/cloudsql-docker/gce-proxy:1.16
+    #     ports:
+    #       - 127.0.0.1:3307:3306
+    #     options: /cloud_sql_proxy -instances=company-official-app-dev:asia-northeast1:app-mysql-01
     steps:
       - uses: actions/checkout@v2
       - name: Set up Cloud SDK
