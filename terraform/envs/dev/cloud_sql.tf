@@ -1,8 +1,8 @@
 resource "google_sql_database_instance" "app_mysql_instance" {
   # NOTE: インスタンス再生成などの場合はsuffixの数値を増やして対応する
-  name =  "app-mysql-01"
+  name             = "app-mysql-01"
   database_version = "MYSQL_8_0"
-  region = local.project_region
+  region           = local.project_region
   depends_on       = [module.root.clout_sql_instance_private_connection]
   settings {
     # NOTE: 実用レベルのプロジェクトや環境を除き冗長化を避けて料金を抑える
