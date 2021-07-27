@@ -72,8 +72,8 @@ jobs:
         with:
           terraform_version: 1.0.0
       - name: Init
-        run: terraform init -input=false
+        run: terraform init -no-color -input=false
       - name: Validate
-        run: terraform validate
+        run: terraform validate -no-color
       - name: Apply
-        run: terraform apply -input=false -auto-approve
+        run: terraform apply -no-color -input=false -auto-approve

@@ -25,9 +25,8 @@ resource "google_project_iam_custom_role" "github_actions_read_write_role" {
   description = "Github Actionsを使用してGCPのリソースに読み書きが可能なロール"
   role_id     = "github_actions_read_write_role"
   title       = "Github Actions Read Write"
-  # NOTE: 必要な権限をここに全て追加していく
   permissions = [
-    # gcs
+    # Cloud Storage
     "storage.objects.create",
     "storage.objects.delete",
     "storage.objects.get",
@@ -35,7 +34,7 @@ resource "google_project_iam_custom_role" "github_actions_read_write_role" {
     "storage.buckets.get",
     # NOTE: 初回gcrにpushする際にこの権限がないと403が出る
     "storage.buckets.create",
-    # service account
+    # サービスアカウント
     "iam.serviceAccounts.actAs",
     "iam.serviceAccounts.get",
     "iam.serviceAccounts.list",
@@ -43,21 +42,52 @@ resource "google_project_iam_custom_role" "github_actions_read_write_role" {
     "iam.serviceAccounts.create",
     "iam.serviceAccounts.update",
     "iam.serviceAccounts.delete",
-    # googleapi
+    # API有効化
     "serviceusage.services.enable",
     "serviceusage.services.disable",
     "serviceusage.services.get",
     "serviceusage.services.list",
-    # role
+    # ロール
     "iam.roles.create",
     "iam.roles.delete",
     "iam.roles.get",
     "iam.roles.list",
     "iam.roles.undelete",
     "iam.roles.update",
-    # iam # 権限の付与を可能にする
+    # IAM
+    # NOTE: 権限の付与を可能にする
     "resourcemanager.projects.setIamPolicy",
     "resourcemanager.projects.getIamPolicy",
+    # Cloud SQL
+    "cloudsql.instances.connect",
+    "cloudsql.instances.create",
+    "cloudsql.instances.delete",
+    "cloudsql.instances.get",
+    "cloudsql.instances.update",
+    "cloudsql.instances.list",
+    "cloudsql.databases.create",
+    "cloudsql.databases.delete",
+    "cloudsql.databases.get",
+    "cloudsql.databases.list",
+    "cloudsql.databases.update",
+    "cloudsql.users.create",
+    "cloudsql.users.delete",
+    "cloudsql.users.list",
+    "cloudsql.users.update",
+    # VPCネットワーク
+    "compute.networks.create",
+    "compute.networks.get",
+    "compute.networks.delete",
+    "compute.networks.use",
+    "compute.networks.removePeering",
+    # IPアドレス
+    "compute.globalAddresses.createInternal",
+    "compute.globalAddresses.get",
+    "compute.globalAddresses.deleteInternal",
+    # Service Networking
+    "servicenetworking.services.addPeering",
+    "servicenetworking.services.addSubnetwork",
+    "servicenetworking.services.get",
   ]
 }
 
@@ -78,26 +108,37 @@ resource "google_project_iam_custom_role" "github_actions_read_only_role" {
   description = "Github Actionsを使用してGCPのリソースに読み込みのみ可能なロール"
   role_id     = "github_actions_read_only_role"
   title       = "Github Actions Read Only"
-  # NOTE: 必要な権限をここに全て追加していく
   permissions = [
-    # gcs
+    # Cloud Storage
     "storage.objects.create",
     "storage.objects.delete",
     "storage.objects.get",
     "storage.objects.list",
     "storage.buckets.get",
-    # service account
+    # サービスアカウント
     "iam.serviceAccounts.get",
     "iam.serviceAccounts.list",
     "resourcemanager.projects.get",
-    # googleapi
+    # API有効化
     "serviceusage.services.get",
     "serviceusage.services.list",
-    # role
+    # ロール
     "iam.roles.get",
     "iam.roles.list",
-    # iam
+    # IAM
     "resourcemanager.projects.getIamPolicy",
+    # Cloud SQL
+    "cloudsql.instances.get",
+    "cloudsql.instances.list",
+    "cloudsql.databases.get",
+    "cloudsql.databases.list",
+    "cloudsql.users.list",
+    # VPCネットワーク
+    "compute.networks.get",
+    # IPアドレス
+    "compute.globalAddresses.get",
+    # Service Networking
+    "servicenetworking.services.get",
   ]
 }
 
