@@ -15,6 +15,10 @@ jobs:
     defaults:
       run:
         working-directory: ./terraform/envs/dev
+    env:
+      TF_VAR_mysql_root_password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+      TF_VAR_mysql_password: ${{ secrets.MYSQL_PASSWORD }}
+      TF_VAR_mysql_migration_ro_password: ${{ secrets.MYSQL_MIGRATION_READ_ONLY_PASSWORD }}
     steps:
       - uses: actions/checkout@v2
       - name: Set up Cloud SDK
@@ -28,19 +32,19 @@ jobs:
           terraform_version: 1.0.0
       - name: Fmt check
         id: fmt
-        run: terraform fmt -recursive -check
+        run: terraform fmt -no-color -recursive -check
         continue-on-error: true
       - name: Init
         id: init
-        run: terraform init -input=false
+        run: terraform init -no-color -input=false
         continue-on-error: true
       - name: Validate
         id: validate
-        run: terraform validate
+        run: terraform validate -no-color
         continue-on-error: true
       - name: Plan
         id: plan
-        run: terraform plan -input=false
+        run: terraform plan -no-color -input=false
         continue-on-error: true
       - name: Comment result of plan
         uses: actions/github-script@v4
