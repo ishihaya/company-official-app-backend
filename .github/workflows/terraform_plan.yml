@@ -15,6 +15,10 @@ jobs:
     defaults:
       run:
         working-directory: ./terraform/envs/dev
+    env:
+      TF_VAR_mysql_root_password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+      TF_VAR_mysql_password: ${{ secrets.MYSQL_PASSWORD }}
+      TF_VAR_mysql_migration_ro_password: ${{ secrets.MYSQL_MIGRATION_READ_ONLY_PASSWORD }}
     steps:
       - uses: actions/checkout@v2
       - name: Set up Cloud SDK
