@@ -88,6 +88,14 @@ resource "google_project_iam_custom_role" "github_actions_read_write_role" {
     "servicenetworking.services.addPeering",
     "servicenetworking.services.addSubnetwork",
     "servicenetworking.services.get",
+    # Cloud Run
+    "run.services.get",
+    "run.services.create",
+    "run.services.list",
+    "run.services.delete",
+    "run.services.update",
+    "run.services.getIamPolicy",
+    "run.services.setIamPolicy",
   ]
 }
 
@@ -139,6 +147,10 @@ resource "google_project_iam_custom_role" "github_actions_read_only_role" {
     "compute.globalAddresses.get",
     # Service Networking
     "servicenetworking.services.get",
+    # Cloud Run
+    "run.services.get",
+    "run.services.list",
+    "run.services.getIamPolicy",
   ]
 }
 
