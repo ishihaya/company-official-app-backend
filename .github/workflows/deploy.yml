@@ -91,6 +91,12 @@ jobs:
       PORT: 3307
     steps:
       - uses: actions/checkout@v2
+      - name: Install sqldef
+        run: |
+          mkdir -p $HOME/bin/
+          wget -O - https://github.com/k0kubun/sqldef/releases/latest/download/mysqldef_linux_amd64.tar.gz | tar xvz
+          mv mysqldef $HOME/bin/mysqldef
+          echo "$HOME/bin" >> $GITHUB_PATH
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
         with:
@@ -103,11 +109,5 @@ jobs:
           chmod +x cloud_sql_proxy
       - name: Connect Cloud SQL Proxy
         run: ./cloud_sql_proxy -instances=$INSTANCE_CONNECTION_NAME=tcp:0.0.0.0:$PORT &
-      - name: Install sqldef
-        run: |
-          mkdir -p $HOME/bin/
-          wget -O - https://github.com/k0kubun/sqldef/releases/latest/download/mysqldef_linux_amd64.tar.gz | tar xvz
-          mv mysqldef $HOME/bin/mysqldef
-          echo "$HOME/bin" >> $GITHUB_PATH
       - name: migrate DB
         run: make migrate -e MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }} -e DB_PORT=$PORT -e MYSQL_DATABASE=app-mysql-database
