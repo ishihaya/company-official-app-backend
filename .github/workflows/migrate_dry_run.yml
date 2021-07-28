@@ -32,7 +32,7 @@ jobs:
           wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
           chmod +x cloud_sql_proxy
       - name: Connect Cloud SQL Proxy
-        run: ./cloud_sql_proxy -instances=$INSTANCE_CONNECTION_NAME=tcp:0.0.0.0:$PORT &
+        run: ./cloud_sql_proxy -instances=${{ secrets.GCP_PROJECT_ID }}:asia-northeast1:app-mysql-01=tcp:0.0.0.0:$PORT &
       - name: migrate DB dry run
         id: migrate_db_dry_run
         run: |
