@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 env:
   GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  GCP_SA_KEY: ${{ secrets.GCP_SA_READ_WRITE_KEY }}
+  TF_VAR_container_image_tag: ${{ github.sha }}
 jobs:
   build_and_push:
     name: Build and push
@@ -18,7 +18,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@master
         with:
           project_id: ${{ env.GCP_PROJECT_ID }}
-          service_account_key: ${{ env.GCP_SA_KEY }}
+          service_account_key: ${{ secrets.GCP_SA_READ_WRITE_KEY }}
           export_default_credentials: true
       - name: Set up Docker Buildx
         id: buildx
@@ -36,7 +36,7 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v2
         env:
-          IMAGE: asia.gcr.io/${{ env.GCP_PROJECT_ID }}/company-official-app-backend
+          IMAGE: asia.gcr.io/${{ env.GCP_PROJECT_ID }}/company-official-app-backend:${{ env.TF_VAR_container_image_tag }}
         with:
           context: .
           file: build/app/Dockerfile
@@ -69,7 +69,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@master
         with:
           project_id: ${{ env.GCP_PROJECT_ID }}
-          service_account_key: ${{ env.GCP_SA_KEY }}
+          service_account_key: ${{ secrets.GCP_SA_READ_WRITE_KEY }}
           export_default_credentials: true
       - uses: hashicorp/setup-terraform@v1
         with:
