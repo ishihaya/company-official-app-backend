@@ -1,5 +1,4 @@
 name: Check CI
-
 on:
   push:
     branches: [ main ]

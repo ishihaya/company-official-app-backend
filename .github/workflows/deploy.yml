@@ -1,5 +1,4 @@
 name: Deploy
-
 on:
   push:
     branches: [ main ]
@@ -7,7 +6,6 @@ on:
 env:
   GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   GCP_SA_KEY: ${{ secrets.GCP_SA_READ_WRITE_KEY }}
-  INSTANCE_CONNECTION_NAME: company-official-app-dev:asia-northeast1:app-mysql-01
 jobs:
   build_and_push:
     name: Build and push
@@ -108,6 +106,6 @@ jobs:
           wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
           chmod +x cloud_sql_proxy
       - name: Connect Cloud SQL Proxy
-        run: ./cloud_sql_proxy -instances=$INSTANCE_CONNECTION_NAME=tcp:0.0.0.0:$PORT &
+        run: ./cloud_sql_proxy -instances=${{ secrets.GCP_PROJECT_ID }}:asia-northeast1:app-mysql-01=tcp:0.0.0.0:$PORT &
       - name: migrate DB
         run: make migrate -e MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }} -e DB_PORT=$PORT -e MYSQL_DATABASE=app-mysql-database

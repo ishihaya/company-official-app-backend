@@ -1,0 +1,70 @@
+name: Migrate DB dry run
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.sql'
+  workflow_dispatch:
+jobs:
+  migrate_db_dry_run:
+    name: Migrate DB dry run
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+    env:
+      PORT: 3307
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install sqldef
+        run: |
+          mkdir -p $HOME/bin/
+          wget -O - https://github.com/k0kubun/sqldef/releases/latest/download/mysqldef_linux_amd64.tar.gz | tar xvz
+          mv mysqldef $HOME/bin/mysqldef
+          echo "$HOME/bin" >> $GITHUB_PATH
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ env.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_MYSQL_CLIENT_KEY }}
+          export_default_credentials: true
+      - name: Install Cloud SQL Proxy
+        run: |
+          wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
+          chmod +x cloud_sql_proxy
+      - name: Connect Cloud SQL Proxy
+        run: ./cloud_sql_proxy -instances=${{ secrets.GCP_PROJECT_ID }}:asia-northeast1:app-mysql-01=tcp:0.0.0.0:$PORT &
+      - name: migrate DB dry run
+        id: migrate_db_dry_run
+        run: |
+          DRYRUN=$(mysqldef -uroot -p${{ secrets.MYSQL_ROOT_PASSWORD }}  -P$PORT app-mysql-database --dry-run < schema.sql)
+          echo "DRYRUN<<EOF" >> $GITHUB_ENV
+          echo "$DRYRUN" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+        continue-on-error: true
+      - name: Comment migrate DB dry run result
+        uses: actions/github-script@v4
+        env:
+          DRYRUN: ${{ env.DRYRUN }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `
+            #### migrate DB dry run by sqldef: \`${{ steps.migrate_db_dry_run.outcome }}\`
+            <details>
+              <summary>Show migrate DB dry run result</summary>
+
+              \`\`\`
+                ${process.env.DRYRUN}
+              \`\`\`
+
+            </details>`;
+            
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+      - name: judge
+        if: steps.migrate_db_dry_run.outcome != 'success'
+        run: exit 1
