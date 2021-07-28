@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: dev
+    env:
+      PORT: 3307
     steps:
       - uses: actions/checkout@v2
       - name: Install sqldef
@@ -34,7 +36,7 @@ jobs:
       - name: migrate DB dry run
         id: migrate_db_dry_run
         run: |
-          DRYRUN="$(make migrate-dry-run -e MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }} -e DB_PORT=$PORT -e MYSQL_DATABASE=app-mysql-database)"
+          DRYRUN=$(make migrate-dry-run -e MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }} -e DB_PORT=$PORT -e MYSQL_DATABASE=app-mysql-database)
           echo "DRYRUN<<EOF" >> $GITHUB_ENV
           echo "$DRYRUN" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
