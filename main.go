@@ -9,9 +9,11 @@ import (
 	// to connect mysql db
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/ishihaya/company-official-app-backend/config"
+	"github.com/ishihaya/company-official-app-backend/infra/logger"
 )
 
 func main() {
+	logger.New(config.Log())
 	dsn := config.DSN()
 	_, err := sql.Open("mysql", dsn)
 	if err != nil {
