@@ -16,3 +16,6 @@ variable "cloud_sql_instance_connection_name" { type = string }
 variable "container_image_name" { type = string }
 variable "container_image_tag" { type = string }
 variable "mysql_database" { type = string }
+variable "app_env" { type = string }
+variable "log_level" { type = string }
+variable "log_encoding" { type = string }
