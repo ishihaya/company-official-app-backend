@@ -11,3 +11,7 @@ variable "mysql_root_password" { type = string }
 variable "mysql_user" { type = string }
 variable "mysql_password" { type = string }
 variable "mysql_migration_ro_password" { type = string }
+variable "cloud_run_name" { type = string }
+variable "cloud_sql_instance_connection_name" { type = string }
+variable "container_image_name" { type = string }
+variable "mysql_database" { type = string }
