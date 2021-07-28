@@ -36,7 +36,7 @@ jobs:
       - name: migrate DB dry run
         id: migrate_db_dry_run
         run: |
-          DRYRUN=$(make migrate-dry-run -e MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }} -e DB_PORT=$PORT -e MYSQL_DATABASE=app-mysql-database)
+          DRYRUN=$(mysqldef -uroot -p${{ secrets.MYSQL_ROOT_PASSWORD }}  -P$PORT app-mysql-database --dry-run < schema.sql)
           echo "DRYRUN<<EOF" >> $GITHUB_ENV
           echo "$DRYRUN" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
