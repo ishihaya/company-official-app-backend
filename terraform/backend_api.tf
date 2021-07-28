@@ -1,12 +1,12 @@
 resource "google_service_account" "backend_api" {
-  account_id = "backend-api"
+  account_id   = "backend-api"
   display_name = "backend-api"
-  description = "Cloud Runサービスであるbackend-apiがGCPのリソースへアクセスする用"
+  description  = "Cloud Runサービスであるbackend-apiがGCPのリソースへアクセスする用"
 }
 
 resource "google_project_iam_custom_role" "backend_api" {
-  role_id = "backend_api_role"
-  title = "Backend API Role to Access GCP Resource"
+  role_id     = "backend_api_role"
+  title       = "Backend API Role to Access GCP Resource"
   description = "Cloud Runサービスであるbackend-apiがGCPのリソースへアクセスする用"
   permissions = [
     # サービスアカウント
@@ -31,9 +31,9 @@ resource "google_project_iam_member" "backend_api" {
 resource "google_cloud_run_service" "company_official_app_backend" {
   provider = google-beta
 
-  name = var.cloud_run_name
-  project = var.project_name
-  location = var.project_region
+  name                       = var.cloud_run_name
+  project                    = var.project_name
+  location                   = var.project_region
   autogenerate_revision_name = true
   metadata {
     annotations = {
@@ -44,7 +44,7 @@ resource "google_cloud_run_service" "company_official_app_backend" {
     }
   }
   traffic {
-    percent = 100
+    percent         = 100
     latest_revision = true
   }
   template {
@@ -60,15 +60,15 @@ resource "google_cloud_run_service" "company_official_app_backend" {
       containers {
         image = "${var.container_image_name}:latest"
         env {
-          name = "MYSQL_USER"
+          name  = "MYSQL_USER"
           value = var.mysql_user
         }
         env {
-          name = "MYSQL_DATABASE"
+          name  = "MYSQL_DATABASE"
           value = var.mysql_database
         }
         env {
-          name = "DB_SOCKET_PATH"
+          name  = "DB_SOCKET_PATH"
           value = "/cloudsql/${var.cloud_sql_instance_connection_name}"
         }
 
@@ -78,7 +78,7 @@ resource "google_cloud_run_service" "company_official_app_backend" {
           value_from {
             secret_key_ref {
               name = "mysql_password"
-              key = "latest"
+              key  = "latest"
             }
           }
         }
