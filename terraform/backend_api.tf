@@ -71,6 +71,18 @@ resource "google_cloud_run_service" "company_official_app_backend" {
           name  = "DB_SOCKET_PATH"
           value = "/cloudsql/${var.cloud_sql_instance_connection_name}"
         }
+        env {
+          name  = "APP_ENV"
+          value = var.app_env
+        }
+        env {
+          name  = "LOG_LEVEL"
+          value = var.log_level
+        }
+        env {
+          name  = "LOG_ENCODING"
+          value = var.log_encoding
+        }
 
         # Secret Manager
         env {

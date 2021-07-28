@@ -53,4 +53,7 @@ module "root" {
   cloud_sql_instance_connection_name = google_sql_database_instance.app_mysql_instance.connection_name
   container_image_name               = "asia.gcr.io/${local.project_id}/company-official-app-backend"
   container_image_tag                = var.container_image_tag
+  app_env                            = "dev"
+  log_level                          = "debug"
+  log_encoding                       = "console"
 }
