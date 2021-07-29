@@ -54,11 +54,11 @@ func Test_userUsecase_Get(t *testing.T) {
 			name: "repositoryでエラーが返された場合エラーを返す",
 			fields: fields{
 				userRepositoryFn: func(mock *mock_repository.MockUserRepository) {
-					mock.EXPECT().GetByAuthID("failed_auth_id").Return(nil, errors.New("something wrong"))
+					mock.EXPECT().GetByAuthID("error_auth_id").Return(nil, errors.New("something wrong"))
 				},
 			},
 			args: args{
-				authID: "failed_auth_id",
+				authID: "error_auth_id",
 			},
 			want: nil,
 			wantErr: true,

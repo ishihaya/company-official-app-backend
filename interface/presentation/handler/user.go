@@ -30,7 +30,7 @@ func NewUserHandler(userUsecase usecase.UserUsecase) UserHandler {
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} response.UserGet
-// @Failure 500 {object} string "Something went wrong"
+// @Failure 500 {object} string "Something wrong"
 // @Router /user [get]
 func (u *userHandler) Get(c *gin.Context) {
 	// request

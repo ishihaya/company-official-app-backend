@@ -3,5 +3,5 @@ package customerror
 import "golang.org/x/xerrors"
 
 var (
-	ErrGetAuthID = xerrors.New("failed to get authID")
+	ErrGetAuthID = xerrors.New("err_get_auth_id")
 )
