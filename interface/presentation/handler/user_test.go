@@ -62,9 +62,9 @@ func Test_userHandler_Get(t *testing.T) {
 					mock.EXPECT().Get("error_auth_id").Return(nil, xerrors.New("something wrong"))
 				},
 			},
-			authID: "error_auth_id",
+			authID:         "error_auth_id",
 			wantStatusCode: 500,
-			want: `"internal_server_error"`,
+			want:           `"internal_server_error"`,
 		},
 	}
 	for _, tt := range tests {

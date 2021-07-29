@@ -60,7 +60,7 @@ func Test_userUsecase_Get(t *testing.T) {
 			args: args{
 				authID: "error_auth_id",
 			},
-			want: nil,
+			want:    nil,
 			wantErr: true,
 		},
 	}
