@@ -18,6 +18,7 @@ func Test_userRepository_GetByAuthID(t *testing.T) {
 		name    string
 		args    args
 		want    *entity.User
+		// ここをerrorにするかどうか？
 		wantErr bool
 	}{
 		// TODO: Add test cases.
