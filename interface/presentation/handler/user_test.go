@@ -3,12 +3,12 @@ package handler
 import (
 	"net/http"
 	"net/http/httptest"
-	"reflect"
 	"testing"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
+	"github.com/google/go-cmp/cmp"
 	"github.com/ishihaya/company-official-app-backend/application/usecase/mock_usecase"
 	"github.com/ishihaya/company-official-app-backend/config"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
@@ -96,8 +96,8 @@ func Test_userHandler_Get(t *testing.T) {
 				t.Errorf("userHandler.Get() statusCode = %v, wantStatusCode = %v", statusCode, tt.wantStatusCode)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("userHandler.Get() = %v, want %v", got, tt.want)
+			if diff := cmp.Diff(got, tt.want); diff != "" {
+				t.Errorf("userHandler.Get() mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}

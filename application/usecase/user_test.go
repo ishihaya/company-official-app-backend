@@ -2,11 +2,11 @@ package usecase
 
 import (
 	"errors"
-	"reflect"
 	"testing"
 	"time"
 
 	"github.com/golang/mock/gomock"
+	"github.com/google/go-cmp/cmp"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
 	"github.com/ishihaya/company-official-app-backend/domain/repository/mock_repository"
 )
@@ -76,8 +76,8 @@ func Test_userUsecase_Get(t *testing.T) {
 				t.Errorf("userUsecase.Get() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("userUsecase.Get() = %v, want %v", got, tt.want)
+			if diff := cmp.Diff(got, tt.want); diff != "" {
+				t.Errorf("userUsecase.Get() mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}
