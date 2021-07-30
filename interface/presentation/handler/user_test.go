@@ -26,6 +26,7 @@ func Test_userHandler_Get(t *testing.T) {
 		name           string
 		fields         fields
 		authID         string
+		isExistAuthID  bool
 		wantStatusCode int
 		want           string
 	}{
@@ -43,6 +44,7 @@ func Test_userHandler_Get(t *testing.T) {
 				},
 			},
 			authID:         "auth_id",
+			isExistAuthID:  true,
 			wantStatusCode: 200,
 			want:           `{"nickName":"nick_name"}`,
 		},
@@ -51,7 +53,7 @@ func Test_userHandler_Get(t *testing.T) {
 			fields: fields{
 				userUsecaseFn: func(mock *mock_usecase.MockUserUsecase) {},
 			},
-			authID:         "", // 空文字ならauthIDをセットしなくなる
+			isExistAuthID:  false,
 			wantStatusCode: 400,
 			want:           `"err_get_auth_id"`,
 		},
@@ -63,6 +65,7 @@ func Test_userHandler_Get(t *testing.T) {
 				},
 			},
 			authID:         "error_auth_id",
+			isExistAuthID:  true,
 			wantStatusCode: 500,
 			want:           `"internal_server_error"`,
 		},
@@ -80,7 +83,7 @@ func Test_userHandler_Get(t *testing.T) {
 			c, _ := gin.CreateTestContext(rec)
 			req := httptest.NewRequest(http.MethodGet, "/user", nil)
 			c.Request = req
-			if tt.authID != "" {
+			if tt.isExistAuthID {
 				context.SetAuthID(c, tt.authID)
 			}
 
