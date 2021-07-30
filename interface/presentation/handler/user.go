@@ -26,7 +26,7 @@ func NewUserHandler(userUsecase usecase.UserUsecase) UserHandler {
 }
 
 // Get
-// @Summary ユーザー情報を取得する
+// @Summary 自分のユーザー情報を取得する
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} response.UserGet
