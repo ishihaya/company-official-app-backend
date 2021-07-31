@@ -4,17 +4,19 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/xerrors"
 )
 
 const currentTimeKey = "currentTime"
 
-// context.Valueから現在時刻を取得する関数
-func Now(c *gin.Context) (time.Time, bool) {
-	ct, isExist := c.Get(currentTimeKey)
-	return ct.(time.Time), isExist
+func Now(c *gin.Context) (time.Time, error) {
+	now, isExist := c.Get(currentTimeKey)
+	if !isExist {
+		return time.Time{}, xerrors.New("authID not set")
+	}
+	return now.(time.Time), nil
 }
 
-// context.Valueに現在時刻を格納する関数
 func SetNow(c *gin.Context) {
 	c.Set(currentTimeKey, time.Now().UTC())
 }

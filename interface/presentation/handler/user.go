@@ -9,6 +9,7 @@ import (
 	"github.com/ishihaya/company-official-app-backend/infra/logger"
 	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/response"
 	"github.com/ishihaya/company-official-app-backend/pkg/context"
+	"golang.org/x/xerrors"
 )
 
 type UserHandler interface {
@@ -44,7 +45,11 @@ func (u *userHandler) Get(c *gin.Context) {
 	// usecase
 	user, err := u.userUsecase.Get(authID)
 	if err != nil {
-		logger.Logging.Errorf("failed to get user: %+v", err)
+		logger.Logging.Warnf("failed to get user: %+v", err)
+		if xerrors.Is(err, customerror.ErrUserNotFound) {
+			c.JSON(http.StatusNotFound, customerror.ErrUserNotFound.Error())
+			return
+		}
 		c.JSON(http.StatusInternalServerError, customerror.ErrInternalServerError.Error())
 		return
 	}

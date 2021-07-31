@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"errors"
 	"testing"
 	"time"
 
@@ -9,6 +8,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
 	"github.com/ishihaya/company-official-app-backend/domain/repository/mock_repository"
+	"golang.org/x/xerrors"
 )
 
 func Test_userUsecase_Get(t *testing.T) {
@@ -23,7 +23,7 @@ func Test_userUsecase_Get(t *testing.T) {
 		fields  fields
 		args    args
 		want    *entity.User
-		wantErr bool
+		wantErr error
 	}{
 		{
 			name: "正常系",
@@ -48,20 +48,7 @@ func Test_userUsecase_Get(t *testing.T) {
 				CreatedAt: time.Time{},
 				UpdatedAt: time.Time{},
 			},
-			wantErr: false,
-		},
-		{
-			name: "repositoryでエラーが返された場合エラーを返す",
-			fields: fields{
-				userRepositoryFn: func(mock *mock_repository.MockUserRepository) {
-					mock.EXPECT().GetByAuthID("error_auth_id").Return(nil, errors.New("something wrong"))
-				},
-			},
-			args: args{
-				authID: "error_auth_id",
-			},
-			want:    nil,
-			wantErr: true,
+			wantErr: nil,
 		},
 	}
 	for _, tt := range tests {
@@ -72,7 +59,7 @@ func Test_userUsecase_Get(t *testing.T) {
 			tt.fields.userRepositoryFn(mockRepository)
 			u := NewUserUsecase(mockRepository)
 			got, err := u.Get(tt.args.authID)
-			if (err != nil) != tt.wantErr {
+			if !xerrors.Is(err, tt.wantErr) {
 				t.Errorf("userUsecase.Get() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
