@@ -1,11 +1,9 @@
 package repository
 
 import (
-	"net/http/httptest"
 	"testing"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"github.com/google/go-cmp/cmp"
 	"github.com/ishihaya/company-official-app-backend/application/customerror"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
@@ -15,10 +13,7 @@ import (
 )
 
 func Test_userRepository_GetByAuthID(t *testing.T) {
-	gin.SetMode(gin.ReleaseMode)
-	timeContext, _ := gin.CreateTestContext(httptest.NewRecorder())
-	context.SetNow(timeContext)
-	mockTime, err := context.Now(timeContext)
+	mockTime, err := context.GetMockNow()
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -17,6 +17,10 @@ test:
 fmt-terraform:
 	terraform fmt -recursive
 
+.PHONY: generate-swagger
+generate-swagger:
+	swag init -o ./docs/swagger
+
 .PHONY: generate-mock-usecase
 generate-mock-usecase:
 	mockgen -source=application/usecase/$(T).go -destination application/usecase/mock_usecase/$(T).go

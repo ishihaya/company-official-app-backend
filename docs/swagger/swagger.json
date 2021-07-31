@@ -1,0 +1,43 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/user": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "認証情報から自分のユーザー情報を取得する",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.UserGet"
+                        }
+                    },
+                    "500": {
+                        "description": "Something wrong",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "response.UserGet": {
+            "type": "object",
+            "properties": {
+                "nickName": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
