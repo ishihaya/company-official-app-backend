@@ -1,0 +1,3 @@
+package ulidgo
+
+func hoge() {}

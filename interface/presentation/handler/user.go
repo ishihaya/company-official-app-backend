@@ -8,7 +8,7 @@ import (
 	"github.com/ishihaya/company-official-app-backend/application/usecase"
 	"github.com/ishihaya/company-official-app-backend/infra/logger"
 	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/response"
-	"github.com/ishihaya/company-official-app-backend/pkg/context"
+	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
 	"golang.org/x/xerrors"
 )
 
@@ -38,7 +38,7 @@ func NewUserHandler(userUsecase usecase.UserUsecase) UserHandler {
 // @Router /user [get]
 func (u *userHandler) Get(c *gin.Context) {
 	// request
-	authID, err := context.GetAuthID(c)
+	authID, err := contextgo.GetAuthID(c)
 	if err != nil {
 		logger.Logging.Warnf(": %+v", err)
 		c.JSON(http.StatusBadRequest, customerror.ErrGetAuthID.Error())

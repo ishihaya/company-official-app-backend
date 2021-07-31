@@ -15,7 +15,7 @@ import (
 	"github.com/ishihaya/company-official-app-backend/config"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
 	"github.com/ishihaya/company-official-app-backend/infra/logger"
-	"github.com/ishihaya/company-official-app-backend/pkg/context"
+	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
 	"golang.org/x/xerrors"
 )
 
@@ -98,7 +98,7 @@ func Test_userHandler_Get(t *testing.T) {
 			req := httptest.NewRequest(http.MethodGet, "/user", nil)
 			c.Request = req
 			if tt.isExistAuthID {
-				context.SetAuthID(c, tt.authID)
+				contextgo.SetAuthID(c, tt.authID)
 			}
 
 			u.Get(c)

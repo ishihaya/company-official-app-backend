@@ -8,12 +8,12 @@ import (
 	"github.com/ishihaya/company-official-app-backend/application/customerror"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
 	"github.com/ishihaya/company-official-app-backend/infra/db"
-	"github.com/ishihaya/company-official-app-backend/pkg/context"
+	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
 	"golang.org/x/xerrors"
 )
 
 func Test_userRepository_GetByAuthID(t *testing.T) {
-	mockTime, err := context.GetMockNow()
+	mockTime, err := contextgo.GetMockNow()
 	if err != nil {
 		t.Fatal(err)
 	}
