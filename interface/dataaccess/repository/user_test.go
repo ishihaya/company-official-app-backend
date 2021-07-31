@@ -76,7 +76,7 @@ func Test_userRepository_GetByAuthID(t *testing.T) {
 			if !xerrors.Is(err, tt.wantErr) {
 				t.Errorf("userRepository.GetByAuthID() error = %v, wantErr %v", err, tt.wantErr)
 			}
-			if diff := cmp.Diff(got, tt.want); diff != "" {
+			if diff := cmp.Diff(tt.want, got); diff != "" {
 				t.Errorf("userRepository.GetByAuthID() mismatch (-want +got):\n%s", diff)
 			}
 		})

@@ -63,7 +63,7 @@ func Test_userUsecase_Get(t *testing.T) {
 				t.Errorf("userUsecase.Get() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if diff := cmp.Diff(got, tt.want); diff != "" {
+			if diff := cmp.Diff(tt.want, got); diff != "" {
 				t.Errorf("userUsecase.Get() mismatch (-want +got):\n%s", diff)
 			}
 		})

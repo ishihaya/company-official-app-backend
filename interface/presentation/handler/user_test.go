@@ -110,7 +110,7 @@ func Test_userHandler_Get(t *testing.T) {
 				t.Errorf("userHandler.Get() statusCode = %v, wantStatusCode = %v", statusCode, tt.wantStatusCode)
 				return
 			}
-			if diff := cmp.Diff(got, tt.want); diff != "" {
+			if diff := cmp.Diff(tt.want, got); diff != "" {
 				t.Errorf("userHandler.Get() mismatch (-want +got):\n%s", diff)
 			}
 		})
