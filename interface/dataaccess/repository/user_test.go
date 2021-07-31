@@ -3,6 +3,7 @@ package repository
 import (
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/go-cmp/cmp"
@@ -55,8 +56,8 @@ func Test_userRepository_GetByAuthID(t *testing.T) {
 				ID:        "id",
 				AuthID:    "auth_id",
 				NickName:  "nick_name",
-				CreatedAt: mockTime,
-				UpdatedAt: mockTime,
+				CreatedAt: mockTime.Truncate(time.Microsecond),
+				UpdatedAt: mockTime.Truncate(time.Microsecond),
 			},
 			wantErr: nil,
 		},
