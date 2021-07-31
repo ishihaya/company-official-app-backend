@@ -29,6 +29,11 @@ fmt-terraform:
 generate-swagger:
 	swag init -o ./docs/swagger
 
+# https://github.com/oklog/ulid#commandline-tool
+.PHONY: generate-ulid
+generate-ulid:
+	ulid
+
 .PHONY: generate-mock-usecase
 generate-mock-usecase:
 	mockgen -source=application/usecase/$(T).go -destination application/usecase/mock_usecase/$(T).go
