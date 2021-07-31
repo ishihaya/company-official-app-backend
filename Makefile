@@ -1,6 +1,14 @@
 include ./config/.env
 export
 
+.PHONY: up
+up:
+	docker compose up -d --build
+
+.PHONY: log-app
+log-app:
+	docker logs -t company-official-app-backend_app_1
+
 .PHONY: migrate
 migrate:
 	mysqldef -uroot -p$(MYSQL_ROOT_PASSWORD) -P$(DB_PORT) $(MYSQL_DATABASE) < schema.sql
