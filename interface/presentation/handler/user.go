@@ -14,6 +14,7 @@ import (
 
 type UserHandler interface {
 	Get(c *gin.Context)
+	Create(c *gin.Context)
 }
 
 type userHandler struct {
@@ -31,6 +32,8 @@ func NewUserHandler(userUsecase usecase.UserUsecase) UserHandler {
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} response.UserGet
+// @Failure 400 {object} string "Something wrong"
+// @Failure 404 {object} string "Something wrong"
 // @Failure 500 {object} string "Something wrong"
 // @Router /user [get]
 func (u *userHandler) Get(c *gin.Context) {
@@ -59,4 +62,25 @@ func (u *userHandler) Get(c *gin.Context) {
 		User: response.NewUserResponse(user),
 	}
 	c.JSON(http.StatusOK, res)
+}
+
+// Create
+// @Summary 認証情報とリクエスト情報からユーザーを作成する
+// @Accept  json
+// @Produce  json
+// @Success 204
+// @Failure 500 {object} string "Something wrong"
+// @Router /user [get]
+func (u *userHandler) Create(c *gin.Context) {
+	// id
+	// authID, err := context.GetAuthID(c)
+	// if err != nil {
+	// 	logger.Logging.Warnf(": %+v", err)
+	// 	c.JSON(http.StatusBadRequest, customerror.ErrGetAuthID.Error())
+	// 	return
+	// }
+	// nick_name
+	// now
+
+	// if err := u.userUsecase.Create()
 }

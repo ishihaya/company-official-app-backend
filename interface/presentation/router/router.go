@@ -21,6 +21,7 @@ type Router struct {
 // New - ルーティング関数の生成
 func New() *Router {
 	engine := gin.Default()
+	gin.SetMode(gin.ReleaseMode)
 	return &Router{Engine: engine}
 }
 

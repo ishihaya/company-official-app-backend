@@ -68,7 +68,7 @@ func Test_userRepository_GetByAuthID(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			u := NewUserRepository(conn)
-			got, err := u.GetByAuthID(tt.args.authID)
+			got, err := u.FindByAuthID(tt.args.authID)
 			if !xerrors.Is(err, tt.wantErr) {
 				t.Errorf("userRepository.GetByAuthID() error = %v, wantErr %v", err, tt.wantErr)
 			}

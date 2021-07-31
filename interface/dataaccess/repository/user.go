@@ -21,7 +21,7 @@ func NewUserRepository(conn *db.Conn) repository.UserRepository {
 	}
 }
 
-func (u *userRepository) GetByAuthID(authID string) (*entity.User, error) {
+func (u *userRepository) FindByAuthID(authID string) (*entity.User, error) {
 	daoUser := new(dao.User)
 	if err := u.conn.Get(daoUser, "SELECT * FROM users WHERE auth_id = ?", authID); err != nil {
 		if xerrors.Is(err, sql.ErrNoRows) {
@@ -31,4 +31,9 @@ func (u *userRepository) GetByAuthID(authID string) (*entity.User, error) {
 	}
 	user := daoUser.ConvertToEntity()
 	return user, nil
+}
+
+func (u *userRepository) Store(user *entity.User) error {
+	// TODO
+	return nil
 }
