@@ -9,6 +9,7 @@ import (
 	"github.com/ishihaya/company-official-app-backend/infra/logger"
 	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/response"
 	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
+	"github.com/ishihaya/company-official-app-backend/pkg/ulidgo"
 	"golang.org/x/xerrors"
 )
 
@@ -70,17 +71,29 @@ func (u *userHandler) Get(c *gin.Context) {
 // @Produce  json
 // @Success 204
 // @Failure 500 {object} string "Something wrong"
-// @Router /user [get]
+// @Router /user [post]
 func (u *userHandler) Create(c *gin.Context) {
-	// id
-	// authID, err := context.GetAuthID(c)
-	// if err != nil {
-	// 	logger.Logging.Warnf(": %+v", err)
-	// 	c.JSON(http.StatusBadRequest, customerror.ErrGetAuthID.Error())
-	// 	return
-	// }
+	now, err := contextgo.Now(c)
+	if err != nil {
+		// TODO
+		return
+	}
+	ulid, err := ulidgo.Generate(now)
+	if err != nil {
+		// TODO
+		return
+	}
+	authID, err := contextgo.GetAuthID(c)
+	if err != nil {
+		// TODO
+		// 	logger.Logging.Warnf(": %+v", err)
+		// 	c.JSON(http.StatusBadRequest, customerror.ErrGetAuthID.Error())
+		return
+	}
+	// TODO
 	// nick_name
-	// now
 
 	// if err := u.userUsecase.Create()
+	// TODO
+	// Response関数が必要かどうかRequestは使用していないのにどうなのか考える
 }
