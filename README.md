@@ -3,7 +3,7 @@
 ## サービス起動方法
 
 ```
-$ docker compose up -d --build
+$ make up
 ```
 
 ## MySQL初期設定(ローカル環境以外)

@@ -3,7 +3,7 @@ package config
 import (
 	"os"
 
-	"github.com/ishihaya/company-official-app-backend/infra/logger"
+	"github.com/ishihaya/company-official-app-backend/pkg/logger"
 )
 
 func Log() (logEnv string, logLevel string, logEncoding string) {

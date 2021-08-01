@@ -21,6 +21,7 @@ type Router struct {
 // New - ルーティング関数の生成
 func New() *Router {
 	engine := gin.Default()
+	gin.SetMode(gin.ReleaseMode)
 	return &Router{Engine: engine}
 }
 
@@ -29,6 +30,7 @@ func (r *Router) Routes() {
 	userHandler := di.InitUser()
 
 	r.GET("/user", userHandler.Get)
+	r.POST("/user", userHandler.Create)
 }
 
 // LoadSwagger - Swaggerを読み込む関数

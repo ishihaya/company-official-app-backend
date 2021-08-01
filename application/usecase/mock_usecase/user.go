@@ -6,6 +6,7 @@ package mock_usecase
 
 import (
 	reflect "reflect"
+	time "time"
 
 	gomock "github.com/golang/mock/gomock"
 	entity "github.com/ishihaya/company-official-app-backend/domain/entity"
@@ -32,6 +33,20 @@ func NewMockUserUsecase(ctrl *gomock.Controller) *MockUserUsecase {
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockUserUsecase) EXPECT() *MockUserUsecaseMockRecorder {
 	return m.recorder
+}
+
+// Create mocks base method.
+func (m *MockUserUsecase) Create(authID, nickName string, currentTime time.Time) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", authID, nickName, currentTime)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockUserUsecaseMockRecorder) Create(authID, nickName, currentTime interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockUserUsecase)(nil).Create), authID, nickName, currentTime)
 }
 
 // Get mocks base method.

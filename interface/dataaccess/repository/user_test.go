@@ -5,15 +5,14 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/ishihaya/company-official-app-backend/application/customerror"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
 	"github.com/ishihaya/company-official-app-backend/infra/db"
-	"github.com/ishihaya/company-official-app-backend/pkg/context"
+	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
 	"golang.org/x/xerrors"
 )
 
 func Test_userRepository_GetByAuthID(t *testing.T) {
-	mockTime, err := context.GetMockNow()
+	mockTime, err := contextgo.GetMockNow()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -43,7 +42,7 @@ func Test_userRepository_GetByAuthID(t *testing.T) {
 		wantErr error
 	}{
 		{
-			name: "正常系",
+			name: "1 / 正常系",
 			args: args{
 				authID: "auth_id",
 			},
@@ -57,23 +56,70 @@ func Test_userRepository_GetByAuthID(t *testing.T) {
 			wantErr: nil,
 		},
 		{
-			name: "準正常系 / ユーザーが見つからない",
+			name: "2 / 準正常系 / ユーザーが見つからない",
 			args: args{
 				authID: "not_found",
 			},
 			want:    nil,
-			wantErr: customerror.ErrUserNotFound,
+			wantErr: entity.ErrUserNotFound,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			u := NewUserRepository(conn)
-			got, err := u.GetByAuthID(tt.args.authID)
+
+			got, err := u.FindByAuthID(tt.args.authID)
+
 			if !xerrors.Is(err, tt.wantErr) {
 				t.Errorf("userRepository.GetByAuthID() error = %v, wantErr %v", err, tt.wantErr)
 			}
 			if diff := cmp.Diff(tt.want, got); diff != "" {
 				t.Errorf("userRepository.GetByAuthID() mismatch (-want +got):\n%s", diff)
+			}
+		})
+	}
+}
+
+func Test_userRepository_Store(t *testing.T) {
+	mockTime, err := contextgo.GetMockNow()
+	if err != nil {
+		t.Fatal(err)
+	}
+	conn := db.New()
+	t.Cleanup(func() {
+		CleanUpRepositoryTest(t, conn, []string{"users"})
+	})
+
+	type args struct {
+		user *entity.User
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr error
+	}{
+		{
+			name: "1 / 正常系",
+			args: args{
+				user: &entity.User{
+					ID:        "id",
+					AuthID:    "auth_id",
+					NickName:  "nick_name",
+					CreatedAt: mockTime,
+					UpdatedAt: mockTime,
+				},
+			},
+			wantErr: nil,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			u := NewUserRepository(conn)
+
+			err := u.Store(tt.args.user)
+
+			if !xerrors.Is(err, tt.wantErr) {
+				t.Errorf("userRepository.Store() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
