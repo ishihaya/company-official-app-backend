@@ -23,3 +23,13 @@ func (u *User) ConvertToEntity() *entity.User {
 		UpdatedAt: u.UpdatedAt,
 	}
 }
+
+func ConvertToDAOUser(ent *entity.User) *User {
+	return &User{
+		ID:        ent.ID,
+		AuthID:    ent.AuthID,
+		NickName:  ent.NickName,
+		CreatedAt: ent.CreatedAt,
+		UpdatedAt: ent.UpdatedAt,
+	}
+}

@@ -27,7 +27,7 @@ func Test_userUsecase_Get(t *testing.T) {
 		wantErr error
 	}{
 		{
-			name: "正常系",
+			name: "1 / 正常系",
 			fields: fields{
 				userRepositoryFn: func(mock *mock_repository.MockUserRepository) {
 					mock.EXPECT().FindByAuthID("auth_id").Return(&entity.User{
@@ -91,7 +91,7 @@ func Test_userUsecase_Create(t *testing.T) {
 		wantErr error
 	}{
 		{
-			name: "正常系",
+			name: "1 / 正常系",
 			fields: fields{
 				userRepositoryFn: func(mock *mock_repository.MockUserRepository) {
 					mock.EXPECT().Store(&entity.User{

@@ -33,6 +33,9 @@ func (u *userRepository) FindByAuthID(authID string) (*entity.User, error) {
 }
 
 func (u *userRepository) Store(user *entity.User) error {
-	// TODO
+	daoUser := dao.ConvertToDAOUser(user)
+	if _, err := u.conn.NamedExec("INSERT INTO users(id, auth_id, nick_name, created_at, updated_at) VALUES(:id, :auth_id, :nick_name, :created_at, :updated_at)", daoUser); err != nil {
+		return xerrors.Errorf("failed to create user : %w", err)
+	}
 	return nil
 }
