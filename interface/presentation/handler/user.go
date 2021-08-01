@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/ishihaya/company-official-app-backend/application/usecase"
-	"github.com/ishihaya/company-official-app-backend/domain/entity"
+	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
 	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/request"
 	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/response"
 	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
@@ -44,7 +44,7 @@ func (u *userHandler) Get(c *gin.Context) {
 	req.AuthID, err = contextgo.GetAuthID(c)
 	if err != nil {
 		logger.Logging.Warnf(": %+v", err)
-		c.JSON(http.StatusBadRequest, entity.ErrGetAuthID.Error())
+		c.JSON(http.StatusBadRequest, apperror.ErrGetAuthID.Error())
 		return
 	}
 
@@ -52,11 +52,11 @@ func (u *userHandler) Get(c *gin.Context) {
 	user, err := u.userUsecase.Get(req.AuthID)
 	if err != nil {
 		logger.Logging.Warnf("failed to get user: %+v", err)
-		if xerrors.Is(err, entity.ErrUserNotFound) {
-			c.JSON(http.StatusNotFound, entity.ErrUserNotFound.Error())
+		if xerrors.Is(err, apperror.ErrUserNotFound) {
+			c.JSON(http.StatusNotFound, apperror.ErrUserNotFound.Error())
 			return
 		}
-		c.JSON(http.StatusInternalServerError, entity.ErrInternalServerError.Error())
+		c.JSON(http.StatusInternalServerError, apperror.ErrInternalServerError.Error())
 		return
 	}
 
@@ -79,25 +79,25 @@ func (u *userHandler) Create(c *gin.Context) {
 	var err error
 	if err = c.ShouldBindJSON(req); err != nil {
 		logger.Logging.Warnf("request not valid: %+v", err)
-		c.JSON(http.StatusBadRequest, entity.ErrValidation.Error())
+		c.JSON(http.StatusBadRequest, apperror.ErrValidation.Error())
 		return
 	}
 	req.CurrentTime, err = contextgo.Now(c)
 	if err != nil {
 		logger.Logging.Warnf("failed to get current time: %+v", err)
-		c.JSON(http.StatusBadRequest, entity.ErrGetTime.Error())
+		c.JSON(http.StatusBadRequest, apperror.ErrGetTime.Error())
 		return
 	}
 	req.AuthID, err = contextgo.GetAuthID(c)
 	if err != nil {
 		logger.Logging.Warnf("failed to get auth id: %+v", err)
-		c.JSON(http.StatusBadRequest, entity.ErrGetAuthID.Error())
+		c.JSON(http.StatusBadRequest, apperror.ErrGetAuthID.Error())
 		return
 	}
 
 	if err = u.userUsecase.Create(req.AuthID, req.NickName, req.CurrentTime); err != nil {
 		logger.Logging.Errorf("failed to get user: %+v", err)
-		c.JSON(http.StatusInternalServerError, entity.ErrInternalServerError.Error())
+		c.JSON(http.StatusInternalServerError, apperror.ErrInternalServerError.Error())
 		return
 	}
 

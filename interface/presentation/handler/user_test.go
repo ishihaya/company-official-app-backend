@@ -14,6 +14,7 @@ import (
 	"github.com/ishihaya/company-official-app-backend/application/usecase/mock_usecase"
 	"github.com/ishihaya/company-official-app-backend/config"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
+	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
 	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
 	"github.com/ishihaya/company-official-app-backend/pkg/logger"
 	"golang.org/x/xerrors"
@@ -57,18 +58,18 @@ func Test_userHandler_Get(t *testing.T) {
 				userUsecaseFn: func(mock *mock_usecase.MockUserUsecase) {},
 			},
 			authID:         nil,
-			want:           fmt.Sprintf(`"%s"`, entity.ErrGetAuthID.Error()),
+			want:           fmt.Sprintf(`"%s"`, apperror.ErrGetAuthID.Error()),
 			wantStatusCode: http.StatusBadRequest,
 		},
 		{
 			name: "3 / 準正常系 / ユーザーが見つからない場合にNot Foundを返す",
 			fields: fields{
 				userUsecaseFn: func(mock *mock_usecase.MockUserUsecase) {
-					mock.EXPECT().Get("not_found").Return(nil, entity.ErrUserNotFound)
+					mock.EXPECT().Get("not_found").Return(nil, apperror.ErrUserNotFound)
 				},
 			},
 			authID:         &authID3,
-			want:           fmt.Sprintf(`"%s"`, entity.ErrUserNotFound.Error()),
+			want:           fmt.Sprintf(`"%s"`, apperror.ErrUserNotFound.Error()),
 			wantStatusCode: http.StatusNotFound,
 		},
 		{
@@ -79,7 +80,7 @@ func Test_userHandler_Get(t *testing.T) {
 				},
 			},
 			authID:         &authID4,
-			want:           fmt.Sprintf(`"%s"`, entity.ErrInternalServerError.Error()),
+			want:           fmt.Sprintf(`"%s"`, apperror.ErrInternalServerError.Error()),
 			wantStatusCode: http.StatusInternalServerError,
 		},
 	}
@@ -152,7 +153,7 @@ func Test_userHandler_Create(t *testing.T) {
 				userUsecaseFn: func(mock *mock_usecase.MockUserUsecase) {},
 			},
 			requestBody:    nil,
-			want:           fmt.Sprintf(`"%s"`, entity.ErrValidation.Error()),
+			want:           fmt.Sprintf(`"%s"`, apperror.ErrValidation.Error()),
 			wantStatusCode: http.StatusBadRequest,
 		},
 		{
@@ -162,7 +163,7 @@ func Test_userHandler_Create(t *testing.T) {
 			},
 			requestBody:    &requestBody1,
 			currentTime:    nil,
-			want:           fmt.Sprintf(`"%s"`, entity.ErrGetTime.Error()),
+			want:           fmt.Sprintf(`"%s"`, apperror.ErrGetTime.Error()),
 			wantStatusCode: http.StatusBadRequest,
 		},
 		{
@@ -173,7 +174,7 @@ func Test_userHandler_Create(t *testing.T) {
 			requestBody:    &requestBody1,
 			currentTime:    &ct1,
 			authID:         nil,
-			want:           fmt.Sprintf(`"%s"`, entity.ErrGetAuthID.Error()),
+			want:           fmt.Sprintf(`"%s"`, apperror.ErrGetAuthID.Error()),
 			wantStatusCode: http.StatusBadRequest,
 		},
 		{
@@ -186,7 +187,7 @@ func Test_userHandler_Create(t *testing.T) {
 			requestBody:    &requestBody1,
 			currentTime:    &ct1,
 			authID:         &authID1,
-			want:           fmt.Sprintf(`"%s"`, entity.ErrInternalServerError.Error()),
+			want:           fmt.Sprintf(`"%s"`, apperror.ErrInternalServerError.Error()),
 			wantStatusCode: http.StatusInternalServerError,
 		},
 	}
