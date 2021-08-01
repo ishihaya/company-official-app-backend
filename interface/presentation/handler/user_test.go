@@ -13,8 +13,8 @@ import (
 	"github.com/ishihaya/company-official-app-backend/application/usecase/mock_usecase"
 	"github.com/ishihaya/company-official-app-backend/config"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
-	"github.com/ishihaya/company-official-app-backend/infra/logger"
 	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
+	"github.com/ishihaya/company-official-app-backend/pkg/logger"
 	"golang.org/x/xerrors"
 )
 

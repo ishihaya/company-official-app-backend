@@ -14,6 +14,17 @@ func NewAppIDOperator() operator.AppIDOperator {
 }
 
 func (a *appIDOperator) Generate(t time.Time) (entity.AppID, error) {
-	// TODO
+	// _, err := ulidgo.Generate(t)
+	// if err != nil {
+	// 	return "", nil
+	// }
+	// var id entity.AppID = ulid
 	return "", nil
+	// timeStamp := ulid.Timestamp(t)
+	// entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
+	// ulid, err := ulid.New(timeStamp, entropy)
+	// if err != nil {
+	// 	return "", err
+	// }
+	// return ulid.String(), nil
 }
