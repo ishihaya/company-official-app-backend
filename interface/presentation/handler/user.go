@@ -94,9 +94,10 @@ func (u *userHandler) Create(c *gin.Context) {
 		return
 	}
 
-	if err := u.userUsecase.Create(req.AuthID, req.NickName, req.CurrentTime); err != nil {
+	if err = u.userUsecase.Create(req.AuthID, req.NickName, req.CurrentTime); err != nil {
 		// TODO
 		return
 	}
-	// TODO
+
+	c.JSON(http.StatusNoContent, nil)
 }
