@@ -4,22 +4,28 @@ import (
 	"time"
 
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
+	"github.com/ishihaya/company-official-app-backend/domain/operator"
 	"github.com/ishihaya/company-official-app-backend/domain/repository"
 	"golang.org/x/xerrors"
 )
 
 type UserUsecase interface {
 	Get(authID string) (*entity.User, error)
-	Create(id, authID, nickName string, now time.Time) error
+	Create(authID, nickName string, currentTime time.Time) error
 }
 
 type userUsecase struct {
 	userRepository repository.UserRepository
+	appIDOperator  operator.AppIDOperator
 }
 
-func NewUserUsecase(userRepository repository.UserRepository) UserUsecase {
+func NewUserUsecase(
+	userRepository repository.UserRepository,
+	appIDOperator operator.AppIDOperator,
+) UserUsecase {
 	return &userUsecase{
 		userRepository: userRepository,
+		appIDOperator:  appIDOperator,
 	}
 }
 
@@ -31,13 +37,17 @@ func (u *userUsecase) Get(authID string) (*entity.User, error) {
 	return user, nil
 }
 
-func (u *userUsecase) Create(id, authID, nickName string, now time.Time) error {
+func (u *userUsecase) Create(authID, nickName string, currentTime time.Time) error {
+	id, err := u.appIDOperator.Generate(currentTime)
+	if err != nil {
+		return xerrors.Errorf(": %w", err)
+	}
 	user := &entity.User{
 		ID:        id,
 		AuthID:    authID,
 		NickName:  nickName,
-		CreatedAt: now,
-		UpdatedAt: now,
+		CreatedAt: currentTime,
+		UpdatedAt: currentTime,
 	}
 	if err := u.userRepository.Store(user); err != nil {
 		return xerrors.Errorf(": %w", err)

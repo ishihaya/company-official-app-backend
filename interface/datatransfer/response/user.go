@@ -6,7 +6,7 @@ type User struct {
 	NickName string `json:"nickName"`
 }
 
-func NewUserResponse(ent *entity.User) *User {
+func NewUser(ent *entity.User) *User {
 	return &User{
 		NickName: ent.NickName,
 	}

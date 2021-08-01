@@ -10,7 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-cmp/cmp"
-	"github.com/ishihaya/company-official-app-backend/application/customerror"
 	"github.com/ishihaya/company-official-app-backend/application/usecase/mock_usecase"
 	"github.com/ishihaya/company-official-app-backend/config"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
@@ -57,19 +56,19 @@ func Test_userHandler_Get(t *testing.T) {
 			},
 			isExistAuthID:  false,
 			wantStatusCode: 400,
-			want:           fmt.Sprintf(`"%s"`, customerror.ErrGetAuthID.Error()),
+			want:           fmt.Sprintf(`"%s"`, entity.ErrGetAuthID.Error()),
 		},
 		{
 			name: "準正常系 / ユーザーが見つからない場合にNot Foundを返す",
 			fields: fields{
 				userUsecaseFn: func(mock *mock_usecase.MockUserUsecase) {
-					mock.EXPECT().Get("not_found").Return(nil, customerror.ErrUserNotFound)
+					mock.EXPECT().Get("not_found").Return(nil, entity.ErrUserNotFound)
 				},
 			},
 			authID:         "not_found",
 			isExistAuthID:  true,
 			wantStatusCode: 404,
-			want:           fmt.Sprintf(`"%s"`, customerror.ErrUserNotFound.Error()),
+			want:           fmt.Sprintf(`"%s"`, entity.ErrUserNotFound.Error()),
 		},
 		{
 			name: "異常系 / 何らかの理由でユーザー取得に失敗する場合にサーバーエラーを返す",
@@ -81,7 +80,7 @@ func Test_userHandler_Get(t *testing.T) {
 			authID:         "error_auth_id",
 			isExistAuthID:  true,
 			wantStatusCode: 500,
-			want:           fmt.Sprintf(`"%s"`, customerror.ErrInternalServerError.Error()),
+			want:           fmt.Sprintf(`"%s"`, entity.ErrInternalServerError.Error()),
 		},
 	}
 	for _, tt := range tests {

@@ -4,12 +4,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ishihaya/company-official-app-backend/application/customerror"
 	"github.com/ishihaya/company-official-app-backend/application/usecase"
+	"github.com/ishihaya/company-official-app-backend/domain/entity"
 	"github.com/ishihaya/company-official-app-backend/infra/logger"
+	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/request"
 	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/response"
 	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
-	"github.com/ishihaya/company-official-app-backend/pkg/ulidgo"
 	"golang.org/x/xerrors"
 )
 
@@ -39,28 +39,30 @@ func NewUserHandler(userUsecase usecase.UserUsecase) UserHandler {
 // @Router /user [get]
 func (u *userHandler) Get(c *gin.Context) {
 	// request
-	authID, err := contextgo.GetAuthID(c)
+	req := new(request.UserGet)
+	var err error
+	req.AuthID, err = contextgo.GetAuthID(c)
 	if err != nil {
 		logger.Logging.Warnf(": %+v", err)
-		c.JSON(http.StatusBadRequest, customerror.ErrGetAuthID.Error())
+		c.JSON(http.StatusBadRequest, entity.ErrGetAuthID.Error())
 		return
 	}
 
 	// usecase
-	user, err := u.userUsecase.Get(authID)
+	user, err := u.userUsecase.Get(req.AuthID)
 	if err != nil {
 		logger.Logging.Warnf("failed to get user: %+v", err)
-		if xerrors.Is(err, customerror.ErrUserNotFound) {
-			c.JSON(http.StatusNotFound, customerror.ErrUserNotFound.Error())
+		if xerrors.Is(err, entity.ErrUserNotFound) {
+			c.JSON(http.StatusNotFound, entity.ErrUserNotFound.Error())
 			return
 		}
-		c.JSON(http.StatusInternalServerError, customerror.ErrInternalServerError.Error())
+		c.JSON(http.StatusInternalServerError, entity.ErrInternalServerError.Error())
 		return
 	}
 
 	// response
 	res := &response.UserGet{
-		User: response.NewUserResponse(user),
+		User: response.NewUser(user),
 	}
 	c.JSON(http.StatusOK, res)
 }
@@ -73,27 +75,27 @@ func (u *userHandler) Get(c *gin.Context) {
 // @Failure 500 {object} string "Something wrong"
 // @Router /user [post]
 func (u *userHandler) Create(c *gin.Context) {
-	now, err := contextgo.Now(c)
+	req := new(request.UserCreate)
+	var err error
+	if err = c.ShouldBindJSON(req); err != nil {
+		// TODO
+		return
+	}
+	req.CurrentTime, err = contextgo.Now(c)
 	if err != nil {
 		// TODO
 		return
 	}
-	ulid, err := ulidgo.Generate(now)
-	if err != nil {
-		// TODO
-		return
-	}
-	authID, err := contextgo.GetAuthID(c)
+	req.AuthID, err = contextgo.GetAuthID(c)
 	if err != nil {
 		// TODO
 		// 	logger.Logging.Warnf(": %+v", err)
-		// 	c.JSON(http.StatusBadRequest, customerror.ErrGetAuthID.Error())
+		// 	c.JSON(http.StatusBadRequest, entity.ErrGetAuthID.Error())
 		return
 	}
-	// TODO
-	// nick_name
 
-	// if err := u.userUsecase.Create()
+	if err := u.userUsecase.Create(req.AuthID, req.NickName, req.CurrentTime); err != nil {
+		// TODO
+	}
 	// TODO
-	// Response関数が必要かどうかRequestは使用していないのにどうなのか考える
 }

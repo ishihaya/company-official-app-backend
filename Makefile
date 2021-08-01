@@ -41,3 +41,7 @@ generate-mock-usecase:
 .PHONY: generate-mock-repository
 generate-mock-repository:
 	mockgen -source=domain/repository/$(T).go -destination domain/repository/mock_repository/$(T).go
+
+.PHONY: generate-mock-operator
+generate-mock-operator:
+	mockgen -source=domain/operator/$(T).go -destination domain/operator/mock_operator/$(T).go

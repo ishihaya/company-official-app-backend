@@ -7,11 +7,11 @@ import (
 )
 
 type User struct {
-	ID        string    `db:"id"`
-	AuthID    string    `db:"auth_id"`
-	NickName  string    `db:"nick_name"`
-	CreatedAt time.Time `db:"created_at"`
-	UpdatedAt time.Time `db:"updated_at"`
+	ID        entity.AppID `db:"id"`
+	AuthID    string       `db:"auth_id"`
+	NickName  string       `db:"nick_name"`
+	CreatedAt time.Time    `db:"created_at"`
+	UpdatedAt time.Time    `db:"updated_at"`
 }
 
 func (u *User) ConvertToEntity() *entity.User {

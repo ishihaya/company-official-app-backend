@@ -36,17 +36,17 @@ func (m *MockUserUsecase) EXPECT() *MockUserUsecaseMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockUserUsecase) Create(id, authID, nickName string, now time.Time) error {
+func (m *MockUserUsecase) Create(authID, nickName string, currentTime time.Time) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", id, authID, nickName, now)
+	ret := m.ctrl.Call(m, "Create", authID, nickName, currentTime)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Create indicates an expected call of Create.
-func (mr *MockUserUsecaseMockRecorder) Create(id, authID, nickName, now interface{}) *gomock.Call {
+func (mr *MockUserUsecaseMockRecorder) Create(authID, nickName, currentTime interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockUserUsecase)(nil).Create), id, authID, nickName, now)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockUserUsecase)(nil).Create), authID, nickName, currentTime)
 }
 
 // Get mocks base method.

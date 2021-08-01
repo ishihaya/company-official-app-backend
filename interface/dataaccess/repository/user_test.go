@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/ishihaya/company-official-app-backend/application/customerror"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
 	"github.com/ishihaya/company-official-app-backend/infra/db"
 	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
@@ -62,7 +61,7 @@ func Test_userRepository_GetByAuthID(t *testing.T) {
 				authID: "not_found",
 			},
 			want:    nil,
-			wantErr: customerror.ErrUserNotFound,
+			wantErr: entity.ErrUserNotFound,
 		},
 	}
 	for _, tt := range tests {

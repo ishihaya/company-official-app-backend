@@ -1,7 +1,7 @@
 CREATE TABLE users (
   id VARCHAR(26) NOT NULL PRIMARY KEY,
   auth_id VARCHAR(255) NOT NULL UNIQUE,
-  nick_name VARCHAR(255) NOT NULL, 
+  nick_name VARCHAR(20) NOT NULL, 
   created_at DATETIME(6) NOT NULL,
   updated_at DATETIME(6) NOT NULL
 );
