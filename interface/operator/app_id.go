@@ -15,6 +15,8 @@ func NewAppIDOperator() operator.AppIDOperator {
 	return &appIDOperator{}
 }
 
+// Generate - アプリケーションの識別子生成関数
+// NOTE: Unit Testは行わない
 func (a *appIDOperator) Generate(t time.Time) (entity.AppID, error) {
 	timeStamp := ulid.Timestamp(t)
 	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)

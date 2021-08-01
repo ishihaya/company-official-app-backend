@@ -5,8 +5,9 @@ import (
 
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
 	"github.com/ishihaya/company-official-app-backend/domain/repository"
-	"github.com/ishihaya/company-official-app-backend/infra/db"
+	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
 	"github.com/ishihaya/company-official-app-backend/interface/dataaccess/dao"
+	"github.com/ishihaya/company-official-app-backend/pkg/db"
 	"golang.org/x/xerrors"
 )
 
@@ -24,7 +25,7 @@ func (u *userRepository) FindByAuthID(authID string) (*entity.User, error) {
 	daoUser := new(dao.User)
 	if err := u.conn.Get(daoUser, "SELECT * FROM users WHERE auth_id = ?", authID); err != nil {
 		if xerrors.Is(err, sql.ErrNoRows) {
-			return nil, xerrors.Errorf("user not found authID= %s : %w", authID, entity.ErrUserNotFound)
+			return nil, xerrors.Errorf("user not found authID= %s : %w", authID, apperror.ErrUserNotFound)
 		}
 		return nil, xerrors.Errorf("failed to get user by authID= %s : %w", authID, err)
 	}
