@@ -78,24 +78,26 @@ func (u *userHandler) Create(c *gin.Context) {
 	req := new(request.UserCreate)
 	var err error
 	if err = c.ShouldBindJSON(req); err != nil {
-		// TODO
+		logger.Logging.Warnf("request not valid: %+v", err)
+		c.JSON(http.StatusBadRequest, entity.ErrValidation.Error())
 		return
 	}
 	req.CurrentTime, err = contextgo.Now(c)
 	if err != nil {
-		// TODO
+		logger.Logging.Warnf("failed to get current time: %+v", err)
+		c.JSON(http.StatusBadRequest, entity.ErrGetTime.Error())
 		return
 	}
 	req.AuthID, err = contextgo.GetAuthID(c)
 	if err != nil {
-		// TODO
-		// 	logger.Logging.Warnf(": %+v", err)
-		// 	c.JSON(http.StatusBadRequest, entity.ErrGetAuthID.Error())
+		logger.Logging.Warnf("failed to get auth id: %+v", err)
+		c.JSON(http.StatusBadRequest, entity.ErrGetAuthID.Error())
 		return
 	}
 
 	if err = u.userUsecase.Create(req.AuthID, req.NickName, req.CurrentTime); err != nil {
-		// TODO
+		logger.Logging.Errorf("failed to get user: %+v", err)
+		c.JSON(http.StatusInternalServerError, entity.ErrInternalServerError.Error())
 		return
 	}
 
