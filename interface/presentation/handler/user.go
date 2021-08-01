@@ -96,6 +96,7 @@ func (u *userHandler) Create(c *gin.Context) {
 
 	if err := u.userUsecase.Create(req.AuthID, req.NickName, req.CurrentTime); err != nil {
 		// TODO
+		return
 	}
 	// TODO
 }
