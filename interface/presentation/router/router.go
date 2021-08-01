@@ -30,6 +30,7 @@ func (r *Router) Routes() {
 	userHandler := di.InitUser()
 
 	r.GET("/user", userHandler.Get)
+	r.POST("/user", userHandler.Create)
 }
 
 // LoadSwagger - Swaggerを読み込む関数
