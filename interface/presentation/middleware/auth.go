@@ -12,6 +12,7 @@ func NewAuthMiddleware() AuthMiddleware {
 	return &authMiddleware{}
 }
 
+// TODO 命名について考える Authだとentityと重複する
 func (a *authMiddleware) Auth(c *gin.Context) {
 	// TODO
 	// 先にentityから書く
