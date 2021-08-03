@@ -1,4 +1,6 @@
 package entity
 
-// TODO 命名について考える Authだとmiddlewareと重複する
-type Auth struct {}
+// Auth - 認証情報
+type Auth struct {
+	ID string // 認証ID
+}
