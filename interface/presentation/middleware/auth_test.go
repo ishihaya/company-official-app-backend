@@ -8,10 +8,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
+	"github.com/google/go-cmp/cmp"
 	"github.com/ishihaya/company-official-app-backend/application/usecase/mock_usecase"
 	"github.com/ishihaya/company-official-app-backend/config"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
 	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
+	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
 	"github.com/ishihaya/company-official-app-backend/pkg/logger"
 	"golang.org/x/xerrors"
 )
@@ -91,22 +93,24 @@ func Test_authMiddleware_AuthAPI(t *testing.T) {
 
 			a.AuthAPI(c)
 
-			// NOTE 明日中にこのTODOを終わらせる
-			// TODO1 この下を記述する
-			// TODO2 operator, pkg, di, routerを記述する
-			// TODO3 ローカル環境立ち上げられるか&Swaggerの起動を確認する
-			// TODO4 フロントエンドへ
-
-			// got := rec.Body.String()
-			// statusCode := rec.Code
-
-			// if statusCode != *tt.wantStatusCode {
-			// 	t.Errorf("authMiddleware.AuthAPI() statusCode = %v, wantStatusCode = %v", statusCode, tt.wantStatusCode)
-			// 	return
-			// }
-			// if diff := cmp.Diff(tt.want, got); diff != "" {
-			// 	t.Errorf("authMiddleware.AuthAPI() mismatch (-want +got):\n%s", diff)
-			// }
+			authID, err := contextgo.GetAuthID(c)
+			if err != nil && tt.wantAuthID == nil {
+				// エラーが出ることを期待する
+				got := rec.Body.String()
+				status := rec.Code
+				if diff := cmp.Diff(*tt.wantResponseBody, got); diff != "" {
+					t.Errorf("authMiddleware.AuthAPI() mismatch (-want +got):\n%s", diff)
+				}
+				if status != *tt.wantStatusCode {
+					t.Errorf("authMiddleware.AuthAPI() statusCode = %v, wantStatusCode = %v", status, *tt.wantStatusCode)
+				}
+			} else if tt.wantAuthID != nil {
+				if diff := cmp.Diff(*tt.wantAuthID, authID); diff != "" {
+					t.Errorf("authMiddleware.AuthAPI() mismatch (-want +got):\n%s", diff)
+				}
+			} else {
+				t.Errorf("authMiddleware.AuthAPI() authID = %v, wantAuthID = %v", authID, *tt.wantAuthID)
+			}
 		})
 	}
 }
