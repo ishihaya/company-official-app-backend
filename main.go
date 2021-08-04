@@ -10,8 +10,5 @@ func main() {
 	logger.New(config.Log())
 	r := router.New()
 	r.Routes()
-	if config.IsLocal() {
-		r.LoadSwagger()
-	}
 	r.RunServer()
 }
