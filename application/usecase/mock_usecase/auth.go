@@ -5,6 +5,7 @@
 package mock_usecase
 
 import (
+	context "context"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -35,16 +36,16 @@ func (m *MockAuthUsecase) EXPECT() *MockAuthUsecaseMockRecorder {
 }
 
 // Get mocks base method.
-func (m *MockAuthUsecase) Get(token string) (*entity.Auth, error) {
+func (m *MockAuthUsecase) Get(ctx context.Context, token string) (*entity.Auth, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Get", token)
+	ret := m.ctrl.Call(m, "Get", ctx, token)
 	ret0, _ := ret[0].(*entity.Auth)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Get indicates an expected call of Get.
-func (mr *MockAuthUsecaseMockRecorder) Get(token interface{}) *gomock.Call {
+func (mr *MockAuthUsecaseMockRecorder) Get(ctx, token interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockAuthUsecase)(nil).Get), token)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockAuthUsecase)(nil).Get), ctx, token)
 }

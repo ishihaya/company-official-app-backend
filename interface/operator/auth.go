@@ -22,8 +22,7 @@ func NewAuthOperator(authClient *authgo.Client) operator.AuthOperator {
 }
 
 // FindByToken - トークンから認証情報を見つける
-func (a *authOperator) FindByToken(token string) (*entity.Auth, error) {
-	ctx := context.Background()
+func (a *authOperator) FindByToken(ctx context.Context, token string) (*entity.Auth, error) {
 	authToken, err := a.authClient.Verify(ctx, token)
 	if err != nil {
 		return nil, xerrors.Errorf(": %w", err)

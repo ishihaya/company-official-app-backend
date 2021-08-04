@@ -5,6 +5,7 @@
 package mock_operator
 
 import (
+	context "context"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -35,16 +36,16 @@ func (m *MockAuthOperator) EXPECT() *MockAuthOperatorMockRecorder {
 }
 
 // FindByToken mocks base method.
-func (m *MockAuthOperator) FindByToken(token string) (*entity.Auth, error) {
+func (m *MockAuthOperator) FindByToken(ctx context.Context, token string) (*entity.Auth, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindByToken", token)
+	ret := m.ctrl.Call(m, "FindByToken", ctx, token)
 	ret0, _ := ret[0].(*entity.Auth)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindByToken indicates an expected call of FindByToken.
-func (mr *MockAuthOperatorMockRecorder) FindByToken(token interface{}) *gomock.Call {
+func (mr *MockAuthOperatorMockRecorder) FindByToken(ctx, token interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByToken", reflect.TypeOf((*MockAuthOperator)(nil).FindByToken), token)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByToken", reflect.TypeOf((*MockAuthOperator)(nil).FindByToken), ctx, token)
 }

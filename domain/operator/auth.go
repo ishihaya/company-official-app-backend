@@ -1,7 +1,11 @@
 package operator
 
-import "github.com/ishihaya/company-official-app-backend/domain/entity"
+import (
+	"context"
+
+	"github.com/ishihaya/company-official-app-backend/domain/entity"
+)
 
 type AuthOperator interface {
-	FindByToken(token string) (*entity.Auth, error)
+	FindByToken(ctx context.Context, token string) (*entity.Auth, error)
 }

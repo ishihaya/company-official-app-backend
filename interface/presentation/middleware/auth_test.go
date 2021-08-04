@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -20,6 +21,7 @@ import (
 
 func Test_authMiddleware_AuthAPI(t *testing.T) {
 	logger.New(config.Log())
+	ctx := context.Background()
 	token1 := "token"
 	wantAuthID1 := "auth_id"
 	wantResponseBody2 := fmt.Sprintf(`"%s"`, apperror.ErrValidation.Error())
@@ -41,7 +43,7 @@ func Test_authMiddleware_AuthAPI(t *testing.T) {
 			name: "1 / 正常系",
 			fields: fields{
 				authUsecaseFn: func(mock *mock_usecase.MockAuthUsecase) {
-					mock.EXPECT().Get("token").Return(&entity.Auth{
+					mock.EXPECT().Get(ctx, "token").Return(&entity.Auth{
 						ID: "id",
 					}, nil)
 				},
@@ -65,7 +67,7 @@ func Test_authMiddleware_AuthAPI(t *testing.T) {
 			name: "3 / 異常系 / 認証情報の取得に失敗した場合Server Error",
 			fields: fields{
 				authUsecaseFn: func(mock *mock_usecase.MockAuthUsecase) {
-					mock.EXPECT().Get("token").Return(nil, xerrors.New("something wrong"))
+					mock.EXPECT().Get(ctx, "token").Return(nil, xerrors.New("something wrong"))
 				},
 			},
 			token:            &token1,

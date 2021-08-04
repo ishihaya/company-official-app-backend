@@ -35,8 +35,9 @@ func (a *authMiddleware) AuthAPI(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, apperror.ErrValidation.Error())
 		return
 	}
+	ctx := c.Request.Context()
 
-	auth, err := a.authUsecase.Get(req.IDToken)
+	auth, err := a.authUsecase.Get(ctx, req.IDToken)
 	if err != nil {
 		logger.Logging.Errorf("failed to get auth: %+v", err)
 		c.AbortWithStatusJSON(http.StatusInternalServerError, apperror.ErrInternalServerError.Error())

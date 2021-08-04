@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"context"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -11,6 +12,7 @@ import (
 )
 
 func Test_authUsecase_Get(t *testing.T) {
+	ctx := context.Background()
 	type fields struct {
 		authOperatorFn func(mock *mock_operator.MockAuthOperator)
 	}
@@ -28,7 +30,7 @@ func Test_authUsecase_Get(t *testing.T) {
 			name: "1 / 正常系",
 			fields: fields{
 				authOperatorFn: func(mock *mock_operator.MockAuthOperator) {
-					mock.EXPECT().FindByToken("token").Return(&entity.Auth{
+					mock.EXPECT().FindByToken(ctx, "token").Return(&entity.Auth{
 						ID: "id",
 					}, nil)
 				},
@@ -50,7 +52,7 @@ func Test_authUsecase_Get(t *testing.T) {
 			tt.fields.authOperatorFn(mockOperator)
 			a := NewAuthUsecase(mockOperator)
 
-			got, err := a.Get(tt.args.token)
+			got, err := a.Get(ctx, tt.args.token)
 
 			if !xerrors.Is(err, tt.wantErr) {
 				t.Errorf("authUsecase.Get() error = %v, wantErr %v", err, tt.wantErr)
