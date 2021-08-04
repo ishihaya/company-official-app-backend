@@ -17,7 +17,9 @@ type authUsecase struct {
 }
 
 func NewAuthUsecase(authOperator operator.AuthOperator) AuthUsecase {
-	return &authUsecase{}
+	return &authUsecase{
+		authOperator: authOperator,
+	}
 }
 
 func (a *authUsecase) Get(ctx context.Context, token string) (*entity.Auth, error) {
