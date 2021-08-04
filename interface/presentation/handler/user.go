@@ -32,6 +32,7 @@ func NewUserHandler(userUsecase usecase.UserUsecase) UserHandler {
 // @Summary 認証情報から自分のユーザー情報を取得する
 // @Accept  json
 // @Produce  json
+// @Param Authorization header string true "Authentiation header"
 // @Success 200 {object} response.UserGet
 // @Failure 400 {object} string "Something wrong"
 // @Failure 404 {object} string "Something wrong"
@@ -71,6 +72,8 @@ func (u *userHandler) Get(c *gin.Context) {
 // @Summary 認証情報とリクエスト情報からユーザーを作成する
 // @Accept  json
 // @Produce  json
+// @Param nickName body string true "nick name"
+// @Param Authorization header string true "Authentiation header"
 // @Success 204
 // @Failure 500 {object} string "Something wrong"
 // @Router /user [post]

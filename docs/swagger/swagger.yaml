@@ -11,6 +11,12 @@ paths:
     get:
       consumes:
       - application/json
+      parameters:
+      - description: Authentiation header
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -18,9 +24,42 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/response.UserGet'
+        "400":
+          description: Something wrong
+          schema:
+            type: string
+        "404":
+          description: Something wrong
+          schema:
+            type: string
         "500":
           description: Something wrong
           schema:
             type: string
       summary: 認証情報から自分のユーザー情報を取得する
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: nick name
+        in: body
+        name: nickName
+        required: true
+        schema:
+          type: string
+      - description: Authentiation header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ""
+        "500":
+          description: Something wrong
+          schema:
+            type: string
+      summary: 認証情報とリクエスト情報からユーザーを作成する
 swagger: "2.0"

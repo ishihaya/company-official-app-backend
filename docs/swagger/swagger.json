@@ -13,12 +13,71 @@
                     "application/json"
                 ],
                 "summary": "認証情報から自分のユーザー情報を取得する",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentiation header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/response.UserGet"
                         }
+                    },
+                    "400": {
+                        "description": "Something wrong",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Something wrong",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Something wrong",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "認証情報とリクエスト情報からユーザーを作成する",
+                "parameters": [
+                    {
+                        "description": "nick name",
+                        "name": "nickName",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authentiation header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
                     },
                     "500": {
                         "description": "Something wrong",
