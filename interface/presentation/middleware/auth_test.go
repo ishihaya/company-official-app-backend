@@ -44,7 +44,7 @@ func Test_authMiddleware_AuthAPI(t *testing.T) {
 			fields: fields{
 				authUsecaseFn: func(mock *mock_usecase.MockAuthUsecase) {
 					mock.EXPECT().Get(ctx, "token").Return(&entity.Auth{
-						ID: "id",
+						ID: "auth_id",
 					}, nil)
 				},
 			},

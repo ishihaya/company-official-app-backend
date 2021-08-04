@@ -30,8 +30,9 @@ func (a *authMiddleware) AuthAPI(c *gin.Context) {
 	req := &request.AuthAPI{
 		IDToken: c.Request.Header.Get("Authorization"),
 	}
-	if err := c.ShouldBindJSON(req); err != nil {
-		logger.Logging.Warnf("request not valid: %+v", err)
+	// NOTE: 手動でバリデーション
+	if req.IDToken == "" {
+		logger.Logging.Warnf("idToken not set")
 		c.JSON(http.StatusBadRequest, apperror.ErrValidation.Error())
 		return
 	}
