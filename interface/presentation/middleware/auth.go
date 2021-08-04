@@ -42,6 +42,7 @@ func (a *authMiddleware) AuthAPI(c *gin.Context) {
 	if err != nil {
 		logger.Logging.Errorf("failed to get auth: %+v", err)
 		c.AbortWithStatusJSON(http.StatusInternalServerError, apperror.ErrInternalServerError.Error())
+		return
 	}
 
 	contextgo.SetAuthID(c, auth.ID)
