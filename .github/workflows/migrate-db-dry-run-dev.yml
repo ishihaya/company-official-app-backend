@@ -1,4 +1,4 @@
-name: Migrate DB dry run
+name: Migrate DB dry run dev
 on:
   pull_request:
     branches: [ main ]
@@ -49,6 +49,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const output = `
+            #### environment: dev
             #### migrate DB dry run by sqldef: \`${{ steps.migrate_db_dry_run.outcome }}\`
             <details>
               <summary>Show migrate DB dry run result</summary>

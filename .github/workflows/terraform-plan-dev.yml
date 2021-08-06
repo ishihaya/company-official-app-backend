@@ -1,4 +1,4 @@
-name: Terraform plan
+name: Terraform plan dev
 on:
   pull_request:
     branches: [ main ]
@@ -55,6 +55,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const output = `
+            #### environment: dev
             #### Terraform fmt check \`${{ steps.fmt.outcome }}\`
             #### Terraform init \`${{ steps.init.outcome }}\`
             #### Terraform validate \`${{ steps.validate.outcome }}\`
