@@ -4,7 +4,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
 env:
-  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GCP_PROJECT_ID: company-official-app-dev
   GCP_SA_READ_WRITE_KEY: ${{ secrets.GCP_SA_READ_WRITE_KEY }}
   GCP_SA_MYSQL_CLIENT_KEY: ${{ secrets.GCP_SA_MYSQL_CLIENT_KEY }}
   TF_VAR_app_version: ${{ github.sha }}
