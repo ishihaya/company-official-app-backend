@@ -2,9 +2,16 @@ name: Terraform plan dev
 on:
   pull_request:
     branches: [ main ]
-    paths:
-      - terraform/**
+    # paths:
+    #   - terraform/**
   workflow_dispatch:
+env:
+  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GCP_SA_READ_ONLY_KEY: ${{ secrets.GCP_SA_READ_ONLY_KEY }}
+  TF_VAR_mysql_root_password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+  TF_VAR_mysql_password: ${{ secrets.MYSQL_PASSWORD }}
+  TF_VAR_mysql_migration_ro_password: ${{ secrets.MYSQL_MIGRATION_READ_ONLY_PASSWORD }}
+  TF_VAR_app_version: ${{ github.sha }}
 jobs:
   terraform_plan:
     name: Terraform plan
@@ -14,18 +21,13 @@ jobs:
     defaults:
       run:
         working-directory: ./terraform/envs/dev
-    env:
-      TF_VAR_mysql_root_password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-      TF_VAR_mysql_password: ${{ secrets.MYSQL_PASSWORD }}
-      TF_VAR_mysql_migration_ro_password: ${{ secrets.MYSQL_MIGRATION_READ_ONLY_PASSWORD }}
-      TF_VAR_container_image_tag: ${{ github.sha }}
     steps:
       - uses: actions/checkout@v2
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
         with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_SA_READ_ONLY_KEY }}
+          project_id: $GCP_PROJECT_ID
+          service_account_key: $GCP_SA_READ_ONLY_KEY
           export_default_credentials: true
       - uses: hashicorp/setup-terraform@v1
         with:

@@ -2,9 +2,13 @@ name: Migrate DB dry run dev
 on:
   pull_request:
     branches: [ main ]
-    paths:
-      - '**.sql'
+    # paths:
+    #   - '**.sql'
   workflow_dispatch:
+env:
+  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GCP_SA_MYSQL_CLIENT_KEY: ${{ secrets.GCP_SA_MYSQL_CLIENT_KEY }}
+  MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
 jobs:
   migrate_db_dry_run:
     name: Migrate DB dry run
@@ -24,19 +28,19 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
         with:
-          project_id: ${{ env.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_SA_MYSQL_CLIENT_KEY }}
+          project_id: $GCP_PROJECT_ID
+          service_account_key: $GCP_SA_MYSQL_CLIENT_KEY
           export_default_credentials: true
       - name: Install Cloud SQL Proxy
         run: |
           wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
           chmod +x cloud_sql_proxy
       - name: Connect Cloud SQL Proxy
-        run: ./cloud_sql_proxy -instances=${{ secrets.GCP_PROJECT_ID }}:asia-northeast1:app-mysql-01=tcp:0.0.0.0:$PORT &
+        run: ./cloud_sql_proxy -instances=$GCP_PROJECT_ID:asia-northeast1:app-mysql-01=tcp:0.0.0.0:$PORT &
       - name: migrate DB dry run
         id: migrate_db_dry_run
         run: |
-          DRYRUN=$(mysqldef -uroot -p${{ secrets.MYSQL_ROOT_PASSWORD }}  -P$PORT app-mysql-database --dry-run < schema.sql)
+          DRYRUN=$(mysqldef -uroot -p$MYSQL_ROOT_PASSWORD  -P$PORT app-mysql-database --dry-run < schema.sql)
           echo "DRYRUN<<EOF" >> $GITHUB_ENV
           echo "$DRYRUN" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
