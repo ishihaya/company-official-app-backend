@@ -26,8 +26,8 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
         with:
-          project_id: $GCP_PROJECT_ID
-          service_account_key: $GCP_SA_READ_ONLY_KEY
+          project_id: ${{ env.GCP_PROJECT_ID }}
+          service_account_key: ${{ env.GCP_SA_READ_ONLY_KEY }}
           export_default_credentials: true
       - uses: hashicorp/setup-terraform@v1
         with:
