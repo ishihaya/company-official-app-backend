@@ -6,7 +6,7 @@ on:
       - terraform/**
   workflow_dispatch:
 env:
-  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GCP_PROJECT_ID: company-official-app-dev
   GCP_SA_READ_ONLY_KEY: ${{ secrets.GCP_SA_READ_ONLY_KEY }}
   TF_VAR_mysql_root_password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
   TF_VAR_mysql_password: ${{ secrets.MYSQL_PASSWORD }}

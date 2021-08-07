@@ -6,7 +6,7 @@ on:
       - '**.sql'
   workflow_dispatch:
 env:
-  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GCP_PROJECT_ID: company-official-app-dev
   GCP_SA_MYSQL_CLIENT_KEY: ${{ secrets.GCP_SA_MYSQL_CLIENT_KEY }}
   MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
 jobs:
