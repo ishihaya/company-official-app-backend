@@ -31,7 +31,7 @@ provider "google-beta" {
 }
 
 # 外部から参照
-variable "container_image_tag" {}
+variable "app_version" {}
 
 # secrets
 variable "mysql_root_password" {}
@@ -52,7 +52,7 @@ module "root" {
   cloud_run_name                     = "company-official-app-backend-dev"
   cloud_sql_instance_connection_name = google_sql_database_instance.app_mysql_instance.connection_name
   container_image_name               = "asia.gcr.io/${local.project_id}/company-official-app-backend"
-  container_image_tag                = var.container_image_tag
+  app_version                        = var.app_version
   app_env                            = "dev"
   log_level                          = "debug"
   log_encoding                       = "console"

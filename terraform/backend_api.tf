@@ -58,7 +58,7 @@ resource "google_cloud_run_service" "company_official_app_backend" {
     spec {
       service_account_name = google_service_account.backend_api.email
       containers {
-        image = "${var.container_image_name}:${var.container_image_tag}"
+        image = "${var.container_image_name}:${var.app_version}"
         env {
           name  = "MYSQL_USER"
           value = var.mysql_user
