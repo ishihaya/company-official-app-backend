@@ -41,7 +41,7 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v2
         env:
-          IMAGE: asia.gcr.io/$GCP_PROJECT_ID/company-official-app-backend:$TF_VAR_app_version
+          IMAGE: asia.gcr.io/${{ env.GCP_PROJECT_ID }}/company-official-app-backend:${{ env.TF_VAR_app_version }}
         with:
           context: .
           file: build/app/Dockerfile
