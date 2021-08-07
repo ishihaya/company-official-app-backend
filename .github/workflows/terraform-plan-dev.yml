@@ -2,8 +2,8 @@ name: Terraform plan dev
 on:
   pull_request:
     branches: [ main ]
-    # paths:
-    #   - terraform/**
+    paths:
+      - terraform/**
   workflow_dispatch:
 env:
   GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}

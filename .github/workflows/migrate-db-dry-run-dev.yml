@@ -2,8 +2,8 @@ name: Migrate DB dry run dev
 on:
   pull_request:
     branches: [ main ]
-    # paths:
-    #   - '**.sql'
+    paths:
+      - '**.sql'
   workflow_dispatch:
 env:
   GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
