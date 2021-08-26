@@ -11,16 +11,14 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-cmp/cmp"
 	"github.com/ishihaya/company-official-app-backend/application/usecase/mock_usecase"
-	"github.com/ishihaya/company-official-app-backend/config"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
 	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
 	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
-	"github.com/ishihaya/company-official-app-backend/pkg/logger"
+	"github.com/ishihaya/company-official-app-backend/pkg/logging"
 	"golang.org/x/xerrors"
 )
 
 func Test_authMiddleware_AuthAPI(t *testing.T) {
-	logger.New(config.Log())
 	ctx := context.Background()
 	token1 := "token"
 	wantAuthID1 := "auth_id"
@@ -82,7 +80,7 @@ func Test_authMiddleware_AuthAPI(t *testing.T) {
 			defer ctrl.Finish()
 			mockUsecase := mock_usecase.NewMockAuthUsecase(ctrl)
 			tt.fields.authUsecaseFn(mockUsecase)
-			a := NewAuthMiddleware(mockUsecase)
+			a := NewAuthMiddleware(mockUsecase, logging.GetInstance())
 
 			rec := httptest.NewRecorder()
 			gin.SetMode(gin.ReleaseMode)

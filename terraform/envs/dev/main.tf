@@ -54,6 +54,4 @@ module "root" {
   container_image_name               = "asia.gcr.io/${local.project_id}/company-official-app-backend"
   app_version                        = var.app_version
   app_env                            = "dev"
-  log_level                          = "debug"
-  log_encoding                       = "console"
 }

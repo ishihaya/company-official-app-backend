@@ -9,7 +9,7 @@ import (
 	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/request"
 	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/response"
 	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
-	"github.com/ishihaya/company-official-app-backend/pkg/logger"
+	"github.com/ishihaya/company-official-app-backend/pkg/logging"
 	"golang.org/x/xerrors"
 )
 
@@ -20,11 +20,16 @@ type UserHandler interface {
 
 type userHandler struct {
 	userUsecase usecase.UserUsecase
+	logging     logging.Log
 }
 
-func NewUserHandler(userUsecase usecase.UserUsecase) UserHandler {
+func NewUserHandler(
+	userUsecase usecase.UserUsecase,
+	logging logging.Log,
+) UserHandler {
 	return &userHandler{
 		userUsecase: userUsecase,
+		logging:     logging,
 	}
 }
 
@@ -44,7 +49,7 @@ func (u *userHandler) Get(c *gin.Context) {
 	var err error
 	req.AuthID, err = contextgo.GetAuthID(c)
 	if err != nil {
-		logger.Logging.Warnf(": %+v", err)
+		u.logging.Warnf(": %+v", err)
 		c.JSON(http.StatusBadRequest, apperror.ErrGetAuthID.Error())
 		return
 	}
@@ -52,7 +57,7 @@ func (u *userHandler) Get(c *gin.Context) {
 	// usecase
 	user, err := u.userUsecase.Get(req.AuthID)
 	if err != nil {
-		logger.Logging.Warnf("failed to get user: %+v", err)
+		u.logging.Warnf("failed to get user: %+v", err)
 		if xerrors.Is(err, apperror.ErrUserNotFound) {
 			c.JSON(http.StatusNotFound, apperror.ErrUserNotFound.Error())
 			return
@@ -81,25 +86,25 @@ func (u *userHandler) Create(c *gin.Context) {
 	req := new(request.UserCreate)
 	var err error
 	if err = c.ShouldBindJSON(req); err != nil {
-		logger.Logging.Warnf("request not valid: %+v", err)
+		u.logging.Warnf("request not valid: %+v", err)
 		c.JSON(http.StatusBadRequest, apperror.ErrValidation.Error())
 		return
 	}
 	req.CurrentTime, err = contextgo.Now(c)
 	if err != nil {
-		logger.Logging.Warnf("failed to get current time: %+v", err)
+		u.logging.Warnf("failed to get current time: %+v", err)
 		c.JSON(http.StatusBadRequest, apperror.ErrGetTime.Error())
 		return
 	}
 	req.AuthID, err = contextgo.GetAuthID(c)
 	if err != nil {
-		logger.Logging.Warnf("failed to get auth id: %+v", err)
+		u.logging.Warnf("failed to get auth id: %+v", err)
 		c.JSON(http.StatusBadRequest, apperror.ErrGetAuthID.Error())
 		return
 	}
 
 	if err = u.userUsecase.Create(req.AuthID, req.NickName, req.CurrentTime); err != nil {
-		logger.Logging.Errorf("failed to get user: %+v", err)
+		u.logging.Errorf("failed to get user: %+v", err)
 		c.JSON(http.StatusInternalServerError, apperror.ErrInternalServerError.Error())
 		return
 	}
