@@ -4,7 +4,7 @@ import (
 	"sync"
 
 	"github.com/ishihaya/cloudlog"
-	"github.com/ishihaya/company-official-app-backend/pkg/config"
+	"github.com/ishihaya/company-official-app-backend/pkg/env"
 )
 
 // You can define methods that you only use.
@@ -40,10 +40,10 @@ func new() Log {
 	var logger *cloudlog.Logger
 	var err error
 	// serviceName is displayed in Error Reporting.
-	serviceName := config.ServiceName()
-	switch config.ENV() {
+	serviceName := env.ServiceName()
+	switch env.ENV() {
 	// List runnning environments on cloud, such as GCP.
-	case config.Production, config.Development:
+	case env.Production, env.Development:
 		logger, err = cloudlog.NewCloudLogger(
 			cloudlog.NeedErrorReporting(true),
 			cloudlog.ServiceName(serviceName),

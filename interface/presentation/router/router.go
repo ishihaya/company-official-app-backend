@@ -11,7 +11,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/ishihaya/company-official-app-backend/di"
-	"github.com/ishihaya/company-official-app-backend/pkg/config"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -20,20 +19,23 @@ type Router struct {
 	*gin.Engine
 }
 
-// New - ルーティング関数の生成
 func New() *Router {
 	engine := gin.Default()
 	gin.SetMode(gin.ReleaseMode)
 	return &Router{Engine: engine}
 }
 
-// Routes - ルーティングを制御する関数
-func (r *Router) Routes() {
-	r.GET("/health", healthCheck)
-	if !config.IsProduction() {
-		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	}
+func (r *Router) HealthCheck() {
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(http.StatusOK, "ok")
+	})
+}
 
+func (r *Router) Swagger() {
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+}
+
+func (r *Router) Routes() {
 	authMiddleware := di.InitAuth()
 	userHandler := di.InitUser()
 
@@ -44,13 +46,8 @@ func (r *Router) Routes() {
 	r.POST("/user", userHandler.Create)
 }
 
-// RunServer - サーバーを走らせる関数
-func (r *Router) RunServer() {
-	if err := r.Run(fmt.Sprintf(":%s", config.PORT())); err != nil {
+func (r *Router) RunServer(port int) {
+	if err := r.Run(fmt.Sprintf(":%d", port)); err != nil {
 		log.Fatal(err)
 	}
-}
-
-func healthCheck(c *gin.Context) {
-	c.JSON(http.StatusOK, "ok")
 }

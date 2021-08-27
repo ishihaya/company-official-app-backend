@@ -6,7 +6,7 @@ import (
 
 	// to connect mysql db
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/ishihaya/company-official-app-backend/pkg/config"
+	"github.com/ishihaya/company-official-app-backend/pkg/env"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -25,7 +25,7 @@ func GetInstance() *Conn {
 }
 
 func new() *Conn {
-	dsn := config.DSN()
+	dsn := env.DSN()
 	db, err := sqlx.Connect("mysql", dsn)
 	if err != nil {
 		log.Fatalf("failed to connect to database: %+v", err)
