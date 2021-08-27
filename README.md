@@ -22,3 +22,7 @@ REVOKE 'cloudsqlsuperuser' FROM 'migration_ro'@'';
 GRANT INSERT, SELECT, UPDATE, DELETE, INDEX ON `app-mysql-database`.* TO 'app'@'';
 GRANT SELECT ON `app-mysql-database`.* TO 'migration_ro'@'';
 ```
+
+## 補足
+
+loggerは自身のパッケージ[cloudlog](https://github.com/ishihaya/cloudlog)を使用してみた
