@@ -7,13 +7,13 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
 	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
-	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
 	"github.com/ishihaya/company-official-app-backend/pkg/db"
+	"github.com/ishihaya/company-official-app-backend/pkg/gincontext"
 	"golang.org/x/xerrors"
 )
 
 func Test_userRepository_GetByAuthID(t *testing.T) {
-	mockTime, err := contextgo.GetMockNow()
+	mockTime, err := gincontext.GetMockNow()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -82,7 +82,7 @@ func Test_userRepository_GetByAuthID(t *testing.T) {
 }
 
 func Test_userRepository_Store(t *testing.T) {
-	mockTime, err := contextgo.GetMockNow()
+	mockTime, err := gincontext.GetMockNow()
 	if err != nil {
 		t.Fatal(err)
 	}

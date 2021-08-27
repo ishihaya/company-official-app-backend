@@ -7,7 +7,7 @@ import (
 	"github.com/ishihaya/company-official-app-backend/application/usecase"
 	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
 	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/request"
-	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
+	"github.com/ishihaya/company-official-app-backend/pkg/gincontext"
 	"github.com/ishihaya/company-official-app-backend/pkg/logging"
 )
 
@@ -50,7 +50,7 @@ func (a *authMiddleware) AuthAPI(c *gin.Context) {
 		return
 	}
 
-	contextgo.SetAuthID(c, auth.ID)
+	gincontext.SetAuthID(c, auth.ID)
 
 	c.Next()
 }

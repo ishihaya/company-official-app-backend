@@ -8,7 +8,7 @@ import (
 	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
 	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/request"
 	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/response"
-	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
+	"github.com/ishihaya/company-official-app-backend/pkg/gincontext"
 	"github.com/ishihaya/company-official-app-backend/pkg/logging"
 	"golang.org/x/xerrors"
 )
@@ -47,7 +47,7 @@ func (u *userHandler) Get(c *gin.Context) {
 	// request
 	req := new(request.UserGet)
 	var err error
-	req.AuthID, err = contextgo.GetAuthID(c)
+	req.AuthID, err = gincontext.GetAuthID(c)
 	if err != nil {
 		u.logging.Warnf(": %+v", err)
 		c.JSON(http.StatusBadRequest, apperror.ErrGetAuthID.Error())
@@ -90,13 +90,13 @@ func (u *userHandler) Create(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, apperror.ErrValidation.Error())
 		return
 	}
-	req.CurrentTime, err = contextgo.Now(c)
+	req.CurrentTime, err = gincontext.Now(c)
 	if err != nil {
 		u.logging.Warnf("failed to get current time: %+v", err)
 		c.JSON(http.StatusBadRequest, apperror.ErrGetTime.Error())
 		return
 	}
-	req.AuthID, err = contextgo.GetAuthID(c)
+	req.AuthID, err = gincontext.GetAuthID(c)
 	if err != nil {
 		u.logging.Warnf("failed to get auth id: %+v", err)
 		c.JSON(http.StatusBadRequest, apperror.ErrGetAuthID.Error())

@@ -1,4 +1,4 @@
-package contextgo
+package gincontext
 
 import (
 	"net/http/httptest"
