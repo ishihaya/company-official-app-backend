@@ -17,7 +17,7 @@ func Test_userRepository_GetByAuthID(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	conn := db.New()
+	conn := db.GetInstance()
 	t.Cleanup(func() {
 		CleanUpRepositoryTest(t, conn, []string{"users"})
 	})
@@ -86,7 +86,7 @@ func Test_userRepository_Store(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	conn := db.New()
+	conn := db.GetInstance()
 	t.Cleanup(func() {
 		CleanUpRepositoryTest(t, conn, []string{"users"})
 	})

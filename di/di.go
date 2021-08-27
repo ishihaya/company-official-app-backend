@@ -12,7 +12,7 @@ import (
 )
 
 func InitUser() handler.UserHandler {
-	conn := db.New()
+	conn := db.GetInstance()
 	repositoryUser := repository.NewUserRepository(conn)
 	operatorAppID := operator.NewAppIDOperator()
 	usecaseUser := usecase.NewUserUsecase(repositoryUser, operatorAppID)
