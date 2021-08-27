@@ -31,12 +31,12 @@ var once sync.Once
 // You should call this if you use logger.
 func GetInstance() Log {
 	once.Do(func() {
-		sharedInstance = new()
+		sharedInstance = newInstance()
 	})
 	return sharedInstance
 }
 
-func new() Log {
+func newInstance() Log {
 	var logger *cloudlog.Logger
 	var err error
 	// serviceName is displayed in Error Reporting.

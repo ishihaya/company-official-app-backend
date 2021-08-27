@@ -2,7 +2,7 @@ package authgo
 
 import (
 	"context"
-	"log"
+	"sync"
 
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/auth"
@@ -13,23 +13,28 @@ type Client struct {
 	*auth.Client
 }
 
-var client *Client
+var sharedInstance *Client
+var once sync.Once
 
-func init() {
+func GetInstance() *Client {
+	once.Do(func() {
+		sharedInstance = newInstance()
+	})
+	return sharedInstance
+}
+
+func newInstance() *Client {
 	ctx := context.Background()
 	app, err := firebase.NewApp(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to init firebase: %+v", err)
+		panic(err)
 	}
 	firebaseCli, err := app.Auth(ctx)
 	if err != nil {
-		log.Fatalf("failed to init firebase app auth: %+v", err)
+		panic(err)
 	}
-	client = &Client{firebaseCli}
-}
-
-func New() *Client {
-	return client
+	cli := &Client{firebaseCli}
+	return cli
 }
 
 func (cl *Client) Verify(ctx context.Context, token string) (*auth.Token, error) {

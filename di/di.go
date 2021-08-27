@@ -22,7 +22,7 @@ func InitUser() handler.UserHandler {
 }
 
 func InitAuth() middleware.AuthMiddleware {
-	client := authgo.New()
+	client := authgo.GetInstance()
 	operatorAuth := operator.NewAuthOperator(client)
 	usecaseAuth := usecase.NewAuthUsecase(operatorAuth)
 	logging := logging.GetInstance()
