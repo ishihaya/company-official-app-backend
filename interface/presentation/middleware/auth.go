@@ -8,7 +8,7 @@ import (
 	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
 	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/request"
 	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
-	"github.com/ishihaya/company-official-app-backend/pkg/logger"
+	"github.com/ishihaya/company-official-app-backend/pkg/logging"
 )
 
 type AuthMiddleware interface {
@@ -17,11 +17,16 @@ type AuthMiddleware interface {
 
 type authMiddleware struct {
 	authUsecase usecase.AuthUsecase
+	logging     logging.Log
 }
 
-func NewAuthMiddleware(authUsecase usecase.AuthUsecase) AuthMiddleware {
+func NewAuthMiddleware(
+	authUsecase usecase.AuthUsecase,
+	logging logging.Log,
+) AuthMiddleware {
 	return &authMiddleware{
 		authUsecase: authUsecase,
+		logging:     logging,
 	}
 }
 
@@ -32,7 +37,7 @@ func (a *authMiddleware) AuthAPI(c *gin.Context) {
 	}
 	// NOTE: 手動でバリデーション
 	if req.IDToken == "" {
-		logger.Logging.Warnf("idToken not set")
+		a.logging.Warnf("idToken not set")
 		c.JSON(http.StatusBadRequest, apperror.ErrValidation.Error())
 		return
 	}
@@ -40,7 +45,7 @@ func (a *authMiddleware) AuthAPI(c *gin.Context) {
 
 	auth, err := a.authUsecase.Get(ctx, req.IDToken)
 	if err != nil {
-		logger.Logging.Errorf("failed to get auth: %+v", err)
+		a.logging.Errorf("failed to get auth: %+v", err)
 		c.AbortWithStatusJSON(http.StatusInternalServerError, apperror.ErrInternalServerError.Error())
 		return
 	}

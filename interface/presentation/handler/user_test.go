@@ -12,16 +12,14 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-cmp/cmp"
 	"github.com/ishihaya/company-official-app-backend/application/usecase/mock_usecase"
-	"github.com/ishihaya/company-official-app-backend/config"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
 	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
 	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
-	"github.com/ishihaya/company-official-app-backend/pkg/logger"
+	"github.com/ishihaya/company-official-app-backend/pkg/logging"
 	"golang.org/x/xerrors"
 )
 
 func Test_userHandler_Get(t *testing.T) {
-	logger.New(config.Log())
 	authID1 := "auth_id"
 	authID3 := "not_found"
 	authID4 := "error_auth_id"
@@ -90,7 +88,7 @@ func Test_userHandler_Get(t *testing.T) {
 			defer ctrl.Finish()
 			mockUsecase := mock_usecase.NewMockUserUsecase(ctrl)
 			tt.fields.userUsecaseFn(mockUsecase)
-			u := NewUserHandler(mockUsecase)
+			u := NewUserHandler(mockUsecase, logging.GetInstance())
 
 			rec := httptest.NewRecorder()
 			gin.SetMode(gin.ReleaseMode)
@@ -197,7 +195,7 @@ func Test_userHandler_Create(t *testing.T) {
 			defer ctrl.Finish()
 			mockUsecase := mock_usecase.NewMockUserUsecase(ctrl)
 			tt.fields.userUsecaseFn(mockUsecase)
-			u := NewUserHandler(mockUsecase)
+			u := NewUserHandler(mockUsecase, logging.GetInstance())
 
 			rec := httptest.NewRecorder()
 			gin.SetMode(gin.ReleaseMode)

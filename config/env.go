@@ -1,11 +1,32 @@
 package config
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
-func IsLocal() bool {
-	return os.Getenv("APP_ENV") == "local"
+type Environment int
+
+const (
+	Production Environment = iota
+	Development
+	Local
+)
+
+func ENV() Environment {
+	env := os.Getenv("APP_ENV")
+	switch env {
+	case "prd":
+		return Production
+	case "dev":
+		return Development
+	case "local":
+		return Local
+	default:
+		panic(fmt.Sprintf("does not match environment %s", env))
+	}
 }
 
 func IsProduction() bool {
-	return os.Getenv("APP_ENV") == "prd"
+	return ENV() == Production
 }

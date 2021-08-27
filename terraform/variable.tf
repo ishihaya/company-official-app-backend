@@ -17,5 +17,3 @@ variable "container_image_name" { type = string }
 variable "app_version" { type = string }
 variable "mysql_database" { type = string }
 variable "app_env" { type = string }
-variable "log_level" { type = string }
-variable "log_encoding" { type = string }

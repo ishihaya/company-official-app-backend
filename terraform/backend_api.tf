@@ -76,12 +76,8 @@ resource "google_cloud_run_service" "company_official_app_backend" {
           value = var.app_env
         }
         env {
-          name  = "LOG_LEVEL"
-          value = var.log_level
-        }
-        env {
-          name  = "LOG_ENCODING"
-          value = var.log_encoding
+          name  = "SERVICE_NAME"
+          value = "cloud-run-backend-api"
         }
 
         # Secret Manager
