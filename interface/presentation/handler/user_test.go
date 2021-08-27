@@ -88,7 +88,7 @@ func Test_userHandler_Get(t *testing.T) {
 			defer ctrl.Finish()
 			mockUsecase := mock_usecase.NewMockUserUsecase(ctrl)
 			tt.fields.userUsecaseFn(mockUsecase)
-			u := NewUserHandler(mockUsecase)
+			u := NewUserHandler(mockUsecase, logging.GetInstance())
 
 			rec := httptest.NewRecorder()
 			gin.SetMode(gin.ReleaseMode)
