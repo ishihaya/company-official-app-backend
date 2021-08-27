@@ -6,7 +6,7 @@ services:
       dockerfile: ./build/app/Dockerfile
     command: /company-official-app-backend
     env_file: 
-      - ./envs/.env
+      - .env
     ports:
       - 8080:8080
   db:
@@ -16,7 +16,7 @@ services:
         - ./build/db/my.cnf:/etc/mysql/conf.d/my.cnf
         - db-data:/var/lib/mysql
     env_file:
-        - ./envs/.env
+        - .env
     ports:
         - 3306:3306
 volumes:
