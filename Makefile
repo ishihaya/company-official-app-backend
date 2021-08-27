@@ -1,4 +1,4 @@
-include ./config/.env
+include ./envs/.env
 export
 
 .PHONY: up
