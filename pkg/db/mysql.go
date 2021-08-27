@@ -5,7 +5,7 @@ import (
 
 	// to connect mysql db
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/ishihaya/company-official-app-backend/config"
+	"github.com/ishihaya/company-official-app-backend/pkg/config"
 	"github.com/jmoiron/sqlx"
 )
 

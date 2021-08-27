@@ -4,7 +4,7 @@ import (
 	"sync"
 
 	"github.com/ishihaya/cloudlog"
-	"github.com/ishihaya/company-official-app-backend/config"
+	"github.com/ishihaya/company-official-app-backend/pkg/config"
 )
 
 // You can define methods that you only use.

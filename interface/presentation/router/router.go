@@ -10,8 +10,8 @@ import (
 	"github.com/ishihaya/company-official-app-backend/interface/presentation/middleware"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ishihaya/company-official-app-backend/config"
 	"github.com/ishihaya/company-official-app-backend/di"
+	"github.com/ishihaya/company-official-app-backend/pkg/config"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
