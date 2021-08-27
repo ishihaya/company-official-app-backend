@@ -14,7 +14,7 @@ import (
 	"github.com/ishihaya/company-official-app-backend/application/usecase/mock_usecase"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
 	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
-	"github.com/ishihaya/company-official-app-backend/pkg/gincontext"
+	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
 	"github.com/ishihaya/company-official-app-backend/pkg/logging"
 	"golang.org/x/xerrors"
 )
@@ -96,7 +96,7 @@ func Test_userHandler_Get(t *testing.T) {
 			req := httptest.NewRequest(http.MethodGet, "/user", nil)
 			c.Request = req
 			if tt.authID != nil {
-				gincontext.SetAuthID(c, *tt.authID)
+				contextgo.SetAuthID(c, *tt.authID)
 			}
 
 			u.Get(c)
@@ -208,10 +208,10 @@ func Test_userHandler_Create(t *testing.T) {
 			}
 			c.Request = req
 			if tt.authID != nil {
-				gincontext.SetAuthID(c, *tt.authID)
+				contextgo.SetAuthID(c, *tt.authID)
 			}
 			if tt.currentTime != nil {
-				gincontext.SetMockTime(c, *tt.currentTime)
+				contextgo.SetMockTime(c, *tt.currentTime)
 			}
 
 			u.Create(c)

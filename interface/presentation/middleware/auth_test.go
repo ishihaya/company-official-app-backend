@@ -13,7 +13,7 @@ import (
 	"github.com/ishihaya/company-official-app-backend/application/usecase/mock_usecase"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
 	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
-	"github.com/ishihaya/company-official-app-backend/pkg/gincontext"
+	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
 	"github.com/ishihaya/company-official-app-backend/pkg/logging"
 	"golang.org/x/xerrors"
 )
@@ -93,7 +93,7 @@ func Test_authMiddleware_AuthAPI(t *testing.T) {
 
 			a.AuthAPI(c)
 
-			authID, err := gincontext.GetAuthID(c)
+			authID, err := contextgo.AuthID(c)
 			if err != nil && tt.wantAuthID == nil {
 				// エラーが出ることを期待する
 				got := rec.Body.String()

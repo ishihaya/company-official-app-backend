@@ -2,10 +2,10 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/ishihaya/company-official-app-backend/pkg/gincontext"
+	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
 )
 
 func CurrentTime(c *gin.Context) {
-	gincontext.SetNow(c)
+	contextgo.SetCurrentTime(c)
 	c.Next()
 }
