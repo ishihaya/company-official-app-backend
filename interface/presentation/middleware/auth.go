@@ -18,7 +18,7 @@ type AuthMiddleware interface {
 
 type authMiddleware struct {
 	authUsecase usecase.AuthUsecase
-	log logging.Log
+	log         logging.Log
 }
 
 func NewAuthMiddleware(
@@ -26,7 +26,7 @@ func NewAuthMiddleware(
 ) AuthMiddleware {
 	return &authMiddleware{
 		authUsecase: authUsecase,
-		log: logging.GetInstance(),
+		log:         logging.GetInstance(),
 	}
 }
 
