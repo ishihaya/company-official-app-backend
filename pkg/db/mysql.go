@@ -1,9 +1,7 @@
 package db
 
 import (
-
-	// to connect mysql db
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql" // to connect mysql db
 	"github.com/ishihaya/company-official-app-backend/pkg/env"
 	"github.com/jmoiron/sqlx"
 )
