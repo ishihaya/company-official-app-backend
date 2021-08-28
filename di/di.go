@@ -12,20 +12,20 @@ import (
 )
 
 func InitUser() handler.UserHandler {
-	conn := db.GetInstance()
+	conn := db.New()
 	repositoryUser := repository.NewUserRepository(conn)
 	operatorAppID := operator.NewAppIDOperator()
 	usecaseUser := usecase.NewUserUsecase(repositoryUser, operatorAppID)
-	logging := logging.GetInstance()
+	logging := logging.New()
 	handlerUser := handler.NewUserHandler(usecaseUser, logging)
 	return handlerUser
 }
 
 func InitAuth() middleware.AuthMiddleware {
-	client := authgo.GetInstance()
+	client := authgo.New()
 	operatorAuth := operator.NewAuthOperator(client)
 	usecaseAuth := usecase.NewAuthUsecase(operatorAuth)
-	logging := logging.GetInstance()
+	logging := logging.New()
 	middlewareAuth := middleware.NewAuthMiddleware(usecaseAuth, logging)
 	return middlewareAuth
 }

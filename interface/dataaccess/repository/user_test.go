@@ -15,7 +15,7 @@ import (
 
 func Test_userRepository_GetByAuthID(t *testing.T) {
 	mockTime := contextgo.MockTime(context.Background())
-	conn := db.GetInstance()
+	conn := db.New()
 	t.Cleanup(func() {
 		CleanUpRepositoryTest(t, conn, []string{"users"})
 	})
@@ -82,7 +82,7 @@ func Test_userRepository_GetByAuthID(t *testing.T) {
 
 func Test_userRepository_Store(t *testing.T) {
 	mockTime := contextgo.MockTime(context.Background())
-	conn := db.GetInstance()
+	conn := db.New()
 	t.Cleanup(func() {
 		CleanUpRepositoryTest(t, conn, []string{"users"})
 	})

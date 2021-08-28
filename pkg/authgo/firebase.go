@@ -16,7 +16,7 @@ type Client struct {
 var sharedInstance *Client
 var once sync.Once
 
-func GetInstance() *Client {
+func New() *Client {
 	once.Do(func() {
 		sharedInstance = newInstance()
 	})

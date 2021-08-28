@@ -78,7 +78,7 @@ func Test_authMiddleware_AuthAPI(t *testing.T) {
 			defer ctrl.Finish()
 			mockUsecase := mock_usecase.NewMockAuthUsecase(ctrl)
 			tt.fields.authUsecaseFn(mockUsecase)
-			a := NewAuthMiddleware(mockUsecase, logging.GetInstance())
+			a := NewAuthMiddleware(mockUsecase, logging.New())
 
 			req := httptest.NewRequest(http.MethodGet, "/", nil)
 			if tt.token != nil {

@@ -1,7 +1,6 @@
 package db
 
 import (
-	"sync"
 
 	// to connect mysql db
 	_ "github.com/go-sql-driver/mysql"
@@ -13,17 +12,7 @@ type Conn struct {
 	*sqlx.DB
 }
 
-var sharedInstance *Conn
-var once sync.Once
-
-func GetInstance() *Conn {
-	once.Do(func() {
-		sharedInstance = newInstance()
-	})
-	return sharedInstance
-}
-
-func newInstance() *Conn {
+func New() *Conn {
 	dsn := env.DSN()
 	db, err := sqlx.Connect("mysql", dsn)
 	if err != nil {
