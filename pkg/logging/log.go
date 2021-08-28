@@ -29,7 +29,7 @@ var sharedInstance Log
 var once sync.Once
 
 // You should call this if you use logger.
-func New() Log {
+func GetInstance() Log {
 	once.Do(func() {
 		sharedInstance = newInstance()
 	})
