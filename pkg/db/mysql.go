@@ -1,11 +1,8 @@
 package db
 
 import (
-	"log"
-
-	// to connect mysql db
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/ishihaya/company-official-app-backend/config"
+	_ "github.com/go-sql-driver/mysql" // to connect mysql db
+	"github.com/ishihaya/company-official-app-backend/pkg/env"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -14,10 +11,10 @@ type Conn struct {
 }
 
 func New() *Conn {
-	dsn := config.DSN()
+	dsn := env.DSN()
 	db, err := sqlx.Connect("mysql", dsn)
 	if err != nil {
-		log.Fatalf("failed to connect to database: %+v", err)
+		panic(err)
 	}
 	conn := &Conn{db}
 	return conn

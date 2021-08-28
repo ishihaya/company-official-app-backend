@@ -1,11 +1,14 @@
 package middleware
 
 import (
-	"github.com/gin-gonic/gin"
+	"net/http"
+
 	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
 )
 
-func CurrentTime(c *gin.Context) {
-	contextgo.SetNow(c)
-	c.Next()
+func CurrentTime(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		contextgo.SetCurrentTime(r.Context())
+		next.ServeHTTP(w, r)
+	})
 }

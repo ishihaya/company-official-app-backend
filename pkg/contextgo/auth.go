@@ -1,22 +1,20 @@
 package contextgo
 
 import (
-	"github.com/gin-gonic/gin"
+	"context"
+
 	"golang.org/x/xerrors"
 )
 
-const authIDKey = "authID"
+var authIDKey = "authID"
 
-// SetAuthID - AuthIDをcontextにセット
-func SetAuthID(c *gin.Context, authID string) {
-	c.Set(authIDKey, authID)
+func AuthID(ctx context.Context) (string, error) {
+	if authID := ctx.Value(&authIDKey); authID != nil {
+		return authID.(string), nil
+	}
+	return "", xerrors.New("authID not set")
 }
 
-// GetAuthID - contextからAuthIDを取得
-func GetAuthID(c *gin.Context) (string, error) {
-	authID, isExist := c.Get(authIDKey)
-	if !isExist {
-		return "", xerrors.New("authID not set")
-	}
-	return authID.(string), nil
+func SetAuthID(ctx context.Context, authID string) context.Context {
+	return context.WithValue(ctx, &authIDKey, authID)
 }

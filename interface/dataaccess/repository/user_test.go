@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"testing"
 	"time"
 
@@ -13,10 +14,7 @@ import (
 )
 
 func Test_userRepository_GetByAuthID(t *testing.T) {
-	mockTime, err := contextgo.GetMockNow()
-	if err != nil {
-		t.Fatal(err)
-	}
+	mockTime := contextgo.MockTime(context.Background())
 	conn := db.New()
 	t.Cleanup(func() {
 		CleanUpRepositoryTest(t, conn, []string{"users"})
@@ -67,6 +65,7 @@ func Test_userRepository_GetByAuthID(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			tt := tt
 			u := NewUserRepository(conn)
 
 			got, err := u.FindByAuthID(tt.args.authID)
@@ -82,10 +81,7 @@ func Test_userRepository_GetByAuthID(t *testing.T) {
 }
 
 func Test_userRepository_Store(t *testing.T) {
-	mockTime, err := contextgo.GetMockNow()
-	if err != nil {
-		t.Fatal(err)
-	}
+	mockTime := contextgo.MockTime(context.Background())
 	conn := db.New()
 	t.Cleanup(func() {
 		CleanUpRepositoryTest(t, conn, []string{"users"})

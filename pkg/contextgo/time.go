@@ -1,40 +1,32 @@
 package contextgo
 
 import (
-	"net/http/httptest"
+	"context"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"golang.org/x/xerrors"
 )
 
-const currentTimeKey = "currentTime"
+var currentTimeKey = "currentTime"
 
-func Now(c *gin.Context) (time.Time, error) {
-	now, isExist := c.Get(currentTimeKey)
-	if !isExist {
-		return time.Time{}, xerrors.New("authID not set")
+func CurrentTime(ctx context.Context) (time.Time, error) {
+	if currentTime := ctx.Value(&currentTimeKey); currentTime != nil {
+		return currentTime.(time.Time), nil
 	}
-	return now.(time.Time), nil
+	return time.Time{}, xerrors.New("currentTime not set")
 }
 
-func SetNow(c *gin.Context) {
-	c.Set(currentTimeKey, time.Now().UTC())
+func SetCurrentTime(ctx context.Context) context.Context {
+	return context.WithValue(ctx, &currentTimeKey, time.Now().UTC())
 }
 
-// テスト用にmockしたいtime.Timeをcontext.Valueに格納する関数
-func SetMockTime(c *gin.Context, mockTime time.Time) {
-	c.Set(currentTimeKey, mockTime)
+// SetMockTime - テスト用にmockしたいtime.Timeをcontext.Valueに格納する関数
+func SetMockTime(ctx context.Context, mockTime time.Time) context.Context {
+	return context.WithValue(ctx, &currentTimeKey, mockTime)
 }
 
-// テストで同時刻を扱いたい時にcontext.Valueに現在時刻を格納して取得する関数
-func GetMockNow() (time.Time, error) {
-	gin.SetMode(gin.ReleaseMode)
-	timeContext, _ := gin.CreateTestContext(httptest.NewRecorder())
-	SetNow(timeContext)
-	mockTime, err := Now(timeContext)
-	if err != nil {
-		return time.Time{}, err
-	}
-	return mockTime, nil
+// MockTime - テスト用に現在時刻をcontextに格納してそのまま取得する
+func MockTime(ctx context.Context) time.Time {
+	ctx = SetCurrentTime(ctx)
+	return ctx.Value(&currentTimeKey).(time.Time)
 }

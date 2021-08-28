@@ -1,4 +1,4 @@
-include ./config/.env
+include .env
 export
 
 .PHONY: up
@@ -27,7 +27,7 @@ fmt-terraform:
 
 .PHONY: generate-swagger
 generate-swagger:
-	swag init -o ./docs/swagger
+	swag init -o ./pkg/swagger
 
 # https://github.com/oklog/ulid#commandline-tool
 .PHONY: generate-ulid
