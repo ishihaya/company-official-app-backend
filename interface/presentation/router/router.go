@@ -37,13 +37,15 @@ func (r *Router) Routes() {
 	authMiddleware := di.InitAuth()
 	userHandler := di.InitUser()
 
-	r.Use(authMiddleware.AuthAPI)
-	r.Use(middleware.CurrentTime)
-
-	r.Route("/user", func(r chi.Router) {
-		r.Get("/", userHandler.Get)
-		r.Post("/", userHandler.Create)
+	r.Group(func(r chi.Router) {
+		r.Use(authMiddleware.AuthAPI)
+		r.Use(middleware.CurrentTime)
+		r.Route("/user", func(r chi.Router) {
+			r.Get("/", userHandler.Get)
+			r.Post("/", userHandler.Create)
+		})
 	})
+
 }
 
 func (r *Router) RunServer(port int) {

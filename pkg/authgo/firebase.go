@@ -3,7 +3,6 @@ package authgo
 import (
 	"context"
 
-	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/auth"
 	"golang.org/x/xerrors"
 )
@@ -13,16 +12,18 @@ type Client struct {
 }
 
 func New() *Client {
-	ctx := context.Background()
-	app, err := firebase.NewApp(ctx, nil)
-	if err != nil {
-		panic(err)
-	}
-	firebaseCli, err := app.Auth(ctx)
-	if err != nil {
-		panic(err)
-	}
-	cli := &Client{firebaseCli}
+	// TODO
+	// ctx := context.Background()
+	// app, err := firebase.NewApp(ctx, nil)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// firebaseCli, err := app.Auth(ctx)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// cli := &Client{firebaseCli}
+	cli := &Client{}
 	return cli
 }
 
