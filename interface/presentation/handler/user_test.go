@@ -14,7 +14,6 @@ import (
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
 	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
 	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
-	"github.com/ishihaya/company-official-app-backend/pkg/logging"
 	"golang.org/x/xerrors"
 )
 
@@ -87,7 +86,7 @@ func Test_userHandler_Get(t *testing.T) {
 			defer ctrl.Finish()
 			mockUsecase := mock_usecase.NewMockUserUsecase(ctrl)
 			tt.fields.userUsecaseFn(mockUsecase)
-			u := NewUserHandler(mockUsecase, logging.GetInstance())
+			u := NewUserHandler(mockUsecase)
 
 			res := httptest.NewRecorder()
 			req := httptest.NewRequest(http.MethodGet, "/user", nil)
@@ -193,7 +192,7 @@ func Test_userHandler_Create(t *testing.T) {
 			defer ctrl.Finish()
 			mockUsecase := mock_usecase.NewMockUserUsecase(ctrl)
 			tt.fields.userUsecaseFn(mockUsecase)
-			u := NewUserHandler(mockUsecase, logging.GetInstance())
+			u := NewUserHandler(mockUsecase)
 
 			res := httptest.NewRecorder()
 			var req *http.Request

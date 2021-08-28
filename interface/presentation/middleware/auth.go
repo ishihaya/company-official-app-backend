@@ -18,16 +18,15 @@ type AuthMiddleware interface {
 
 type authMiddleware struct {
 	authUsecase usecase.AuthUsecase
-	logging     logging.Log
+	log logging.Log
 }
 
 func NewAuthMiddleware(
 	authUsecase usecase.AuthUsecase,
-	logging logging.Log,
 ) AuthMiddleware {
 	return &authMiddleware{
 		authUsecase: authUsecase,
-		logging:     logging,
+		log: logging.GetInstance(),
 	}
 }
 
@@ -42,7 +41,7 @@ func (a *authMiddleware) AuthAPI(next http.Handler) http.Handler {
 		ctx := r.Context()
 		auth, err := a.authUsecase.Get(ctx, idToken)
 		if err != nil {
-			a.logging.Errorf("failed to get auth: %+v", err)
+			a.log.Errorf("failed to get auth: %+v", err)
 			factory.JSON(w, http.StatusInternalServerError, apperror.ErrInternalServerError.Error())
 			return
 		}

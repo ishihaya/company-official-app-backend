@@ -21,16 +21,15 @@ type UserHandler interface {
 
 type userHandler struct {
 	userUsecase usecase.UserUsecase
-	logging     logging.Log
+	log         logging.Log
 }
 
 func NewUserHandler(
 	userUsecase usecase.UserUsecase,
-	logging logging.Log,
 ) UserHandler {
 	return &userHandler{
 		userUsecase: userUsecase,
-		logging:     logging,
+		log:         logging.GetInstance(),
 	}
 }
 
@@ -50,14 +49,14 @@ func (u *userHandler) Get(w http.ResponseWriter, r *http.Request) {
 	var err error
 	req.AuthID, err = contextgo.AuthID(ctx)
 	if err != nil {
-		u.logging.Warnf(": %+v", err)
+		u.log.Warnf(": %+v", err)
 		factory.JSON(w, http.StatusBadRequest, apperror.ErrGetAuthID.Error())
 		return
 	}
 
 	user, err := u.userUsecase.Get(req.AuthID)
 	if err != nil {
-		u.logging.Warnf("failed to get user: %+v", err)
+		u.log.Warnf("failed to get user: %+v", err)
 		if xerrors.Is(err, apperror.ErrUserNotFound) {
 			factory.JSON(w, http.StatusNotFound, apperror.ErrUserNotFound.Error())
 			return
@@ -91,19 +90,19 @@ func (u *userHandler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 	req.CurrentTime, err = contextgo.CurrentTime(ctx)
 	if err != nil {
-		u.logging.Warnf("failed to get current time: %+v", err)
+		u.log.Warnf("failed to get current time: %+v", err)
 		factory.JSON(w, http.StatusBadRequest, apperror.ErrGetTime.Error())
 		return
 	}
 	req.AuthID, err = contextgo.AuthID(ctx)
 	if err != nil {
-		u.logging.Warnf("failed to get auth id: %+v", err)
+		u.log.Warnf("failed to get auth id: %+v", err)
 		factory.JSON(w, http.StatusBadRequest, apperror.ErrGetAuthID.Error())
 		return
 	}
 
 	if err = u.userUsecase.Create(req.AuthID, req.NickName, req.CurrentTime); err != nil {
-		u.logging.Errorf("failed to get user: %+v", err)
+		u.log.Errorf("failed to get user: %+v", err)
 		factory.JSON(w, http.StatusInternalServerError, apperror.ErrInternalServerError.Error())
 		return
 	}

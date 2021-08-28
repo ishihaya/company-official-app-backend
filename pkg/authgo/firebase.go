@@ -2,7 +2,6 @@ package authgo
 
 import (
 	"context"
-	"sync"
 
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/auth"
@@ -13,17 +12,7 @@ type Client struct {
 	*auth.Client
 }
 
-var sharedInstance *Client
-var once sync.Once
-
 func New() *Client {
-	once.Do(func() {
-		sharedInstance = newInstance()
-	})
-	return sharedInstance
-}
-
-func newInstance() *Client {
 	ctx := context.Background()
 	app, err := firebase.NewApp(ctx, nil)
 	if err != nil {
