@@ -1,21 +1,22 @@
 package handler
 
 import (
+	"encoding/json"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"github.com/ishihaya/company-official-app-backend/application/usecase"
 	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
 	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/request"
 	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/response"
 	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
+	"github.com/ishihaya/company-official-app-backend/pkg/factory"
 	"github.com/ishihaya/company-official-app-backend/pkg/logging"
 	"golang.org/x/xerrors"
 )
 
 type UserHandler interface {
-	Get(c *gin.Context)
-	Create(c *gin.Context)
+	Get(w http.ResponseWriter, r *http.Request)
+	Create(w http.ResponseWriter, r *http.Request)
 }
 
 type userHandler struct {
@@ -43,34 +44,31 @@ func NewUserHandler(
 // @Failure 404 {object} string "Something wrong"
 // @Failure 500 {object} string "Something wrong"
 // @Router /user [get]
-func (u *userHandler) Get(c *gin.Context) {
-	// request
+func (u *userHandler) Get(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
 	req := new(request.UserGet)
 	var err error
-	req.AuthID, err = contextgo.AuthID(c)
+	req.AuthID, err = contextgo.AuthID(ctx)
 	if err != nil {
 		u.logging.Warnf(": %+v", err)
-		c.JSON(http.StatusBadRequest, apperror.ErrGetAuthID.Error())
+		factory.JSON(w, http.StatusBadRequest, apperror.ErrGetAuthID.Error())
 		return
 	}
 
-	// usecase
 	user, err := u.userUsecase.Get(req.AuthID)
 	if err != nil {
 		u.logging.Warnf("failed to get user: %+v", err)
 		if xerrors.Is(err, apperror.ErrUserNotFound) {
-			c.JSON(http.StatusNotFound, apperror.ErrUserNotFound.Error())
+			factory.JSON(w, http.StatusNotFound, apperror.ErrUserNotFound.Error())
 			return
 		}
-		c.JSON(http.StatusInternalServerError, apperror.ErrInternalServerError.Error())
+		factory.JSON(w, http.StatusInternalServerError, apperror.ErrInternalServerError.Error())
 		return
 	}
-
-	// response
 	res := &response.UserGet{
 		User: response.NewUser(user),
 	}
-	c.JSON(http.StatusOK, res)
+	factory.JSON(w, http.StatusOK, res)
 }
 
 // Create
@@ -82,32 +80,33 @@ func (u *userHandler) Get(c *gin.Context) {
 // @Success 204
 // @Failure 500 {object} string "Something wrong"
 // @Router /user [post]
-func (u *userHandler) Create(c *gin.Context) {
+func (u *userHandler) Create(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
 	req := new(request.UserCreate)
 	var err error
-	if err = c.ShouldBindJSON(req); err != nil {
-		u.logging.Warnf("request not valid: %+v", err)
-		c.JSON(http.StatusBadRequest, apperror.ErrValidation.Error())
-		return
+	// TODO validate
+	err = json.NewDecoder(r.Body).Decode(req)
+	if err != nil {
+		panic(err)
 	}
-	req.CurrentTime, err = contextgo.CurrentTime(c)
+	req.CurrentTime, err = contextgo.CurrentTime(ctx)
 	if err != nil {
 		u.logging.Warnf("failed to get current time: %+v", err)
-		c.JSON(http.StatusBadRequest, apperror.ErrGetTime.Error())
+		factory.JSON(w, http.StatusBadRequest, apperror.ErrGetTime.Error())
 		return
 	}
-	req.AuthID, err = contextgo.AuthID(c)
+	req.AuthID, err = contextgo.AuthID(ctx)
 	if err != nil {
 		u.logging.Warnf("failed to get auth id: %+v", err)
-		c.JSON(http.StatusBadRequest, apperror.ErrGetAuthID.Error())
+		factory.JSON(w, http.StatusBadRequest, apperror.ErrGetAuthID.Error())
 		return
 	}
 
 	if err = u.userUsecase.Create(req.AuthID, req.NickName, req.CurrentTime); err != nil {
 		u.logging.Errorf("failed to get user: %+v", err)
-		c.JSON(http.StatusInternalServerError, apperror.ErrInternalServerError.Error())
+		factory.JSON(w, http.StatusInternalServerError, apperror.ErrInternalServerError.Error())
 		return
 	}
 
-	c.JSON(http.StatusNoContent, nil)
+	factory.JSON(w, http.StatusNoContent, nil)
 }

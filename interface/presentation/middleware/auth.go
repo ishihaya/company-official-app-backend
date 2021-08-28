@@ -1,18 +1,19 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
+	"strings"
 
-	"github.com/gin-gonic/gin"
 	"github.com/ishihaya/company-official-app-backend/application/usecase"
 	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
-	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/request"
 	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
+	"github.com/ishihaya/company-official-app-backend/pkg/factory"
 	"github.com/ishihaya/company-official-app-backend/pkg/logging"
 )
 
 type AuthMiddleware interface {
-	AuthAPI(c *gin.Context)
+	AuthAPI(next http.Handler) http.Handler
 }
 
 type authMiddleware struct {
@@ -31,26 +32,21 @@ func NewAuthMiddleware(
 }
 
 // AuthAPI - 認証API
-func (a *authMiddleware) AuthAPI(c *gin.Context) {
-	req := &request.AuthAPI{
-		IDToken: c.Request.Header.Get("Authorization"),
-	}
-	// NOTE: 手動でバリデーション
-	if req.IDToken == "" {
-		a.logging.Warnf("idToken not set")
-		c.JSON(http.StatusBadRequest, apperror.ErrValidation.Error())
-		return
-	}
-	ctx := c.Request.Context()
-
-	auth, err := a.authUsecase.Get(ctx, req.IDToken)
-	if err != nil {
-		a.logging.Errorf("failed to get auth: %+v", err)
-		c.AbortWithStatusJSON(http.StatusInternalServerError, apperror.ErrInternalServerError.Error())
-		return
-	}
-
-	c.Request = c.Request.WithContext(contextgo.SetAuthID(ctx, auth.ID))
-
-	c.Next()
+func (a *authMiddleware) AuthAPI(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authHeader := r.Header.Get("Authorization")
+		// TODO validate
+		typ := "Bearer"
+		typPrefix := fmt.Sprintf("%s ", typ)
+		idToken := strings.Replace(authHeader, typPrefix, "", 1)
+		ctx := r.Context()
+		auth, err := a.authUsecase.Get(ctx, idToken)
+		if err != nil {
+			a.logging.Errorf("failed to get auth: %+v", err)
+			factory.JSON(w, http.StatusInternalServerError, apperror.ErrInternalServerError.Error())
+			return
+		}
+		r = r.WithContext(contextgo.SetAuthID(ctx, auth.ID))
+		next.ServeHTTP(w, r)
+	})
 }
