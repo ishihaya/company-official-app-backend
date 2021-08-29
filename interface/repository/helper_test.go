@@ -7,7 +7,7 @@ import (
 	"github.com/ishihaya/company-official-app-backend/pkg/db"
 )
 
-func CleanUpRepositoryTest(tb testing.TB, conn *db.Conn, tables []string) {
+func cleanUpRepositoryTest(tb testing.TB, conn *db.Conn, tables []string) {
 	tb.Helper()
 	conn.MustExec("SET FOREIGN_KEY_CHECKS = 0")
 	for _, table := range tables {

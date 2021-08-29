@@ -2,10 +2,10 @@ package di
 
 import (
 	"github.com/ishihaya/company-official-app-backend/application/usecase"
-	"github.com/ishihaya/company-official-app-backend/interface/dataaccess/repository"
 	"github.com/ishihaya/company-official-app-backend/interface/operator"
 	"github.com/ishihaya/company-official-app-backend/interface/presentation/handler"
 	"github.com/ishihaya/company-official-app-backend/interface/presentation/middleware"
+	"github.com/ishihaya/company-official-app-backend/interface/repository"
 	"github.com/ishihaya/company-official-app-backend/pkg/authgo"
 	"github.com/ishihaya/company-official-app-backend/pkg/db"
 )
