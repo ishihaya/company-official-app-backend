@@ -79,20 +79,20 @@ var doc = `{
                 "summary": "認証情報とリクエスト情報からユーザーを作成する",
                 "parameters": [
                     {
-                        "description": "nick name",
-                        "name": "nickName",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "type": "string",
                         "description": "Authentiation header",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "description": "request body",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.UserCreate"
+                        }
                     }
                 ],
                 "responses": {
@@ -110,10 +110,21 @@ var doc = `{
         }
     },
     "definitions": {
+        "request.UserCreate": {
+            "type": "object",
+            "required": [
+                "nickname"
+            ],
+            "properties": {
+                "nickname": {
+                    "type": "string"
+                }
+            }
+        },
         "response.UserGet": {
             "type": "object",
             "properties": {
-                "nickName": {
+                "nickname": {
                     "type": "string"
                 }
             }

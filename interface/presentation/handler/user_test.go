@@ -38,14 +38,14 @@ func Test_userHandler_Get(t *testing.T) {
 					mock.EXPECT().Get("auth_id").Return(&entity.User{
 						ID:        "id",
 						AuthID:    "auth_id",
-						NickName:  "nick_name",
+						Nickname:  "nick_name",
 						CreatedAt: time.Time{},
 						UpdatedAt: time.Time{},
 					}, nil)
 				},
 			},
 			authID:         &authID1,
-			want:           "{\"nickName\":\"nick_name\"}\n",
+			want:           "{\"nickname\":\"nick_name\"}\n",
 			wantStatusCode: http.StatusOK,
 		},
 		{
@@ -113,7 +113,7 @@ func Test_userHandler_Get(t *testing.T) {
 }
 
 func Test_userHandler_Create(t *testing.T) {
-	requestBody1 := `{"nickName":"nick_name"}`
+	requestBody1 := `{"nickname":"nick_name"}`
 	authID1 := "auth_id"
 	ct1 := time.Now().UTC()
 

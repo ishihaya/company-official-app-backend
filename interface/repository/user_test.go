@@ -17,7 +17,7 @@ func Test_userRepository_GetByAuthID(t *testing.T) {
 	mockTime := contextgo.MockTime(context.Background())
 	conn := db.New()
 	t.Cleanup(func() {
-		CleanUpRepositoryTest(t, conn, []string{"users"})
+		cleanUpRepositoryTest(t, conn, []string{"users"})
 	})
 
 	dummyUser := map[string]interface{}{
@@ -48,7 +48,7 @@ func Test_userRepository_GetByAuthID(t *testing.T) {
 			want: &entity.User{
 				ID:        "id",
 				AuthID:    "auth_id",
-				NickName:  "nick_name",
+				Nickname:  "nick_name",
 				CreatedAt: mockTime.Round(time.Microsecond),
 				UpdatedAt: mockTime.Round(time.Microsecond),
 			},
@@ -84,7 +84,7 @@ func Test_userRepository_Store(t *testing.T) {
 	mockTime := contextgo.MockTime(context.Background())
 	conn := db.New()
 	t.Cleanup(func() {
-		CleanUpRepositoryTest(t, conn, []string{"users"})
+		cleanUpRepositoryTest(t, conn, []string{"users"})
 	})
 
 	type args struct {
@@ -101,7 +101,7 @@ func Test_userRepository_Store(t *testing.T) {
 				user: &entity.User{
 					ID:        "id",
 					AuthID:    "auth_id",
-					NickName:  "nick_name",
+					Nickname:  "nick_name",
 					CreatedAt: mockTime,
 					UpdatedAt: mockTime,
 				},

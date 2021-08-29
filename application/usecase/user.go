@@ -11,7 +11,7 @@ import (
 
 type UserUsecase interface {
 	Get(authID string) (*entity.User, error)
-	Create(authID, nickName string, currentTime time.Time) error
+	Create(authID, nickname string, currentTime time.Time) error
 }
 
 type userUsecase struct {
@@ -37,7 +37,7 @@ func (u *userUsecase) Get(authID string) (*entity.User, error) {
 	return user, nil
 }
 
-func (u *userUsecase) Create(authID, nickName string, currentTime time.Time) error {
+func (u *userUsecase) Create(authID, nickname string, currentTime time.Time) error {
 	id, err := u.appIDOperator.Generate(currentTime)
 	if err != nil {
 		return xerrors.Errorf(": %w", err)
@@ -45,7 +45,7 @@ func (u *userUsecase) Create(authID, nickName string, currentTime time.Time) err
 	user := &entity.User{
 		ID:        id,
 		AuthID:    authID,
-		NickName:  nickName,
+		Nickname:  nickname,
 		CreatedAt: currentTime,
 		UpdatedAt: currentTime,
 	}

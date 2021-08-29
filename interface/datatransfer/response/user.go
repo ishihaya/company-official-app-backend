@@ -3,12 +3,12 @@ package response
 import "github.com/ishihaya/company-official-app-backend/domain/entity"
 
 type User struct {
-	NickName string `json:"nickName"`
+	Nickname string `json:"nickname"`
 }
 
 func NewUser(ent *entity.User) *User {
 	return &User{
-		NickName: ent.NickName,
+		Nickname: ent.Nickname,
 	}
 }
 

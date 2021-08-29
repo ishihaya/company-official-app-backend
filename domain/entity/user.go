@@ -6,7 +6,7 @@ import "time"
 type User struct {
 	ID        AppID     // 識別子
 	AuthID    string    // 認証のID
-	NickName  string    // ニックネーム
+	Nickname  string    // ニックネーム
 	CreatedAt time.Time // 作成日時
 	UpdatedAt time.Time // 更新日時
 }

@@ -1,7 +1,14 @@
 definitions:
+  request.UserCreate:
+    properties:
+      nickname:
+        type: string
+    required:
+    - nickname
+    type: object
   response.UserGet:
     properties:
-      nickName:
+      nickname:
         type: string
     type: object
 info:
@@ -41,17 +48,17 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: nick name
-        in: body
-        name: nickName
-        required: true
-        schema:
-          type: string
       - description: Authentiation header
         in: header
         name: Authorization
         required: true
         type: string
+      - description: request body
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserCreate'
       produces:
       - application/json
       responses:

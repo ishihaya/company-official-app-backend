@@ -74,8 +74,8 @@ func (u *userHandler) Get(w http.ResponseWriter, r *http.Request) {
 // @Summary 認証情報とリクエスト情報からユーザーを作成する
 // @Accept  json
 // @Produce  json
-// @Param nickName body string true "nick name"
 // @Param Authorization header string true "Authentiation header"
+// @Param data body request.UserCreate true "request body"
 // @Success 204
 // @Failure 500 {object} string "Something wrong"
 // @Router /user [post]
@@ -101,7 +101,7 @@ func (u *userHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err = u.userUsecase.Create(req.AuthID, req.NickName, req.CurrentTime); err != nil {
+	if err = u.userUsecase.Create(req.AuthID, req.Nickname, req.CurrentTime); err != nil {
 		u.log.Errorf("failed to get user: %+v", err)
 		factory.JSON(w, http.StatusInternalServerError, apperror.ErrInternalServerError.Error())
 		return
