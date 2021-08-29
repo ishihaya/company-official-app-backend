@@ -2,21 +2,21 @@ package di
 
 import (
 	"github.com/ishihaya/company-official-app-backend/application/usecase"
+	"github.com/ishihaya/company-official-app-backend/interface/controller"
+	"github.com/ishihaya/company-official-app-backend/interface/middleware"
 	"github.com/ishihaya/company-official-app-backend/interface/operator"
-	"github.com/ishihaya/company-official-app-backend/interface/presentation/handler"
-	"github.com/ishihaya/company-official-app-backend/interface/presentation/middleware"
 	"github.com/ishihaya/company-official-app-backend/interface/repository"
 	"github.com/ishihaya/company-official-app-backend/pkg/authgo"
 	"github.com/ishihaya/company-official-app-backend/pkg/db"
 )
 
-func InitUser() handler.UserHandler {
+func InitUser() controller.UserController {
 	conn := db.New()
 	repositoryUser := repository.NewUserRepository(conn)
 	operatorAppID := operator.NewAppIDOperator()
 	usecaseUser := usecase.NewUserUsecase(repositoryUser, operatorAppID)
-	handlerUser := handler.NewUserHandler(usecaseUser)
-	return handlerUser
+	controllerUser := controller.NewUserController(usecaseUser)
+	return controllerUser
 }
 
 func InitAuth() middleware.AuthMiddleware {

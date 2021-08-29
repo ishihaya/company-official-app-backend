@@ -1,4 +1,4 @@
-package handler
+package controller
 
 import (
 	"encoding/json"
@@ -6,28 +6,28 @@ import (
 
 	"github.com/ishihaya/company-official-app-backend/application/usecase"
 	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
-	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/request"
-	"github.com/ishihaya/company-official-app-backend/interface/datatransfer/response"
+	"github.com/ishihaya/company-official-app-backend/interface/controller/request"
+	"github.com/ishihaya/company-official-app-backend/interface/controller/response"
 	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
 	"github.com/ishihaya/company-official-app-backend/pkg/factory"
 	"github.com/ishihaya/company-official-app-backend/pkg/logging"
 	"golang.org/x/xerrors"
 )
 
-type UserHandler interface {
+type UserController interface {
 	Get(w http.ResponseWriter, r *http.Request)
 	Create(w http.ResponseWriter, r *http.Request)
 }
 
-type userHandler struct {
+type userController struct {
 	userUsecase usecase.UserUsecase
 	log         logging.Log
 }
 
-func NewUserHandler(
+func NewUserController(
 	userUsecase usecase.UserUsecase,
-) UserHandler {
-	return &userHandler{
+) UserController {
+	return &userController{
 		userUsecase: userUsecase,
 		log:         logging.GetInstance(),
 	}
@@ -43,7 +43,7 @@ func NewUserHandler(
 // @Failure 404 {object} string "Something wrong"
 // @Failure 500 {object} string "Something wrong"
 // @Router /user [get]
-func (u *userHandler) Get(w http.ResponseWriter, r *http.Request) {
+func (u *userController) Get(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := new(request.UserGet)
 	var err error
@@ -79,7 +79,7 @@ func (u *userHandler) Get(w http.ResponseWriter, r *http.Request) {
 // @Success 204
 // @Failure 500 {object} string "Something wrong"
 // @Router /user [post]
-func (u *userHandler) Create(w http.ResponseWriter, r *http.Request) {
+func (u *userController) Create(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := new(request.UserCreate)
 	var err error
