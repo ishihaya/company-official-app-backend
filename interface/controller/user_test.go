@@ -1,4 +1,4 @@
-package handler
+package controller
 
 import (
 	"fmt"
@@ -86,7 +86,7 @@ func Test_userHandler_Get(t *testing.T) {
 			defer ctrl.Finish()
 			mockUsecase := mock_usecase.NewMockUserUsecase(ctrl)
 			tt.fields.userUsecaseFn(mockUsecase)
-			u := NewUserHandler(mockUsecase)
+			u := NewUserController(mockUsecase)
 
 			res := httptest.NewRecorder()
 			req := httptest.NewRequest(http.MethodGet, "/user", nil)
@@ -192,7 +192,7 @@ func Test_userHandler_Create(t *testing.T) {
 			defer ctrl.Finish()
 			mockUsecase := mock_usecase.NewMockUserUsecase(ctrl)
 			tt.fields.userUsecaseFn(mockUsecase)
-			u := NewUserHandler(mockUsecase)
+			u := NewUserController(mockUsecase)
 
 			res := httptest.NewRecorder()
 			var req *http.Request

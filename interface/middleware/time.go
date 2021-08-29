@@ -8,7 +8,7 @@ import (
 
 func CurrentTime(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		contextgo.SetCurrentTime(r.Context())
+		r = r.WithContext(contextgo.SetCurrentTime(r.Context()))
 		next.ServeHTTP(w, r)
 	})
 }

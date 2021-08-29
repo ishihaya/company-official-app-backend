@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/ishihaya/company-official-app-backend/interface/presentation/router"
+	"github.com/ishihaya/company-official-app-backend/interface/router"
 	"github.com/ishihaya/company-official-app-backend/pkg/env"
 )
 

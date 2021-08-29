@@ -30,6 +30,10 @@ func NewAuthMiddleware(
 	}
 }
 
+// type authAPIRequest struct {
+// 	IDToken string `json:"-"`
+// }
+
 // AuthAPI - 認証API
 func (a *authMiddleware) AuthAPI(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
