@@ -24,7 +24,7 @@ func NewUserRepository(conn *db.Conn) repository.UserRepository {
 type daoUser struct {
 	ID        entity.AppID `db:"id"`
 	AuthID    string       `db:"auth_id"`
-	NickName  string       `db:"nick_name"`
+	Nickname  string       `db:"nick_name"`
 	CreatedAt time.Time    `db:"created_at"`
 	UpdatedAt time.Time    `db:"updated_at"`
 }
@@ -33,7 +33,7 @@ func (du *daoUser) convertUserDAOToEntity() *entity.User {
 	return &entity.User{
 		ID:        du.ID,
 		AuthID:    du.AuthID,
-		NickName:  du.NickName,
+		Nickname:  du.Nickname,
 		CreatedAt: du.CreatedAt,
 		UpdatedAt: du.UpdatedAt,
 	}
@@ -43,7 +43,7 @@ func convertUserEntityToDAO(ent *entity.User) *daoUser {
 	return &daoUser{
 		ID:        ent.ID,
 		AuthID:    ent.AuthID,
-		NickName:  ent.NickName,
+		Nickname:  ent.Nickname,
 		CreatedAt: ent.CreatedAt,
 		UpdatedAt: ent.UpdatedAt,
 	}

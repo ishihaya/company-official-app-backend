@@ -33,7 +33,7 @@ func Test_userUsecase_Get(t *testing.T) {
 					mock.EXPECT().FindByAuthID("auth_id").Return(&entity.User{
 						ID:        "id",
 						AuthID:    "auth_id",
-						NickName:  "nick_name",
+						Nickname:  "nick_name",
 						CreatedAt: time.Time{},
 						UpdatedAt: time.Time{},
 					}, nil)
@@ -45,7 +45,7 @@ func Test_userUsecase_Get(t *testing.T) {
 			want: &entity.User{
 				ID:        "id",
 				AuthID:    "auth_id",
-				NickName:  "nick_name",
+				Nickname:  "nick_name",
 				CreatedAt: time.Time{},
 				UpdatedAt: time.Time{},
 			},
@@ -81,7 +81,7 @@ func Test_userUsecase_Create(t *testing.T) {
 	}
 	type args struct {
 		authID      string
-		nickName    string
+		nickname    string
 		currentTime time.Time
 	}
 	tests := []struct {
@@ -97,7 +97,7 @@ func Test_userUsecase_Create(t *testing.T) {
 					mock.EXPECT().Store(&entity.User{
 						ID:        id,
 						AuthID:    "auth_id",
-						NickName:  "nick_name",
+						Nickname:  "nick_name",
 						CreatedAt: time.Time{},
 						UpdatedAt: time.Time{},
 					}).Return(nil)
@@ -108,7 +108,7 @@ func Test_userUsecase_Create(t *testing.T) {
 			},
 			args: args{
 				authID:      "auth_id",
-				nickName:    "nick_name",
+				nickname:    "nick_name",
 				currentTime: time.Time{},
 			},
 			wantErr: nil,
@@ -124,7 +124,7 @@ func Test_userUsecase_Create(t *testing.T) {
 			tt.fields.appIDOperatorFn(mockOperator)
 			u := NewUserUsecase(mockRepository, mockOperator)
 
-			err := u.Create(tt.args.authID, tt.args.nickName, tt.args.currentTime)
+			err := u.Create(tt.args.authID, tt.args.nickname, tt.args.currentTime)
 
 			if !xerrors.Is(err, tt.wantErr) {
 				t.Errorf("userUsecase.Create() error = %v, wantErr %v", err, tt.wantErr)

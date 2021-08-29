@@ -9,5 +9,5 @@ type UserGet struct {
 type UserCreate struct {
 	AuthID      string    `json:"-"`
 	CurrentTime time.Time `json:"-"`
-	NickName    string    `json:"nickName" binding:"required,max=20"`
+	Nickname    string    `json:"nickname" binding:"required,max=20"`
 }
