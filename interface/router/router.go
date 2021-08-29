@@ -35,14 +35,14 @@ func (r *Router) Swagger() {
 
 func (r *Router) Routes() {
 	authMiddleware := di.InitAuth()
-	userHandler := di.InitUser()
+	userController := di.InitUser()
 
 	r.Group(func(r chi.Router) {
 		r.Use(authMiddleware.AuthAPI)
 		r.Use(middleware.CurrentTime)
 		r.Route("/user", func(r chi.Router) {
-			r.Get("/", userHandler.Get)
-			r.Post("/", userHandler.Create)
+			r.Get("/", userController.Get)
+			r.Post("/", userController.Create)
 		})
 	})
 
