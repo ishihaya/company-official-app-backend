@@ -11,7 +11,7 @@ import (
 	"golang.org/x/xerrors"
 )
 
-func Test_authUsecase_Get(t *testing.T) {
+func Test_auth_usecase_Get(t *testing.T) {
 	ctx := context.Background()
 	type fields struct {
 		authOperatorFn func(mock *mock_operator.MockAuth)

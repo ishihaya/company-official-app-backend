@@ -17,7 +17,7 @@ import (
 	"golang.org/x/xerrors"
 )
 
-func Test_userHandler_Get(t *testing.T) {
+func Test_user_controller_Get(t *testing.T) {
 	authID1 := "auth_id"
 	authID3 := "not_found"
 	authID4 := "error_auth_id"
@@ -112,7 +112,7 @@ func Test_userHandler_Get(t *testing.T) {
 	}
 }
 
-func Test_userHandler_Create(t *testing.T) {
+func Test_user_controller_Create(t *testing.T) {
 	requestBody1 := `{"nickname":"nick_name"}`
 	authID1 := "auth_id"
 	ct1 := time.Now().UTC()

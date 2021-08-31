@@ -16,7 +16,7 @@ import (
 	"golang.org/x/xerrors"
 )
 
-func Test_authMiddleware_AuthAPI(t *testing.T) {
+func Test_auth_middleware_AuthAPI(t *testing.T) {
 	token1 := "Bearer token"
 	wantAuthID1 := "auth_id"
 	// wantResponseBody2 := fmt.Sprintf(`"%s"`, apperror.ErrValidation.Error())

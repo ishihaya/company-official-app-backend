@@ -12,7 +12,7 @@ import (
 	"golang.org/x/xerrors"
 )
 
-func Test_userUsecase_Get(t *testing.T) {
+func Test_user_usecase_Get(t *testing.T) {
 	type fields struct {
 		userRepositoryFn func(mock *mock_repository.MockUser)
 	}
@@ -73,7 +73,7 @@ func Test_userUsecase_Get(t *testing.T) {
 	}
 }
 
-func Test_userUsecase_Create(t *testing.T) {
+func Test_user_usecase_Create(t *testing.T) {
 	var id entity.AppID = "id"
 	type fields struct {
 		userRepositoryFn func(mock *mock_repository.MockUser)
