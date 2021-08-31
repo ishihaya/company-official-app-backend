@@ -11,12 +11,12 @@ import (
 	"golang.org/x/xerrors"
 )
 
-type userRepository struct {
+type user struct {
 	conn *db.Conn
 }
 
-func NewUserRepository(conn *db.Conn) repository.UserRepository {
-	return &userRepository{
+func NewUser(conn *db.Conn) repository.User {
+	return &user{
 		conn: conn,
 	}
 }
@@ -49,7 +49,7 @@ func convertUserEntityToDAO(ent *entity.User) *daoUser {
 	}
 }
 
-func (u *userRepository) FindByAuthID(authID string) (*entity.User, error) {
+func (u *user) FindByAuthID(authID string) (*entity.User, error) {
 	du := new(daoUser)
 	if err := u.conn.Get(du, "SELECT * FROM users WHERE auth_id = ?", authID); err != nil {
 		if xerrors.Is(err, sql.ErrNoRows) {
@@ -60,7 +60,7 @@ func (u *userRepository) FindByAuthID(authID string) (*entity.User, error) {
 	return du.convertUserDAOToEntity(), nil
 }
 
-func (u *userRepository) Store(user *entity.User) error {
+func (u *user) Store(user *entity.User) error {
 	du := convertUserEntityToDAO(user)
 	if _, err := u.conn.NamedExec("INSERT INTO users(id, auth_id, nick_name, created_at, updated_at) VALUES(:id, :auth_id, :nick_name, :created_at, :updated_at)", du); err != nil {
 		return xerrors.Errorf("failed to create user : %w", err)

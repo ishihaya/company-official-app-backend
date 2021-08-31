@@ -12,31 +12,31 @@ import (
 	entity "github.com/ishihaya/company-official-app-backend/domain/entity"
 )
 
-// MockUserUsecase is a mock of UserUsecase interface.
-type MockUserUsecase struct {
+// MockUser is a mock of User interface.
+type MockUser struct {
 	ctrl     *gomock.Controller
-	recorder *MockUserUsecaseMockRecorder
+	recorder *MockUserMockRecorder
 }
 
-// MockUserUsecaseMockRecorder is the mock recorder for MockUserUsecase.
-type MockUserUsecaseMockRecorder struct {
-	mock *MockUserUsecase
+// MockUserMockRecorder is the mock recorder for MockUser.
+type MockUserMockRecorder struct {
+	mock *MockUser
 }
 
-// NewMockUserUsecase creates a new mock instance.
-func NewMockUserUsecase(ctrl *gomock.Controller) *MockUserUsecase {
-	mock := &MockUserUsecase{ctrl: ctrl}
-	mock.recorder = &MockUserUsecaseMockRecorder{mock}
+// NewMockUser creates a new mock instance.
+func NewMockUser(ctrl *gomock.Controller) *MockUser {
+	mock := &MockUser{ctrl: ctrl}
+	mock.recorder = &MockUserMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockUserUsecase) EXPECT() *MockUserUsecaseMockRecorder {
+func (m *MockUser) EXPECT() *MockUserMockRecorder {
 	return m.recorder
 }
 
 // Create mocks base method.
-func (m *MockUserUsecase) Create(authID, nickname string, currentTime time.Time) error {
+func (m *MockUser) Create(authID, nickname string, currentTime time.Time) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", authID, nickname, currentTime)
 	ret0, _ := ret[0].(error)
@@ -44,13 +44,13 @@ func (m *MockUserUsecase) Create(authID, nickname string, currentTime time.Time)
 }
 
 // Create indicates an expected call of Create.
-func (mr *MockUserUsecaseMockRecorder) Create(authID, nickname, currentTime interface{}) *gomock.Call {
+func (mr *MockUserMockRecorder) Create(authID, nickname, currentTime interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockUserUsecase)(nil).Create), authID, nickname, currentTime)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockUser)(nil).Create), authID, nickname, currentTime)
 }
 
 // Get mocks base method.
-func (m *MockUserUsecase) Get(authID string) (*entity.User, error) {
+func (m *MockUser) Get(authID string) (*entity.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", authID)
 	ret0, _ := ret[0].(*entity.User)
@@ -59,7 +59,7 @@ func (m *MockUserUsecase) Get(authID string) (*entity.User, error) {
 }
 
 // Get indicates an expected call of Get.
-func (mr *MockUserUsecaseMockRecorder) Get(authID interface{}) *gomock.Call {
+func (mr *MockUserMockRecorder) Get(authID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockUserUsecase)(nil).Get), authID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockUser)(nil).Get), authID)
 }

@@ -8,21 +8,21 @@ import (
 	"golang.org/x/xerrors"
 )
 
-type AuthUsecase interface {
+type Auth interface {
 	Get(ctx context.Context, token string) (*entity.Auth, error)
 }
 
-type authUsecase struct {
-	authOperator operator.AuthOperator
+type auth struct {
+	authOperator operator.Auth
 }
 
-func NewAuthUsecase(authOperator operator.AuthOperator) AuthUsecase {
-	return &authUsecase{
+func NewAuth(authOperator operator.Auth) Auth {
+	return &auth{
 		authOperator: authOperator,
 	}
 }
 
-func (a *authUsecase) Get(ctx context.Context, token string) (*entity.Auth, error) {
+func (a *auth) Get(ctx context.Context, token string) (*entity.Auth, error) {
 	auth, err := a.authOperator.FindByToken(ctx, token)
 	if err != nil {
 		return nil, xerrors.Errorf(": %w", err)

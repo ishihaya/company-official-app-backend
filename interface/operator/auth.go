@@ -9,20 +9,18 @@ import (
 	"golang.org/x/xerrors"
 )
 
-// NOTE: operatorは複雑なロジックのみtestを導入する 現在は導入していないが柔軟に対応する
-
-type authOperator struct {
+type auth struct {
 	authClient *authgo.Client
 }
 
-func NewAuthOperator(authClient *authgo.Client) operator.AuthOperator {
-	return &authOperator{
+func NewAuth(authClient *authgo.Client) operator.Auth {
+	return &auth{
 		authClient: authClient,
 	}
 }
 
 // FindByToken - トークンから認証情報を見つける
-func (a *authOperator) FindByToken(ctx context.Context, token string) (*entity.Auth, error) {
+func (a *auth) FindByToken(ctx context.Context, token string) (*entity.Auth, error) {
 	authToken, err := a.authClient.Verify(ctx, token)
 	if err != nil {
 		return nil, xerrors.Errorf(": %w", err)

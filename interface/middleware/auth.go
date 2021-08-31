@@ -12,19 +12,19 @@ import (
 	"github.com/ishihaya/company-official-app-backend/pkg/logging"
 )
 
-type AuthMiddleware interface {
+type Auth interface {
 	AuthAPI(next http.Handler) http.Handler
 }
 
-type authMiddleware struct {
-	authUsecase usecase.AuthUsecase
+type auth struct {
+	authUsecase usecase.Auth
 	log         logging.Log
 }
 
-func NewAuthMiddleware(
-	authUsecase usecase.AuthUsecase,
-) AuthMiddleware {
-	return &authMiddleware{
+func NewAuth(
+	authUsecase usecase.Auth,
+) Auth {
+	return &auth{
 		authUsecase: authUsecase,
 		log:         logging.GetInstance(),
 	}
@@ -35,7 +35,7 @@ func NewAuthMiddleware(
 // }
 
 // AuthAPI - 認証API
-func (a *authMiddleware) AuthAPI(next http.Handler) http.Handler {
+func (a *auth) AuthAPI(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
 		// TODO validate

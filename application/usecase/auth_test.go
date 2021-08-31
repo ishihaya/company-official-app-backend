@@ -11,10 +11,10 @@ import (
 	"golang.org/x/xerrors"
 )
 
-func Test_authUsecase_Get(t *testing.T) {
+func Test_auth_usecase_Get(t *testing.T) {
 	ctx := context.Background()
 	type fields struct {
-		authOperatorFn func(mock *mock_operator.MockAuthOperator)
+		authOperatorFn func(mock *mock_operator.MockAuth)
 	}
 	type args struct {
 		token string
@@ -29,7 +29,7 @@ func Test_authUsecase_Get(t *testing.T) {
 		{
 			name: "1 / 正常系",
 			fields: fields{
-				authOperatorFn: func(mock *mock_operator.MockAuthOperator) {
+				authOperatorFn: func(mock *mock_operator.MockAuth) {
 					mock.EXPECT().FindByToken(ctx, "token").Return(&entity.Auth{
 						ID: "id",
 					}, nil)
@@ -48,9 +48,9 @@ func Test_authUsecase_Get(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
-			mockOperator := mock_operator.NewMockAuthOperator(ctrl)
+			mockOperator := mock_operator.NewMockAuth(ctrl)
 			tt.fields.authOperatorFn(mockOperator)
-			a := NewAuthUsecase(mockOperator)
+			a := NewAuth(mockOperator)
 
 			got, err := a.Get(ctx, tt.args.token)
 

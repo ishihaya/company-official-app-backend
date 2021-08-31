@@ -10,19 +10,19 @@ import (
 	"github.com/ishihaya/company-official-app-backend/pkg/db"
 )
 
-func InitUser() controller.UserController {
+func InitUser() controller.User {
 	conn := db.New()
-	repositoryUser := repository.NewUserRepository(conn)
+	repositoryUser := repository.NewUser(conn)
 	operatorAppID := operator.NewAppIDOperator()
-	usecaseUser := usecase.NewUserUsecase(repositoryUser, operatorAppID)
-	controllerUser := controller.NewUserController(usecaseUser)
+	usecaseUser := usecase.NewUser(repositoryUser, operatorAppID)
+	controllerUser := controller.NewUser(usecaseUser)
 	return controllerUser
 }
 
-func InitAuth() middleware.AuthMiddleware {
+func InitAuth() middleware.Auth {
 	client := authgo.New()
-	operatorAuth := operator.NewAuthOperator(client)
-	usecaseAuth := usecase.NewAuthUsecase(operatorAuth)
-	middlewareAuth := middleware.NewAuthMiddleware(usecaseAuth)
+	operatorAuth := operator.NewAuth(client)
+	usecaseAuth := usecase.NewAuth(operatorAuth)
+	middlewareAuth := middleware.NewAuth(usecaseAuth)
 	return middlewareAuth
 }

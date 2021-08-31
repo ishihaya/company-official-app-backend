@@ -12,9 +12,9 @@ import (
 	"golang.org/x/xerrors"
 )
 
-func Test_userUsecase_Get(t *testing.T) {
+func Test_user_usecase_Get(t *testing.T) {
 	type fields struct {
-		userRepositoryFn func(mock *mock_repository.MockUserRepository)
+		userRepositoryFn func(mock *mock_repository.MockUser)
 	}
 	type args struct {
 		authID string
@@ -29,7 +29,7 @@ func Test_userUsecase_Get(t *testing.T) {
 		{
 			name: "1 / 正常系",
 			fields: fields{
-				userRepositoryFn: func(mock *mock_repository.MockUserRepository) {
+				userRepositoryFn: func(mock *mock_repository.MockUser) {
 					mock.EXPECT().FindByAuthID("auth_id").Return(&entity.User{
 						ID:        "id",
 						AuthID:    "auth_id",
@@ -56,9 +56,9 @@ func Test_userUsecase_Get(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
-			mockRepository := mock_repository.NewMockUserRepository(ctrl)
+			mockRepository := mock_repository.NewMockUser(ctrl)
 			tt.fields.userRepositoryFn(mockRepository)
-			u := NewUserUsecase(mockRepository, nil)
+			u := NewUser(mockRepository, nil)
 
 			got, err := u.Get(tt.args.authID)
 
@@ -73,10 +73,10 @@ func Test_userUsecase_Get(t *testing.T) {
 	}
 }
 
-func Test_userUsecase_Create(t *testing.T) {
+func Test_user_usecase_Create(t *testing.T) {
 	var id entity.AppID = "id"
 	type fields struct {
-		userRepositoryFn func(mock *mock_repository.MockUserRepository)
+		userRepositoryFn func(mock *mock_repository.MockUser)
 		appIDOperatorFn  func(mock *mock_operator.MockAppIDOperator)
 	}
 	type args struct {
@@ -93,7 +93,7 @@ func Test_userUsecase_Create(t *testing.T) {
 		{
 			name: "1 / 正常系",
 			fields: fields{
-				userRepositoryFn: func(mock *mock_repository.MockUserRepository) {
+				userRepositoryFn: func(mock *mock_repository.MockUser) {
 					mock.EXPECT().Store(&entity.User{
 						ID:        id,
 						AuthID:    "auth_id",
@@ -118,11 +118,11 @@ func Test_userUsecase_Create(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
-			mockRepository := mock_repository.NewMockUserRepository(ctrl)
+			mockRepository := mock_repository.NewMockUser(ctrl)
 			tt.fields.userRepositoryFn(mockRepository)
 			mockOperator := mock_operator.NewMockAppIDOperator(ctrl)
 			tt.fields.appIDOperatorFn(mockOperator)
-			u := NewUserUsecase(mockRepository, mockOperator)
+			u := NewUser(mockRepository, mockOperator)
 
 			err := u.Create(tt.args.authID, tt.args.nickname, tt.args.currentTime)
 

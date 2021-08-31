@@ -6,6 +6,6 @@ import (
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
 )
 
-type AuthOperator interface {
+type Auth interface {
 	FindByToken(ctx context.Context, token string) (*entity.Auth, error)
 }
