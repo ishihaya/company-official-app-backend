@@ -13,7 +13,7 @@ import (
 	"golang.org/x/xerrors"
 )
 
-func Test_userRepository_GetByAuthID(t *testing.T) {
+func Test_user_repository_GetByAuthID(t *testing.T) {
 	mockTime := contextgo.MockTime(context.Background())
 	conn := db.New()
 	t.Cleanup(func() {
@@ -66,7 +66,7 @@ func Test_userRepository_GetByAuthID(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			tt := tt
-			u := NewUserRepository(conn)
+			u := NewUser(conn)
 
 			got, err := u.FindByAuthID(tt.args.authID)
 
@@ -80,7 +80,7 @@ func Test_userRepository_GetByAuthID(t *testing.T) {
 	}
 }
 
-func Test_userRepository_Store(t *testing.T) {
+func Test_user_repository_Store(t *testing.T) {
 	mockTime := contextgo.MockTime(context.Background())
 	conn := db.New()
 	t.Cleanup(func() {
@@ -111,7 +111,7 @@ func Test_userRepository_Store(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			u := NewUserRepository(conn)
+			u := NewUser(conn)
 
 			err := u.Store(tt.args.user)
 

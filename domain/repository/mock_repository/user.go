@@ -11,31 +11,31 @@ import (
 	entity "github.com/ishihaya/company-official-app-backend/domain/entity"
 )
 
-// MockUserRepository is a mock of UserRepository interface.
-type MockUserRepository struct {
+// MockUser is a mock of User interface.
+type MockUser struct {
 	ctrl     *gomock.Controller
-	recorder *MockUserRepositoryMockRecorder
+	recorder *MockUserMockRecorder
 }
 
-// MockUserRepositoryMockRecorder is the mock recorder for MockUserRepository.
-type MockUserRepositoryMockRecorder struct {
-	mock *MockUserRepository
+// MockUserMockRecorder is the mock recorder for MockUser.
+type MockUserMockRecorder struct {
+	mock *MockUser
 }
 
-// NewMockUserRepository creates a new mock instance.
-func NewMockUserRepository(ctrl *gomock.Controller) *MockUserRepository {
-	mock := &MockUserRepository{ctrl: ctrl}
-	mock.recorder = &MockUserRepositoryMockRecorder{mock}
+// NewMockUser creates a new mock instance.
+func NewMockUser(ctrl *gomock.Controller) *MockUser {
+	mock := &MockUser{ctrl: ctrl}
+	mock.recorder = &MockUserMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockUserRepository) EXPECT() *MockUserRepositoryMockRecorder {
+func (m *MockUser) EXPECT() *MockUserMockRecorder {
 	return m.recorder
 }
 
 // FindByAuthID mocks base method.
-func (m *MockUserRepository) FindByAuthID(authID string) (*entity.User, error) {
+func (m *MockUser) FindByAuthID(authID string) (*entity.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindByAuthID", authID)
 	ret0, _ := ret[0].(*entity.User)
@@ -44,13 +44,13 @@ func (m *MockUserRepository) FindByAuthID(authID string) (*entity.User, error) {
 }
 
 // FindByAuthID indicates an expected call of FindByAuthID.
-func (mr *MockUserRepositoryMockRecorder) FindByAuthID(authID interface{}) *gomock.Call {
+func (mr *MockUserMockRecorder) FindByAuthID(authID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByAuthID", reflect.TypeOf((*MockUserRepository)(nil).FindByAuthID), authID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByAuthID", reflect.TypeOf((*MockUser)(nil).FindByAuthID), authID)
 }
 
 // Store mocks base method.
-func (m *MockUserRepository) Store(user *entity.User) error {
+func (m *MockUser) Store(user *entity.User) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Store", user)
 	ret0, _ := ret[0].(error)
@@ -58,7 +58,7 @@ func (m *MockUserRepository) Store(user *entity.User) error {
 }
 
 // Store indicates an expected call of Store.
-func (mr *MockUserRepositoryMockRecorder) Store(user interface{}) *gomock.Call {
+func (mr *MockUserMockRecorder) Store(user interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Store", reflect.TypeOf((*MockUserRepository)(nil).Store), user)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Store", reflect.TypeOf((*MockUser)(nil).Store), user)
 }

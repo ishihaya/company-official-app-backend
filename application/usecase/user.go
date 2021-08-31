@@ -15,12 +15,12 @@ type UserUsecase interface {
 }
 
 type userUsecase struct {
-	userRepository repository.UserRepository
+	userRepository repository.User
 	appIDOperator  operator.AppIDOperator
 }
 
 func NewUserUsecase(
-	userRepository repository.UserRepository,
+	userRepository repository.User,
 	appIDOperator operator.AppIDOperator,
 ) UserUsecase {
 	return &userUsecase{

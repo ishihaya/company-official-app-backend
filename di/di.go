@@ -12,7 +12,7 @@ import (
 
 func InitUser() controller.UserController {
 	conn := db.New()
-	repositoryUser := repository.NewUserRepository(conn)
+	repositoryUser := repository.NewUser(conn)
 	operatorAppID := operator.NewAppIDOperator()
 	usecaseUser := usecase.NewUserUsecase(repositoryUser, operatorAppID)
 	controllerUser := controller.NewUserController(usecaseUser)
