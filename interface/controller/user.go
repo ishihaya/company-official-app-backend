@@ -14,20 +14,20 @@ import (
 	"golang.org/x/xerrors"
 )
 
-type UserController interface {
+type User interface {
 	Get(w http.ResponseWriter, r *http.Request)
 	Create(w http.ResponseWriter, r *http.Request)
 }
 
-type userController struct {
+type user struct {
 	userUsecase usecase.User
 	log         logging.Log
 }
 
-func NewUserController(
+func NewUser(
 	userUsecase usecase.User,
-) UserController {
-	return &userController{
+) User {
+	return &user{
 		userUsecase: userUsecase,
 		log:         logging.GetInstance(),
 	}
@@ -43,7 +43,7 @@ func NewUserController(
 // @Failure 404 {object} string "Something wrong"
 // @Failure 500 {object} string "Something wrong"
 // @Router /user [get]
-func (u *userController) Get(w http.ResponseWriter, r *http.Request) {
+func (u *user) Get(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := new(request.UserGet)
 	var err error
@@ -79,7 +79,7 @@ func (u *userController) Get(w http.ResponseWriter, r *http.Request) {
 // @Success 204
 // @Failure 500 {object} string "Something wrong"
 // @Router /user [post]
-func (u *userController) Create(w http.ResponseWriter, r *http.Request) {
+func (u *user) Create(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := new(request.UserCreate)
 	var err error

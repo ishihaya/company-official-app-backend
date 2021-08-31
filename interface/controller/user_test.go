@@ -86,7 +86,7 @@ func Test_userHandler_Get(t *testing.T) {
 			defer ctrl.Finish()
 			mockUsecase := mock_usecase.NewMockUser(ctrl)
 			tt.fields.userUsecaseFn(mockUsecase)
-			u := NewUserController(mockUsecase)
+			u := NewUser(mockUsecase)
 
 			res := httptest.NewRecorder()
 			req := httptest.NewRequest(http.MethodGet, "/user", nil)
@@ -192,7 +192,7 @@ func Test_userHandler_Create(t *testing.T) {
 			defer ctrl.Finish()
 			mockUsecase := mock_usecase.NewMockUser(ctrl)
 			tt.fields.userUsecaseFn(mockUsecase)
-			u := NewUserController(mockUsecase)
+			u := NewUser(mockUsecase)
 
 			res := httptest.NewRecorder()
 			var req *http.Request
