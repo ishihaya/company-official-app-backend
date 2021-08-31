@@ -83,7 +83,7 @@ func (u *user) Get(w http.ResponseWriter, r *http.Request) {
 
 	res := struct {
 		*outputUser
-	} {
+	}{
 		convertUserEntityToOutput(user),
 	}
 	factory.JSON(w, http.StatusOK, res)
