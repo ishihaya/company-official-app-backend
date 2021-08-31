@@ -52,12 +52,15 @@ func convertUserEntityToOutput(ent *entity.User) *outputUser {
 	}
 }
 
+type userGetRes struct {
+	*outputUser
+}
+
 // Get
 // @Summary 認証情報から自分のユーザー情報を取得する
 // @Accept  json
 // @Produce  json
 // @Param Authorization header string true "Authentiation header"
-// @Success 200 {object} response.UserGet
 // @Failure 400 {object} string "Something wrong"
 // @Failure 404 {object} string "Something wrong"
 // @Failure 500 {object} string "Something wrong"
@@ -81,12 +84,12 @@ func (u *user) Get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := struct {
-		*outputUser
-	}{
-		convertUserEntityToOutput(user),
-	}
+	res := &userGetRes{convertUserEntityToOutput(user)}
 	factory.JSON(w, http.StatusOK, res)
+}
+
+type userCreateReq struct {
+	Nickname string `json:"nickname" binding:"required"`
 }
 
 // Create
@@ -94,15 +97,13 @@ func (u *user) Get(w http.ResponseWriter, r *http.Request) {
 // @Accept  json
 // @Produce  json
 // @Param Authorization header string true "Authentiation header"
-// @Param data body request.UserCreate true "request body"
+// @Param data body userCreateReq true "request body"
 // @Success 204
 // @Failure 500 {object} string "Something wrong"
 // @Router /user [post]
 func (u *user) Create(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	req := new(struct {
-		Nickname string `json:"nickname" binding:"required"`
-	})
+	req := new(userCreateReq)
 	err := json.NewDecoder(r.Body).Decode(req)
 	if err != nil {
 		panic(err)
