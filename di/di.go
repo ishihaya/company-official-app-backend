@@ -21,7 +21,7 @@ func InitUser() controller.UserController {
 
 func InitAuth() middleware.AuthMiddleware {
 	client := authgo.New()
-	operatorAuth := operator.NewAuthOperator(client)
+	operatorAuth := operator.NewAuth(client)
 	usecaseAuth := usecase.NewAuthUsecase(operatorAuth)
 	middlewareAuth := middleware.NewAuthMiddleware(usecaseAuth)
 	return middlewareAuth

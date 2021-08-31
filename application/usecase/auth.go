@@ -13,10 +13,10 @@ type AuthUsecase interface {
 }
 
 type authUsecase struct {
-	authOperator operator.AuthOperator
+	authOperator operator.Auth
 }
 
-func NewAuthUsecase(authOperator operator.AuthOperator) AuthUsecase {
+func NewAuthUsecase(authOperator operator.Auth) AuthUsecase {
 	return &authUsecase{
 		authOperator: authOperator,
 	}

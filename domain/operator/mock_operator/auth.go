@@ -12,31 +12,31 @@ import (
 	entity "github.com/ishihaya/company-official-app-backend/domain/entity"
 )
 
-// MockAuthOperator is a mock of AuthOperator interface.
-type MockAuthOperator struct {
+// MockAuth is a mock of Auth interface.
+type MockAuth struct {
 	ctrl     *gomock.Controller
-	recorder *MockAuthOperatorMockRecorder
+	recorder *MockAuthMockRecorder
 }
 
-// MockAuthOperatorMockRecorder is the mock recorder for MockAuthOperator.
-type MockAuthOperatorMockRecorder struct {
-	mock *MockAuthOperator
+// MockAuthMockRecorder is the mock recorder for MockAuth.
+type MockAuthMockRecorder struct {
+	mock *MockAuth
 }
 
-// NewMockAuthOperator creates a new mock instance.
-func NewMockAuthOperator(ctrl *gomock.Controller) *MockAuthOperator {
-	mock := &MockAuthOperator{ctrl: ctrl}
-	mock.recorder = &MockAuthOperatorMockRecorder{mock}
+// NewMockAuth creates a new mock instance.
+func NewMockAuth(ctrl *gomock.Controller) *MockAuth {
+	mock := &MockAuth{ctrl: ctrl}
+	mock.recorder = &MockAuthMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockAuthOperator) EXPECT() *MockAuthOperatorMockRecorder {
+func (m *MockAuth) EXPECT() *MockAuthMockRecorder {
 	return m.recorder
 }
 
 // FindByToken mocks base method.
-func (m *MockAuthOperator) FindByToken(ctx context.Context, token string) (*entity.Auth, error) {
+func (m *MockAuth) FindByToken(ctx context.Context, token string) (*entity.Auth, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindByToken", ctx, token)
 	ret0, _ := ret[0].(*entity.Auth)
@@ -45,7 +45,7 @@ func (m *MockAuthOperator) FindByToken(ctx context.Context, token string) (*enti
 }
 
 // FindByToken indicates an expected call of FindByToken.
-func (mr *MockAuthOperatorMockRecorder) FindByToken(ctx, token interface{}) *gomock.Call {
+func (mr *MockAuthMockRecorder) FindByToken(ctx, token interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByToken", reflect.TypeOf((*MockAuthOperator)(nil).FindByToken), ctx, token)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByToken", reflect.TypeOf((*MockAuth)(nil).FindByToken), ctx, token)
 }
