@@ -30,15 +30,10 @@ func NewAuth(
 	}
 }
 
-// type authAPIRequest struct {
-// 	IDToken string `json:"-"`
-// }
-
 // AuthAPI - 認証API
 func (a *auth) AuthAPI(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
-		// TODO validate
 		typ := "Bearer"
 		typPrefix := fmt.Sprintf("%s ", typ)
 		idToken := strings.Replace(authHeader, typPrefix, "", 1)

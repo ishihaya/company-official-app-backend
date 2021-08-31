@@ -3,11 +3,11 @@ package controller
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/ishihaya/company-official-app-backend/application/usecase"
+	"github.com/ishihaya/company-official-app-backend/domain/entity"
 	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
-	"github.com/ishihaya/company-official-app-backend/interface/controller/request"
-	"github.com/ishihaya/company-official-app-backend/interface/controller/response"
 	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
 	"github.com/ishihaya/company-official-app-backend/pkg/factory"
 	"github.com/ishihaya/company-official-app-backend/pkg/logging"
@@ -33,6 +33,25 @@ func NewUser(
 	}
 }
 
+// outputUser is used response
+type outputUser struct {
+	ID        entity.AppID `json:"id"`
+	AuthID    string       `json:"authID"`
+	Nickname  string       `json:"nickname"`
+	CreatedAt time.Time    `json:"createdAt"`
+	UpdatedAt time.Time    `json:"ureatedAt"`
+}
+
+func convertUserEntityToOutput(ent *entity.User) *outputUser {
+	return &outputUser{
+		ID:        ent.ID,
+		AuthID:    ent.AuthID,
+		Nickname:  ent.Nickname,
+		CreatedAt: ent.CreatedAt,
+		UpdatedAt: ent.UpdatedAt,
+	}
+}
+
 // Get
 // @Summary 認証情報から自分のユーザー情報を取得する
 // @Accept  json
@@ -44,17 +63,14 @@ func NewUser(
 // @Failure 500 {object} string "Something wrong"
 // @Router /user [get]
 func (u *user) Get(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	req := new(request.UserGet)
-	var err error
-	req.AuthID, err = contextgo.AuthID(ctx)
+	authID, err := contextgo.AuthID(r.Context())
 	if err != nil {
 		u.log.Warnf(": %+v", err)
 		factory.JSON(w, http.StatusBadRequest, apperror.ErrGetAuthID.Error())
 		return
 	}
 
-	user, err := u.userUsecase.Get(req.AuthID)
+	user, err := u.userUsecase.Get(authID)
 	if err != nil {
 		u.log.Warnf("failed to get user: %+v", err)
 		if xerrors.Is(err, apperror.ErrUserNotFound) {
@@ -64,8 +80,11 @@ func (u *user) Get(w http.ResponseWriter, r *http.Request) {
 		factory.JSON(w, http.StatusInternalServerError, apperror.ErrInternalServerError.Error())
 		return
 	}
-	res := &response.UserGet{
-		User: response.NewUser(user),
+
+	res := struct {
+		*outputUser
+	} {
+		convertUserEntityToOutput(user),
 	}
 	factory.JSON(w, http.StatusOK, res)
 }
@@ -81,27 +100,27 @@ func (u *user) Get(w http.ResponseWriter, r *http.Request) {
 // @Router /user [post]
 func (u *user) Create(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	req := new(request.UserCreate)
-	var err error
-	// TODO validate
-	err = json.NewDecoder(r.Body).Decode(req)
+	req := new(struct {
+		Nickname string `json:"nickname" binding:"required"`
+	})
+	err := json.NewDecoder(r.Body).Decode(req)
 	if err != nil {
 		panic(err)
 	}
-	req.CurrentTime, err = contextgo.CurrentTime(ctx)
+	currentTime, err := contextgo.CurrentTime(ctx)
 	if err != nil {
 		u.log.Warnf("failed to get current time: %+v", err)
 		factory.JSON(w, http.StatusBadRequest, apperror.ErrGetTime.Error())
 		return
 	}
-	req.AuthID, err = contextgo.AuthID(ctx)
+	authID, err := contextgo.AuthID(ctx)
 	if err != nil {
 		u.log.Warnf("failed to get auth id: %+v", err)
 		factory.JSON(w, http.StatusBadRequest, apperror.ErrGetAuthID.Error())
 		return
 	}
 
-	if err = u.userUsecase.Create(req.AuthID, req.Nickname, req.CurrentTime); err != nil {
+	if err := u.userUsecase.Create(authID, req.Nickname, currentTime); err != nil {
 		u.log.Errorf("failed to get user: %+v", err)
 		factory.JSON(w, http.StatusInternalServerError, apperror.ErrInternalServerError.Error())
 		return
