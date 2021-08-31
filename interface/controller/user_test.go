@@ -45,7 +45,7 @@ func Test_user_controller_Get(t *testing.T) {
 				},
 			},
 			authID:         &authID1,
-			want:           "{\"nickname\":\"nick_name\"}\n",
+			want:           "{\"id\":\"id\",\"authID\":\"auth_id\",\"nickname\":\"nick_name\",\"createdAt\":\"0001-01-01T00:00:00Z\",\"ureatedAt\":\"0001-01-01T00:00:00Z\"}\n",
 			wantStatusCode: http.StatusOK,
 		},
 		{

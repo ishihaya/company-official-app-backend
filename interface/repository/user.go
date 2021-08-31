@@ -21,6 +21,7 @@ func NewUser(conn *db.Conn) repository.User {
 	}
 }
 
+// daoUser is used data access
 type daoUser struct {
 	ID        entity.AppID `db:"id"`
 	AuthID    string       `db:"auth_id"`

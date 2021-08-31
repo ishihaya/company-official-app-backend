@@ -43,12 +43,6 @@ var doc = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.UserGet"
-                        }
-                    },
                     "400": {
                         "description": "Something wrong",
                         "schema": {
@@ -91,7 +85,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/request.UserCreate"
+                            "$ref": "#/definitions/controller.userCreateReq"
                         }
                     }
                 ],
@@ -110,19 +104,11 @@ var doc = `{
         }
     },
     "definitions": {
-        "request.UserCreate": {
+        "controller.userCreateReq": {
             "type": "object",
             "required": [
                 "nickname"
             ],
-            "properties": {
-                "nickname": {
-                    "type": "string"
-                }
-            }
-        },
-        "response.UserGet": {
-            "type": "object",
             "properties": {
                 "nickname": {
                     "type": "string"

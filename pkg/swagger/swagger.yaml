@@ -1,15 +1,10 @@
 definitions:
-  request.UserCreate:
+  controller.userCreateReq:
     properties:
       nickname:
         type: string
     required:
     - nickname
-    type: object
-  response.UserGet:
-    properties:
-      nickname:
-        type: string
     type: object
 info:
   contact: {}
@@ -27,10 +22,6 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.UserGet'
         "400":
           description: Something wrong
           schema:
@@ -58,7 +49,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/request.UserCreate'
+          $ref: '#/definitions/controller.userCreateReq'
       produces:
       - application/json
       responses:
