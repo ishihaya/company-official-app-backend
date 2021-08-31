@@ -58,7 +58,7 @@ func Test_userUsecase_Get(t *testing.T) {
 			defer ctrl.Finish()
 			mockRepository := mock_repository.NewMockUser(ctrl)
 			tt.fields.userRepositoryFn(mockRepository)
-			u := NewUserUsecase(mockRepository, nil)
+			u := NewUser(mockRepository, nil)
 
 			got, err := u.Get(tt.args.authID)
 
@@ -122,7 +122,7 @@ func Test_userUsecase_Create(t *testing.T) {
 			tt.fields.userRepositoryFn(mockRepository)
 			mockOperator := mock_operator.NewMockAppIDOperator(ctrl)
 			tt.fields.appIDOperatorFn(mockOperator)
-			u := NewUserUsecase(mockRepository, mockOperator)
+			u := NewUser(mockRepository, mockOperator)
 
 			err := u.Create(tt.args.authID, tt.args.nickname, tt.args.currentTime)
 

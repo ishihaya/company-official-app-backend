@@ -12,31 +12,31 @@ import (
 	entity "github.com/ishihaya/company-official-app-backend/domain/entity"
 )
 
-// MockAuthUsecase is a mock of AuthUsecase interface.
-type MockAuthUsecase struct {
+// MockAuth is a mock of Auth interface.
+type MockAuth struct {
 	ctrl     *gomock.Controller
-	recorder *MockAuthUsecaseMockRecorder
+	recorder *MockAuthMockRecorder
 }
 
-// MockAuthUsecaseMockRecorder is the mock recorder for MockAuthUsecase.
-type MockAuthUsecaseMockRecorder struct {
-	mock *MockAuthUsecase
+// MockAuthMockRecorder is the mock recorder for MockAuth.
+type MockAuthMockRecorder struct {
+	mock *MockAuth
 }
 
-// NewMockAuthUsecase creates a new mock instance.
-func NewMockAuthUsecase(ctrl *gomock.Controller) *MockAuthUsecase {
-	mock := &MockAuthUsecase{ctrl: ctrl}
-	mock.recorder = &MockAuthUsecaseMockRecorder{mock}
+// NewMockAuth creates a new mock instance.
+func NewMockAuth(ctrl *gomock.Controller) *MockAuth {
+	mock := &MockAuth{ctrl: ctrl}
+	mock.recorder = &MockAuthMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockAuthUsecase) EXPECT() *MockAuthUsecaseMockRecorder {
+func (m *MockAuth) EXPECT() *MockAuthMockRecorder {
 	return m.recorder
 }
 
 // Get mocks base method.
-func (m *MockAuthUsecase) Get(ctx context.Context, token string) (*entity.Auth, error) {
+func (m *MockAuth) Get(ctx context.Context, token string) (*entity.Auth, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", ctx, token)
 	ret0, _ := ret[0].(*entity.Auth)
@@ -45,7 +45,7 @@ func (m *MockAuthUsecase) Get(ctx context.Context, token string) (*entity.Auth, 
 }
 
 // Get indicates an expected call of Get.
-func (mr *MockAuthUsecaseMockRecorder) Get(ctx, token interface{}) *gomock.Call {
+func (mr *MockAuthMockRecorder) Get(ctx, token interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockAuthUsecase)(nil).Get), ctx, token)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockAuth)(nil).Get), ctx, token)
 }

@@ -50,7 +50,7 @@ func Test_authUsecase_Get(t *testing.T) {
 			defer ctrl.Finish()
 			mockOperator := mock_operator.NewMockAuth(ctrl)
 			tt.fields.authOperatorFn(mockOperator)
-			a := NewAuthUsecase(mockOperator)
+			a := NewAuth(mockOperator)
 
 			got, err := a.Get(ctx, tt.args.token)
 

@@ -20,12 +20,12 @@ type UserController interface {
 }
 
 type userController struct {
-	userUsecase usecase.UserUsecase
+	userUsecase usecase.User
 	log         logging.Log
 }
 
 func NewUserController(
-	userUsecase usecase.UserUsecase,
+	userUsecase usecase.User,
 ) UserController {
 	return &userController{
 		userUsecase: userUsecase,

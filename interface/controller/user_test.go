@@ -22,7 +22,7 @@ func Test_userHandler_Get(t *testing.T) {
 	authID3 := "not_found"
 	authID4 := "error_auth_id"
 	type fields struct {
-		userUsecaseFn func(mock *mock_usecase.MockUserUsecase)
+		userUsecaseFn func(mock *mock_usecase.MockUser)
 	}
 	tests := []struct {
 		name           string
@@ -34,7 +34,7 @@ func Test_userHandler_Get(t *testing.T) {
 		{
 			name: "1 / 正常系",
 			fields: fields{
-				userUsecaseFn: func(mock *mock_usecase.MockUserUsecase) {
+				userUsecaseFn: func(mock *mock_usecase.MockUser) {
 					mock.EXPECT().Get("auth_id").Return(&entity.User{
 						ID:        "id",
 						AuthID:    "auth_id",
@@ -51,7 +51,7 @@ func Test_userHandler_Get(t *testing.T) {
 		{
 			name: "2 / 準正常系 / authIDが正常に取得できない場合にBad Requestを返す",
 			fields: fields{
-				userUsecaseFn: func(mock *mock_usecase.MockUserUsecase) {},
+				userUsecaseFn: func(mock *mock_usecase.MockUser) {},
 			},
 			authID:         nil,
 			want:           fmt.Sprintf("\"%s\"\n", apperror.ErrGetAuthID.Error()),
@@ -60,7 +60,7 @@ func Test_userHandler_Get(t *testing.T) {
 		{
 			name: "3 / 準正常系 / ユーザーが見つからない場合にNot Foundを返す",
 			fields: fields{
-				userUsecaseFn: func(mock *mock_usecase.MockUserUsecase) {
+				userUsecaseFn: func(mock *mock_usecase.MockUser) {
 					mock.EXPECT().Get("not_found").Return(nil, apperror.ErrUserNotFound)
 				},
 			},
@@ -71,7 +71,7 @@ func Test_userHandler_Get(t *testing.T) {
 		{
 			name: "4 / 異常系 / 何らかの理由でユーザー取得に失敗する場合にサーバーエラーを返す",
 			fields: fields{
-				userUsecaseFn: func(mock *mock_usecase.MockUserUsecase) {
+				userUsecaseFn: func(mock *mock_usecase.MockUser) {
 					mock.EXPECT().Get("error_auth_id").Return(nil, xerrors.New("something wrong"))
 				},
 			},
@@ -84,7 +84,7 @@ func Test_userHandler_Get(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
-			mockUsecase := mock_usecase.NewMockUserUsecase(ctrl)
+			mockUsecase := mock_usecase.NewMockUser(ctrl)
 			tt.fields.userUsecaseFn(mockUsecase)
 			u := NewUserController(mockUsecase)
 
@@ -118,7 +118,7 @@ func Test_userHandler_Create(t *testing.T) {
 	ct1 := time.Now().UTC()
 
 	type fields struct {
-		userUsecaseFn func(mock *mock_usecase.MockUserUsecase)
+		userUsecaseFn func(mock *mock_usecase.MockUser)
 	}
 	tests := []struct {
 		name           string
@@ -132,7 +132,7 @@ func Test_userHandler_Create(t *testing.T) {
 		{
 			name: "1 / 正常系",
 			fields: fields{
-				userUsecaseFn: func(mock *mock_usecase.MockUserUsecase) {
+				userUsecaseFn: func(mock *mock_usecase.MockUser) {
 					mock.EXPECT().Create("auth_id", "nick_name", ct1).Return(nil)
 				},
 			},
@@ -145,7 +145,7 @@ func Test_userHandler_Create(t *testing.T) {
 		// {
 		// 	name: "2 / 準正常系 / リクエストボディが空の場合Bad Request",
 		// 	fields: fields{
-		// 		userUsecaseFn: func(mock *mock_usecase.MockUserUsecase) {},
+		// 		userUsecaseFn: func(mock *mock_usecase.MockUser) {},
 		// 	},
 		// 	requestBody:    nil,
 		// 	want:           fmt.Sprintf("\"%s\"\n"`, apperror.ErrValidation.Error()),
@@ -154,7 +154,7 @@ func Test_userHandler_Create(t *testing.T) {
 		{
 			name: "3 / 準正常系 / 現在時刻が取得できない場合Bad Request",
 			fields: fields{
-				userUsecaseFn: func(mock *mock_usecase.MockUserUsecase) {},
+				userUsecaseFn: func(mock *mock_usecase.MockUser) {},
 			},
 			requestBody:    &requestBody1,
 			currentTime:    nil,
@@ -164,7 +164,7 @@ func Test_userHandler_Create(t *testing.T) {
 		{
 			name: "4 / 準正常系 / authIDが取得できない場合Bad Request",
 			fields: fields{
-				userUsecaseFn: func(mock *mock_usecase.MockUserUsecase) {},
+				userUsecaseFn: func(mock *mock_usecase.MockUser) {},
 			},
 			requestBody:    &requestBody1,
 			currentTime:    &ct1,
@@ -175,7 +175,7 @@ func Test_userHandler_Create(t *testing.T) {
 		{
 			name: "5 / 異常系 / ユーザー取得に失敗した場合Internal Server Error",
 			fields: fields{
-				userUsecaseFn: func(mock *mock_usecase.MockUserUsecase) {
+				userUsecaseFn: func(mock *mock_usecase.MockUser) {
 					mock.EXPECT().Create("auth_id", "nick_name", ct1).Return(xerrors.New("something wrong"))
 				},
 			},
@@ -190,7 +190,7 @@ func Test_userHandler_Create(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
-			mockUsecase := mock_usecase.NewMockUserUsecase(ctrl)
+			mockUsecase := mock_usecase.NewMockUser(ctrl)
 			tt.fields.userUsecaseFn(mockUsecase)
 			u := NewUserController(mockUsecase)
 

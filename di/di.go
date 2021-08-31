@@ -14,7 +14,7 @@ func InitUser() controller.UserController {
 	conn := db.New()
 	repositoryUser := repository.NewUser(conn)
 	operatorAppID := operator.NewAppIDOperator()
-	usecaseUser := usecase.NewUserUsecase(repositoryUser, operatorAppID)
+	usecaseUser := usecase.NewUser(repositoryUser, operatorAppID)
 	controllerUser := controller.NewUserController(usecaseUser)
 	return controllerUser
 }
@@ -22,7 +22,7 @@ func InitUser() controller.UserController {
 func InitAuth() middleware.AuthMiddleware {
 	client := authgo.New()
 	operatorAuth := operator.NewAuth(client)
-	usecaseAuth := usecase.NewAuthUsecase(operatorAuth)
+	usecaseAuth := usecase.NewAuth(operatorAuth)
 	middlewareAuth := middleware.NewAuthMiddleware(usecaseAuth)
 	return middlewareAuth
 }

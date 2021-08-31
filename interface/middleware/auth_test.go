@@ -24,7 +24,7 @@ func Test_authMiddleware_AuthAPI(t *testing.T) {
 	wantResponseBody3 := fmt.Sprintf("\"%s\"\n", apperror.ErrInternalServerError.Error())
 	wantStatusCode3 := 500
 	type fields struct {
-		authUsecaseFn func(mock *mock_usecase.MockAuthUsecase)
+		authUsecaseFn func(mock *mock_usecase.MockAuth)
 	}
 	tests := []struct {
 		name             string
@@ -37,7 +37,7 @@ func Test_authMiddleware_AuthAPI(t *testing.T) {
 		{
 			name: "1 / 正常系",
 			fields: fields{
-				authUsecaseFn: func(mock *mock_usecase.MockAuthUsecase) {
+				authUsecaseFn: func(mock *mock_usecase.MockAuth) {
 					mock.EXPECT().Get(context.Background(), "token").Return(&entity.Auth{
 						ID: "auth_id",
 					}, nil)
@@ -51,7 +51,7 @@ func Test_authMiddleware_AuthAPI(t *testing.T) {
 		// {
 		// 	name: "2 / 準正常系 / headerにtokenがセットされていない場合Bad Request",
 		// 	fields: fields{
-		// 		authUsecaseFn: func(mock *mock_usecase.MockAuthUsecase) {},
+		// 		authUsecaseFn: func(mock *mock_usecase.MockAuth) {},
 		// 	},
 		// 	token:            nil,
 		// 	wantAuthID:       nil,
@@ -61,7 +61,7 @@ func Test_authMiddleware_AuthAPI(t *testing.T) {
 		{
 			name: "3 / 異常系 / 認証情報の取得に失敗した場合Server Error",
 			fields: fields{
-				authUsecaseFn: func(mock *mock_usecase.MockAuthUsecase) {
+				authUsecaseFn: func(mock *mock_usecase.MockAuth) {
 					mock.EXPECT().Get(context.Background(), "token").Return(nil, xerrors.New("something wrong"))
 				},
 			},
@@ -75,7 +75,7 @@ func Test_authMiddleware_AuthAPI(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
-			mockUsecase := mock_usecase.NewMockAuthUsecase(ctrl)
+			mockUsecase := mock_usecase.NewMockAuth(ctrl)
 			tt.fields.authUsecaseFn(mockUsecase)
 			a := NewAuthMiddleware(mockUsecase)
 

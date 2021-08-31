@@ -9,27 +9,27 @@ import (
 	"golang.org/x/xerrors"
 )
 
-type UserUsecase interface {
+type User interface {
 	Get(authID string) (*entity.User, error)
 	Create(authID, nickname string, currentTime time.Time) error
 }
 
-type userUsecase struct {
+type user struct {
 	userRepository repository.User
 	appIDOperator  operator.AppIDOperator
 }
 
-func NewUserUsecase(
+func NewUser(
 	userRepository repository.User,
 	appIDOperator operator.AppIDOperator,
-) UserUsecase {
-	return &userUsecase{
+) User {
+	return &user{
 		userRepository: userRepository,
 		appIDOperator:  appIDOperator,
 	}
 }
 
-func (u *userUsecase) Get(authID string) (*entity.User, error) {
+func (u *user) Get(authID string) (*entity.User, error) {
 	user, err := u.userRepository.FindByAuthID(authID)
 	if err != nil {
 		return nil, xerrors.Errorf(": %w", err)
@@ -37,7 +37,7 @@ func (u *userUsecase) Get(authID string) (*entity.User, error) {
 	return user, nil
 }
 
-func (u *userUsecase) Create(authID, nickname string, currentTime time.Time) error {
+func (u *user) Create(authID, nickname string, currentTime time.Time) error {
 	id, err := u.appIDOperator.Generate(currentTime)
 	if err != nil {
 		return xerrors.Errorf(": %w", err)

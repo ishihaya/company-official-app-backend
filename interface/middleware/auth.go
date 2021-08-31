@@ -17,12 +17,12 @@ type AuthMiddleware interface {
 }
 
 type authMiddleware struct {
-	authUsecase usecase.AuthUsecase
+	authUsecase usecase.Auth
 	log         logging.Log
 }
 
 func NewAuthMiddleware(
-	authUsecase usecase.AuthUsecase,
+	authUsecase usecase.Auth,
 ) AuthMiddleware {
 	return &authMiddleware{
 		authUsecase: authUsecase,
