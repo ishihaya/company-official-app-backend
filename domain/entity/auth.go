@@ -1,6 +1,6 @@
 package entity
 
-// Auth - 認証情報
+// Auth - 認証
 type Auth struct {
-	ID string // 認証ID
+	ID string // ID
 }
