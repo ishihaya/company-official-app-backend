@@ -16,12 +16,12 @@ type User interface {
 
 type user struct {
 	userRepository repository.User
-	appIDOperator  operator.AppIDOperator
+	appIDOperator  operator.AppID
 }
 
 func NewUser(
 	userRepository repository.User,
-	appIDOperator operator.AppIDOperator,
+	appIDOperator operator.AppID,
 ) User {
 	return &user{
 		userRepository: userRepository,

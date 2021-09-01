@@ -77,7 +77,7 @@ func Test_user_usecase_Create(t *testing.T) {
 	var id entity.AppID = "id"
 	type fields struct {
 		userRepositoryFn func(mock *mock_repository.MockUser)
-		appIDOperatorFn  func(mock *mock_operator.MockAppIDOperator)
+		appIDOperatorFn  func(mock *mock_operator.MockAppID)
 	}
 	type args struct {
 		authID      string
@@ -102,7 +102,7 @@ func Test_user_usecase_Create(t *testing.T) {
 						UpdatedAt: time.Time{},
 					}).Return(nil)
 				},
-				appIDOperatorFn: func(mock *mock_operator.MockAppIDOperator) {
+				appIDOperatorFn: func(mock *mock_operator.MockAppID) {
 					mock.EXPECT().Generate(time.Time{}).Return(id, nil)
 				},
 			},
@@ -120,7 +120,7 @@ func Test_user_usecase_Create(t *testing.T) {
 			defer ctrl.Finish()
 			mockRepository := mock_repository.NewMockUser(ctrl)
 			tt.fields.userRepositoryFn(mockRepository)
-			mockOperator := mock_operator.NewMockAppIDOperator(ctrl)
+			mockOperator := mock_operator.NewMockAppID(ctrl)
 			tt.fields.appIDOperatorFn(mockOperator)
 			u := NewUser(mockRepository, mockOperator)
 
