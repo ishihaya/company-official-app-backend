@@ -10,9 +10,9 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-cmp/cmp"
 	"github.com/ishihaya/company-official-app-backend/application/usecase/mock_usecase"
+	"github.com/ishihaya/company-official-app-backend/common/apperror"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
-	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
-	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
+	"github.com/ishihaya/company-official-app-backend/interface/pkg/contextgo"
 	"golang.org/x/xerrors"
 )
 

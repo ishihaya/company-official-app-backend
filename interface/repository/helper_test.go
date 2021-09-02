@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/ishihaya/company-official-app-backend/pkg/db"
+	"github.com/ishihaya/company-official-app-backend/infrastructure/db"
 )
 
 func cleanUpRepositoryTest(tb testing.TB, conn *db.Conn, tables []string) {

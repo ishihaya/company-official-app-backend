@@ -2,12 +2,12 @@ package di
 
 import (
 	"github.com/ishihaya/company-official-app-backend/application/usecase"
+	"github.com/ishihaya/company-official-app-backend/infrastructure/auth"
+	"github.com/ishihaya/company-official-app-backend/infrastructure/db"
 	"github.com/ishihaya/company-official-app-backend/interface/controller"
 	"github.com/ishihaya/company-official-app-backend/interface/middleware"
 	"github.com/ishihaya/company-official-app-backend/interface/operator"
 	"github.com/ishihaya/company-official-app-backend/interface/repository"
-	"github.com/ishihaya/company-official-app-backend/pkg/authgo"
-	"github.com/ishihaya/company-official-app-backend/pkg/db"
 )
 
 func InitUser() controller.User {
@@ -20,7 +20,7 @@ func InitUser() controller.User {
 }
 
 func InitAuth() middleware.Auth {
-	client := authgo.New()
+	client := auth.New()
 	operatorAuth := operator.NewAuth(client)
 	usecaseAuth := usecase.NewAuth(operatorAuth)
 	middlewareAuth := middleware.NewAuth(usecaseAuth)

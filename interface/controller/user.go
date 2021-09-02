@@ -6,11 +6,11 @@ import (
 	"time"
 
 	"github.com/ishihaya/company-official-app-backend/application/usecase"
+	"github.com/ishihaya/company-official-app-backend/common/apperror"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
-	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
-	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
-	"github.com/ishihaya/company-official-app-backend/pkg/factory"
-	"github.com/ishihaya/company-official-app-backend/pkg/logging"
+	"github.com/ishihaya/company-official-app-backend/interface/pkg/contextgo"
+	"github.com/ishihaya/company-official-app-backend/interface/pkg/factory"
+	"github.com/ishihaya/company-official-app-backend/interface/pkg/loggo"
 	"golang.org/x/xerrors"
 )
 
@@ -21,7 +21,7 @@ type User interface {
 
 type user struct {
 	userUsecase usecase.User
-	log         logging.Log
+	log         loggo.Log
 }
 
 func NewUser(
@@ -29,7 +29,7 @@ func NewUser(
 ) User {
 	return &user{
 		userUsecase: userUsecase,
-		log:         logging.GetInstance(),
+		log:         loggo.GetInstance(),
 	}
 }
 
