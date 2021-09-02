@@ -1,10 +1,10 @@
-package logging
+package loggo
 
 import (
 	"sync"
 
 	"github.com/ishihaya/cloudlog"
-	"github.com/ishihaya/company-official-app-backend/pkg/env"
+	"github.com/ishihaya/company-official-app-backend/common/env"
 )
 
 // You can define methods that you only use.

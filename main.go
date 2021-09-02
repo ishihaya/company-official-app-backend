@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/ishihaya/company-official-app-backend/common/env"
 	"github.com/ishihaya/company-official-app-backend/interface/router"
-	"github.com/ishihaya/company-official-app-backend/pkg/env"
 )
 
 func main() {

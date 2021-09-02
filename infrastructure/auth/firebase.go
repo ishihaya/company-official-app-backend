@@ -1,4 +1,4 @@
-package authgo
+package auth
 
 import (
 	"context"

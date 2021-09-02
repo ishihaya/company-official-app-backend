@@ -6,10 +6,10 @@ import (
 	"strings"
 
 	"github.com/ishihaya/company-official-app-backend/application/usecase"
-	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
-	"github.com/ishihaya/company-official-app-backend/pkg/contextgo"
-	"github.com/ishihaya/company-official-app-backend/pkg/factory"
-	"github.com/ishihaya/company-official-app-backend/pkg/logging"
+	"github.com/ishihaya/company-official-app-backend/common/apperror"
+	"github.com/ishihaya/company-official-app-backend/interface/pkg/contextgo"
+	"github.com/ishihaya/company-official-app-backend/interface/pkg/factory"
+	"github.com/ishihaya/company-official-app-backend/interface/pkg/loggo"
 )
 
 type Auth interface {
@@ -18,7 +18,7 @@ type Auth interface {
 
 type auth struct {
 	authUsecase usecase.Auth
-	log         logging.Log
+	log         loggo.Log
 }
 
 func NewAuth(
@@ -26,7 +26,7 @@ func NewAuth(
 ) Auth {
 	return &auth{
 		authUsecase: authUsecase,
-		log:         logging.GetInstance(),
+		log:         loggo.GetInstance(),
 	}
 }
 

@@ -4,10 +4,11 @@ import (
 	"database/sql"
 	"time"
 
+	"github.com/ishihaya/company-official-app-backend/common/apperror"
 	"github.com/ishihaya/company-official-app-backend/domain/entity"
 	"github.com/ishihaya/company-official-app-backend/domain/repository"
-	"github.com/ishihaya/company-official-app-backend/domain/service/apperror"
-	"github.com/ishihaya/company-official-app-backend/pkg/db"
+	"github.com/ishihaya/company-official-app-backend/infrastructure/db"
+
 	"golang.org/x/xerrors"
 )
 
